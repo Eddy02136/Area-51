@@ -1,0 +1,7 @@
+<resources>
+    <string name="app_name">Area</string>
+    <string name="create_an_account">Create an account</string>
+    <string name="loading">Loading...</string>
+    <string name="or">Or</string>
+    <string name="loading_account_informations">Loading account informations...</string>
+</resources>

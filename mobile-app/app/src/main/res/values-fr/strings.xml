@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="create_an_account">Créer un compte</string>
+    <string name="loading">Chargement...</string>
+    <string name="or">Ou</string>
+    <string name="loading_account_informations">Chargement des données du compte...</string>
+</resources>
