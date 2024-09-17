@@ -1,4 +1,4 @@
-package com.usukae.area;
+package com.usukae.area.Activities.Account;
 
 import android.os.Bundle;
 
@@ -7,6 +7,8 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
+
+import com.usukae.area.R;
 
 public class AuthActivity extends AppCompatActivity {
 
@@ -20,5 +22,17 @@ public class AuthActivity extends AppCompatActivity {
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
             return insets;
         });
+    }
+
+    private void loginWithEmail() {
+        // @TODO Login with Email system following back protocol
+    }
+
+    private void loginWithGoogle() {
+        // @TODO Login with Google system following back protocol
+    }
+
+    private void register() {
+        // @TODO Register system following back protocol
     }
 }

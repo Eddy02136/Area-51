@@ -4,4 +4,19 @@
     <string name="loading">Loading...</string>
     <string name="or">Or</string>
     <string name="loading_account_informations">Loading account informations...</string>
+    <string name="login_with_email">Login with Email</string>
+    <string name="login_with_google">Login with Google</string>
+    <string name="account_login">Account login</string>
+    <string name="area51">Area51</string>
+    <string name="email">Email</string>
+    <string name="use_your_credentials_to_login_to_your_account">Use your credentials to login to your account.</string>
+    <string name="login_with_email_title">Login with Email</string>
+    <string name="login">Login</string>
+    <string name="password">Password</string>
+    <string name="register_with_email">Register with Email</string>
+    <string name="create_your_area51_account">Create your Area51 account.</string>
+    <string name="create_my_account">Create my account</string>
+    <string name="confirm_password">Confirm password</string>
+    <string name="last_name">Last name</string>
+    <string name="first_name">First name</string>
 </resources>
