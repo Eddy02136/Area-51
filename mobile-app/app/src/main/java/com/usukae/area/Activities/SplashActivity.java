@@ -1,4 +1,4 @@
-package com.usukae.area;
+package com.usukae.area.Activities;
 
 import android.annotation.SuppressLint;
 import android.content.Intent;
@@ -15,11 +15,12 @@ import androidx.core.view.WindowInsetsCompat;
 
 import com.airbnb.lottie.LottieAnimationView;
 import com.usukae.area.Activities.Account.AuthActivity;
+import com.usukae.area.R;
 
 @SuppressLint("CustomSplashScreen")
 public class SplashActivity extends AppCompatActivity {
     private TextView titleText, subtitleText;
-    private LottieAnimationView loadingLottie;
+    private LottieAnimationView loading;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -41,13 +42,13 @@ public class SplashActivity extends AppCompatActivity {
     private void bindView() {
         titleText = findViewById(R.id.title);
         subtitleText = findViewById(R.id.subtitle);
-        loadingLottie = findViewById(R.id.loadingLottie);
+        loading = findViewById(R.id.loading);
     }
 
     private void animateView() {
         titleText.startAnimation(AnimationUtils.loadAnimation(this, R.anim.slide_from_left));
         subtitleText.startAnimation(AnimationUtils.loadAnimation(this, R.anim.slide_from_right));
-        loadingLottie.startAnimation(AnimationUtils.loadAnimation(this, R.anim.slide_from_bottom));
+        loading.startAnimation(AnimationUtils.loadAnimation(this, R.anim.slide_from_bottom));
     }
 
     private void loginProtocol() {
@@ -58,7 +59,7 @@ public class SplashActivity extends AppCompatActivity {
         new Handler().postDelayed(() -> {
             startActivity(new Intent(SplashActivity.this, AuthActivity.class));
             finish();
-        }, 30000);
+        }, 3000);
     }
 
     private void setStatus(String newStatus) {
