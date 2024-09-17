@@ -11,7 +11,7 @@ const Login = () => {
         </div>
         <div className='register-link-container'>
             <p>Or</p>
-            <button>Create an account</button>
+            <button className='register-button'>Create an account</button>
         </div>
     </div>
   )
