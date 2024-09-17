@@ -1,7 +1,13 @@
-import React from 'react'
 import "./Login.css"
+import { useNavigate } from "react-router-dom"
 
 const Login = () => {
+
+    const navigate = useNavigate()
+    const handleClick = () => {
+        navigate('/register')
+    }
+
   return (
     <div className='login-page'>
         <h1>AREA 51</h1>
@@ -11,7 +17,7 @@ const Login = () => {
         </div>
         <div className='register-link-container'>
             <p>Or</p>
-            <button className='register-button'>Create an account</button>
+            <button className='register-button' onClick={handleClick}>Create an account</button>
         </div>
     </div>
   )
