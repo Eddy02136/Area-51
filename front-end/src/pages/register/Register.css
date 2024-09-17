@@ -1,0 +1,100 @@
+@font-face {
+    font-family: 'PriegoRegular';
+    src: url('../../fonts/Priego-Regular.otf') format('truetype');
+  }
+  
+  @font-face {
+    font-family: 'PriegoBold';
+    src: url('../../fonts/Priego-Bold.otf') format('truetype');
+  }
+  
+  @font-face {
+    font-family: 'PriegoSemibold';
+    src: url('../../fonts/Priego-SemiBold.otf') format('truetype');
+  }
+
+.register-page {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: white;
+    flex-direction: column;
+    padding-top: 10vh;
+    font-family: PriegoRegular;
+}
+
+.register-page h1 {
+    color: #fdff91;
+    font-size: 370%;
+    font-family: PriegoBold;
+}
+
+.register-inputs-container {
+    display: flex;
+    flex-direction: column;
+    gap : 2vh;
+    padding-top: 5vh;
+    font-family: PriegoRegular;
+}
+
+.register-input {
+    background-color: white;
+    color: #737373;
+    border: none;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 100%;
+    cursor: pointer;
+    border-radius: 4px;
+    height: 5vh;
+    width: 35vw;
+    font-family: PriegoRegular;
+}
+
+.register-button-email button {
+    background-color: #0015d0;
+    color: white;
+    border: none;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 100%;
+    cursor: pointer;
+    border-radius: 4px;
+    height: 5vh;
+    width: 35vw;
+    font-family: PriegoRegular;
+    margin-top: 4vh;
+}
+
+.register-link-container {
+    display: flex;
+    flex-direction: column;
+    gap : 2vh;
+    padding-top: 3vh;
+    font-size: 140%;
+    font-family: PriegoRegular;
+}
+
+.login-button {
+    background: none;
+    color: #fdff91;
+    border: none;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 115%;
+    margin: 4px 2px;
+    cursor: pointer;
+    border-radius: 4px;
+    font-family: PriegoBold;
+}
+
+.register-input:focus {
+    color: black;
+}
+
+.register-input::placeholder {
+    color: #737373;
+}
