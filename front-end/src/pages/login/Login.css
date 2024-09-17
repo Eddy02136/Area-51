@@ -1,0 +1,17 @@
+.login-page {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  color: white;
+  flex-direction: column;
+}
+
+.login-page h1 {
+    color: #fdff91;
+    font-size: 570%;
+}
+
+.login-buttons-container {
+    display: flex;
+    flex-direction: column;
+}
