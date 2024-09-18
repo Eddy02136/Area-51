@@ -1,5 +1,6 @@
 import { Module } from '@nestjs/common';
 import { UsersController } from './users.controller';
+import { JwtModule } from '@nestjs/jwt';
 import { UsersService } from './users.service';
 import { MongooseModule } from '@nestjs/mongoose';
 import { User, UserSchema } from '../schema/User.schema';
@@ -12,6 +13,10 @@ import { User, UserSchema } from '../schema/User.schema';
         schema: UserSchema,
       },
     ]),
+    JwtModule.register({
+      secret: 'unhommebleuquiaimelesbananes',
+      signOptions: { expiresIn: '1h' },
+    }),
   ],
   controllers: [UsersController],
   providers: [UsersService],
