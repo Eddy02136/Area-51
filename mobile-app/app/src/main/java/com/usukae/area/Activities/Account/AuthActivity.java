@@ -1,6 +1,7 @@
 package com.usukae.area.Activities.Account;
 
 import android.app.Dialog;
+import android.content.Intent;
 import android.os.Bundle;
 import android.widget.TextView;
 
@@ -8,6 +9,7 @@ import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.cardview.widget.CardView;
 
+import com.usukae.area.Activities.MainActivity;
 import com.usukae.area.Classes.Managers.AccountManager;
 import com.usukae.area.Classes.Models.User;
 import com.usukae.area.Classes.Utils.DialogUtil;
@@ -84,6 +86,8 @@ public class AuthActivity extends AppCompatActivity {
             if (success) {
                 prettyAlert.success("Login Success", 3000);
                 loginDialog.dismiss();
+                startActivity(new Intent(getApplicationContext(), MainActivity.class));
+                finish();
             } else {
                 prettyAlert.error("Login Failed", 3000);
             }
@@ -113,6 +117,8 @@ public class AuthActivity extends AppCompatActivity {
             if (success) {
                 prettyAlert.success("Registration Success", 3000);
                 registerDialog.dismiss();
+                startActivity(new Intent(getApplicationContext(), MainActivity.class));
+                finish();
             } else {
                 prettyAlert.error("Registration Failed", 3000);
             }

@@ -17,4 +17,15 @@
     <string name="confirm_password">Confirm password</string>
     <string name="last_name">Last name</string>
     <string name="first_name">First name</string>
+    <string name="account_login">Account login</string>
+    <string name="area51">Area51</string>
+    <string name="app_name">Area51</string>
+    <string name="welcome_back">Welcome back,</string>
+    <string name="benjamin">Benjamin</string>
+    <string name="dashboard">Dashboard</string>
+    <string name="active">Active</string>
+    <string name="total_executions">Total Executions</string>
+    <string name="nothing_to_show">Nothing to show...</string>
+    <string name="all_our_functionnal_area_s">All our functionnal Area\'s</string>
+    <string name="area_s_catalog">Area\'s catalog</string>
 </resources>
