@@ -5,8 +5,11 @@ import { MongooseModule } from '@nestjs/mongoose';
 
 import { UsersModule } from './users/users.module';
 import { NasaModule } from './API/nasa/nasa.module';
+import * as process from 'node:process';
 
 dotenv.config();
+
+console.log(process.env.MONGO_URI);
 
 @Module({
   imports: [

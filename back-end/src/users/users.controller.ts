@@ -4,7 +4,9 @@ import { CreateUserDto } from './dto/CreateUser.dto';
 
 @Controller('users')
 export class UsersController {
-  constructor(private userService: UsersService) {}
+  constructor(private readonly userService: UsersService) {
+    console.log('UsersService:', userService);
+  }
 
   @Post('signing')
   createUser(@Body() createUserDto: CreateUserDto) {
