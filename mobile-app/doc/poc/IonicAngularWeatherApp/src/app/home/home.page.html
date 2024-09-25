@@ -1,0 +1,18 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title>WeatherApp</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content class="ion-padding">
+  <ion-button expand="full" (click)="fetchWeather()">
+    Get Weather
+  </ion-button>
+
+  <ion-spinner *ngIf="loading"></ion-spinner>
+
+  <div *ngIf="weather">
+    <h2>Temperature: {{ weather.temperature }}°C</h2>
+    <h3>Wind Speed: {{ weather.windspeed }} km/h</h3>
+  </div>
+</ion-content>
