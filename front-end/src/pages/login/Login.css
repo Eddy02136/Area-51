@@ -1,0 +1,90 @@
+@font-face {
+    font-family: 'PriegoRegular';
+    src: url('../../fonts/Priego-Regular.otf') format('truetype');
+  }
+  
+  @font-face {
+    font-family: 'PriegoBold';
+    src: url('../../fonts/Priego-Bold.otf') format('truetype');
+  }
+  
+  @font-face {
+    font-family: 'PriegoSemibold';
+    src: url('../../fonts/Priego-SemiBold.otf') format('truetype');
+  }
+
+.login-page {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  color: white;
+  flex-direction: column;
+  padding-top: 10vh;
+}
+
+.login-page h1 {
+    color: #fdff91;
+    font-size: 570%;
+    font-family: PriegoBold;
+}
+
+.login-buttons-container {
+    display: flex;
+    flex-direction: column;
+    gap : 2vh;
+    padding-top: 10vh;
+    font-family: PriegoRegular;
+}
+
+.login-button-google {
+    background-color: #0015d0;
+    color: white;
+    border: none;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 100%;
+    cursor: pointer;
+    border-radius: 4px;
+    height: 5vh;
+    width: 35vw;
+    font-family: PriegoRegular;
+}
+
+.login-button-email {
+    background-color: white;
+    color: rgb(0, 0, 0);
+    border: none;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 100%;
+    cursor: pointer;
+    border-radius: 4px;
+    height: 5vh;
+    width: 35vw;
+    font-family: PriegoRegular;
+}
+
+.register-button {
+    background: none;
+    color: #fdff91;
+    border: none;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 115%;
+    margin: 4px 2px;
+    cursor: pointer;
+    border-radius: 4px;
+    height: 5vh;
+    width: 35vw;
+    font-family: PriegoBold;
+}
+
+
+.register-link-container {
+    padding-top: 2vh;
+    color: #fdff91;
+    font-family: PriegoRegular;
+}
