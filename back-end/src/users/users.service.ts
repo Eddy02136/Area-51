@@ -14,6 +14,9 @@ export class UsersService {
   ) {}
 
   async createUser(createUserDto: CreateUserDto) {
+    if (createUserDto.password.length < 6) {
+      throw new UnauthorizedException('Password must be at least 6 characters');
+    }
     const saltOrRounds = 10;
     const hashedPassword = await bcrypt.hash(
       createUserDto.password,

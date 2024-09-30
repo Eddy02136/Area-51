@@ -9,7 +9,7 @@ export class UsersController {
     console.log('UsersService:', userService);
   }
 
-  @Post('signing')
+  @Post('register')
   @ApiOperation({ summary: 'Create new user' })
   @ApiBody({
     type: CreateUserDto,
