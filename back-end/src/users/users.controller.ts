@@ -24,8 +24,23 @@ export class UsersController {
 
   @Post('login')
   @ApiOperation({ summary: 'User login' })
-  @ApiBody({ type: CreateUserDto })
-  @ApiResponse({ status: 200, description: 'Login successful.' })
+  @ApiBody({
+    schema: {
+      example: {
+        email: 'string',
+        password: 'string',
+      },
+    },
+  })
+  @ApiResponse({
+    status: 201,
+    description: 'User successfully created.',
+    schema: {
+      example: {
+        token: 'string',
+      },
+    },
+  })
   @ApiResponse({ status: 400, description: 'Validation failed.' })
   loginUser(@Body() createUserDto: CreateUserDto) {
     console.log(createUserDto);
