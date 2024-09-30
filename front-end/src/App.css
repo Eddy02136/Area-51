@@ -1,3 +1,9 @@
+@font-face {
+  font-family: 'PriegoRegular';
+  src: url('../src/fonts/Priego-Bold.otf') format('truetype');
+}
+
+
 .App {
   text-align: center;
 }
@@ -35,4 +41,11 @@
   to {
     transform: rotate(360deg);
   }
+}
+
+
+.home-page {
+    color: #fdff91;
+    font-size: 570%;
+    font-family: PriegoBold;
 }
