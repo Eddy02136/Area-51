@@ -17,7 +17,7 @@ export class UsersController {
   @ApiResponse({ status: 400, description: 'Required fields are missing in the request body.' })
   @ApiResponse({ status: 401, description: 'Invalid Password' })
   @ApiResponse({ status: 500, description: 'Internal Server Error' })
-  createUser(@Body() createUserDto: CreateUserDto) : Promise<User> {
+  register(@Body() createUserDto: CreateUserDto) : Promise<User> {
     return this.userService.register(createUserDto);
   }
 
@@ -35,7 +35,7 @@ export class UsersController {
     schema: {example: { token: 'string' }},
   })
   @ApiResponse({ status: 401, description: 'Invalid email or password' })
-  loginUser(@Body() createUserDto: CreateUserDto) : Promise<{ token: string }> {
+  login(@Body() createUserDto: CreateUserDto) : Promise<{ token: string }> {
     return this.userService.login(createUserDto);
   }
 }
