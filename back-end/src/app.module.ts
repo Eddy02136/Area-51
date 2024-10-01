@@ -5,6 +5,8 @@ import { MongooseModule } from '@nestjs/mongoose';
 
 import { UsersModule } from './users/users.module';
 import { NasaModule } from './API/nasa/nasa.module';
+import { SpotifyModule } from './API/spotify/spotify.module'
+
 import * as process from 'node:process';
 
 dotenv.config();
@@ -19,6 +21,7 @@ console.log(process.env.MONGO_URI);
     MongooseModule.forRoot(process.env.MONGO_URI),
     UsersModule,
     NasaModule,
+    SpotifyModule,
   ],
   controllers: [],
   providers: [],
