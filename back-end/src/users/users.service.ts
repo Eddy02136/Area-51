@@ -1,4 +1,4 @@
-import { Injectable, UnauthorizedException } from '@nestjs/common';
+import { BadRequestException, Injectable, UnauthorizedException } from '@nestjs/common';
 import { User } from '../schema/User.schema';
 import { Model } from 'mongoose';
 import { InjectModel } from '@nestjs/mongoose';
@@ -14,6 +14,9 @@ export class UsersService {
   ) {}
 
   async createUser(createUserDto: CreateUserDto) {
+    if (!createUserDto.firstname || !createUserDto.lastname || !createUserDto.email || !createUserDto.password) {
+      throw new BadRequestException('Required fields are missing in the request body.');
+    }
     if (createUserDto.password.length < 6) {
       throw new UnauthorizedException('Password must be at least 6 characters');
     }
