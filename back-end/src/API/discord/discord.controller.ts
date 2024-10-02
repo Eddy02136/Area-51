@@ -23,7 +23,7 @@ export class DiscordController {
       const accessToken = await this.discordService.getAccessToken(code);
       const user = await this.discordService.getUser(accessToken);
 
-      reply.send({ message: 'Discord login successful', user });
+      reply.send({ message: 'Discord login successful', accessToken});
     } catch (error) {
       console.error('Error during Discord login redirect:', error);
       reply.status(500).send({ message: 'Error logging in with Discord' });
