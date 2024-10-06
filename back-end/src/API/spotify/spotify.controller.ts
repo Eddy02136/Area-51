@@ -1,4 +1,4 @@
-import { Controller, Get, Query, Response } from '@nestjs/common';
+import {Body, Controller, Get, Put, Query, Response, Headers} from '@nestjs/common';
 import { SpotifyService } from './spotify.service';
 import { FastifyReply } from 'fastify';
 
@@ -28,6 +28,30 @@ export class SpotifyController {
     try {
       const accessToken = await this.spotifyService.getSpotifyAccessToken(code);
       return reply.send({ accessToken });
+    } catch (error) {
+      return reply.status(500).send({ error: error.message });
+    }
+  }
+
+  @Put('play-music')
+  async playTrack(
+    @Headers('authorization') authorization: string,
+    @Body() playDto: { trackId: string },
+    @Response() reply: FastifyReply
+  ) {
+    if (!authorization) {
+      return reply.status(400).send('Access token is required');
+    }
+
+    const accessToken = authorization.replace('Bearer ', '');
+
+    if (!playDto.trackId) {
+      return reply.status(400).send('Track ID is required');
+    }
+
+    try {
+      const result = await this.spotifyService.playMusic(accessToken, playDto.trackId);
+      return reply.send({ message: result });
     } catch (error) {
       return reply.status(500).send({ error: error.message });
     }

@@ -1,20 +1,18 @@
 import { Injectable } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
-import { HttpService } from '@nestjs/axios';
+import axios from 'axios';
 import { stringify } from 'querystring';
-import { lastValueFrom } from 'rxjs';
 
 @Injectable()
 export class SpotifyService {
   constructor(
     private readonly configService: ConfigService,
-    private readonly httpService: HttpService,
   ) {}
 
   getSpotifyAuthUrl(): string {
     const clientId = this.configService.get<string>('SPOTIFY_CLIENT_ID');
     const redirectUri = this.configService.get<string>('SPOTIFY_REDIRECT_URI');
-    const scopes = this.configService.get<string>('SPOTIFY_SCOPES', 'user-read-private user-read-email');
+    const scopes = 'user-read-playback-state user-modify-playback-state playlist-read-private user-read-email';
 
     const queryParams = {
       client_id: clientId,
@@ -43,13 +41,34 @@ export class SpotifyService {
     };
 
     try {
-      const response = await lastValueFrom(this.httpService.post(tokenUrl, stringify(body), {
+      // Utilisation de axios pour faire la requête POST
+      const response = await axios.post(tokenUrl, stringify(body), {
         headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-      }));
+      });
 
       return response.data.access_token;
     } catch (error) {
-      throw new Error(`Failed to get Spotify access token: ${error.message}`);
+      throw new Error(`Failed to get Spotify access token: ${error.response?.data?.error?.message || error.message}`);
+    }
+  }
+
+  async playMusic(accessToken: string, trackId: string): Promise<string> {
+    const playUrl = 'https://api.spotify.com/v1/me/player/play';
+
+    const headers = {
+      Authorization: `Bearer ${accessToken}`,
+      'Content-Type': 'application/json',
+    };
+
+    const body = {
+      uris: [`spotify:track:${trackId}`],
+    };
+
+    try {
+      await axios.put(playUrl, body, { headers });
+      return 'Track started playing successfully!';
+    } catch (error) {
+      throw new Error(`Failed to play track: ${error.response?.data?.error?.message || error.message}`);
     }
   }
 }
