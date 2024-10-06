@@ -1,13 +1,13 @@
 import { UsersService } from './users.service';
 import { CreateUserDto } from './dto/CreateUser.dto';
-import { ApiBody, ApiOperation, ApiResponse } from '@nestjs/swagger';
+import { ApiBody, ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
 import { Body, Controller, Post } from '@nestjs/common';
+import {User} from "../schema/User.schema";
 
 @Controller('users')
+@ApiTags('Users')
 export class UsersController {
-  constructor(private readonly userService: UsersService) {
-    console.log('UsersService:', userService);
-  }
+  constructor(private readonly userService: UsersService) {}
 
   @Post('register')
   @ApiOperation({ summary: 'Create new user' })
@@ -15,11 +15,11 @@ export class UsersController {
     type: CreateUserDto,
   })
   @ApiResponse({ status: 201, description: 'User successfully created.' })
-  @ApiResponse({ status: 400, description: 'Validation failed.' })
+  @ApiResponse({ status: 400, description: 'Required fields are missing in the request body.' })
+  @ApiResponse({ status: 401, description: 'Invalid Password' })
   @ApiResponse({ status: 500, description: 'Internal Server Error' })
-  createUser(@Body() createUserDto: CreateUserDto) {
-    console.log(createUserDto);
-    return this.userService.createUser(createUserDto);
+  register(@Body() createUserDto: CreateUserDto) : Promise<User> {
+    return this.userService.register(createUserDto);
   }
 
   @Post('login')
@@ -32,18 +32,11 @@ export class UsersController {
       },
     },
   })
-  @ApiResponse({
-    status: 201,
-    description: 'User successfully created.',
-    schema: {
-      example: {
-        token: 'string',
-      },
-    },
+  @ApiResponse({ status: 201, description: 'User successfully created.',
+    schema: {example: { token: 'string' }},
   })
-  @ApiResponse({ status: 400, description: 'Validation failed.' })
-  loginUser(@Body() createUserDto: CreateUserDto) {
-    console.log(createUserDto);
-    return this.userService.loginUser(createUserDto);
+  @ApiResponse({ status: 401, description: 'Invalid email or password' })
+  login(@Body() createUserDto: CreateUserDto) : Promise<{ token: string }> {
+    return this.userService.login(createUserDto);
   }
 }

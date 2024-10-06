@@ -1,4 +1,4 @@
-import { Injectable, UnauthorizedException } from '@nestjs/common';
+import { BadRequestException, Injectable, UnauthorizedException } from '@nestjs/common';
 import { User } from '../schema/User.schema';
 import { Model } from 'mongoose';
 import { InjectModel } from '@nestjs/mongoose';
@@ -13,7 +13,10 @@ export class UsersService {
     private jwtService: JwtService,
   ) {}
 
-  async createUser(createUserDto: CreateUserDto) {
+  async register(createUserDto: CreateUserDto) : Promise<User> {
+    if (!createUserDto.firstname || !createUserDto.lastname || !createUserDto.email || !createUserDto.password) {
+      throw new BadRequestException('Required fields are missing in the request body.');
+    }
     if (createUserDto.password.length < 6) {
       throw new UnauthorizedException('Password must be at least 6 characters');
     }
@@ -31,14 +34,14 @@ export class UsersService {
     return newUser.save();
   }
 
-  async loginUser(createUserDto: CreateUserDto) {
-    const user = await this.userModel.findOne({ email: createUserDto.email });
+  async login(createUserDto: CreateUserDto) : Promise<{ token: string }>  {
+    const user : User = await this.userModel.findOne({ email: createUserDto.email });
 
     if (!user) {
-      throw new UnauthorizedException('Invalid credentials');
+      throw new UnauthorizedException('Invalid email or password');
     }
 
-    const isPasswordMatching = await bcrypt.compare(
+    const isPasswordMatching : boolean = await bcrypt.compare(
       createUserDto.password,
       user.password,
     );
@@ -49,12 +52,10 @@ export class UsersService {
 
     const payload = { email: user.email, sub: user._id };
 
-    const token = this.jwtService.sign(payload);
+    const token : string = this.jwtService.sign(payload);
 
     return {
-      message: 'Login successful',
       token,
-      user,
     };
   }
 }
