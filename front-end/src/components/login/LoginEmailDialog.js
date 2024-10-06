@@ -1,23 +1,32 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import './LoginEmailDialog.css';
 import { useForm } from 'react-hook-form';
 import axios from 'axios';
 import { useMutation } from '@tanstack/react-query';
 import { useNavigate } from 'react-router-dom';
+import AuthContext from '../../auth/AuthContext';
 
 const LoginEmailDialog = ({ onCancel }) => {
   const { register, handleSubmit, formState: { errors } } = useForm();
-
   const navigate = useNavigate();
+  const { login } = useContext(AuthContext);
 
   const mutation = useMutation({
     mutationFn: async (loginData) => {
+      console.log('Login data:', loginData);
       return axios.post('http://localhost:3000/users/login', loginData);
     },
     onSuccess: (response) => {
-      alert('Login successful!');
-      console.log('Token:', response.data.token);
-      navigate('/home');
+      console.log('Login response:', response);
+
+      const { token } = response.data || {};
+      if (token) {
+        alert('Login successful!');
+        login(token);
+        navigate('/');
+      } else {
+        alert('Unexpected error: Token not found.');
+      }
     },
     onError: (error) => {
       if (error.response?.status === 400) {
@@ -25,6 +34,7 @@ const LoginEmailDialog = ({ onCancel }) => {
       } else if (error.response?.status === 500) {
         alert('Internal Server Error');
       } else {
+        console.log('Error:', error);
         alert('An unexpected error occurred.');
       }
     },
