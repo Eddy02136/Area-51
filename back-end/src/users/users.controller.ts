@@ -15,7 +15,9 @@ export class UsersController {
   @ApiBody({
     type: CreateUserDto,
   })
-  @ApiResponse({ status: 201, description: 'User successfully created.' })
+  @ApiResponse({ status: 201, description: 'User successfully created.',
+    schema: {example: { token: 'string' }},
+  })
   @ApiResponse({ status: 400, description: 'Required fields are missing in the request body.' })
   @ApiResponse({ status: 401, description: 'Invalid Password' })
   @ApiResponse({ status: 500, description: 'Internal Server Error' })
