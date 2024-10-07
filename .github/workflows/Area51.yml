@@ -36,7 +36,7 @@ jobs:
 
       - name: Check if front-end is running
         run: |
-          curl -f http://localhost:3001/
+          curl -f http://localhost:3000/
 
       - name: Stop front-end
         run: |
