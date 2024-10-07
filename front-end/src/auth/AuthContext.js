@@ -4,13 +4,24 @@ const AuthContext = createContext();
 
 export const AuthProvider = ({ children }) => {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
-  const [discordAccessToken, setDiscordAccessToken] = useState(null);
   const [discordUser, setDiscordUser] = useState(null);
+  const [discordAccessToken, setDiscordAccessToken] = useState(null);
+  const [spotifyUser, setSpotifyUser] = useState(null);
+  const [spotifyAccessToken, setSpotifyAccessToken] = useState(null);
 
   useEffect(() => {
     const token = localStorage.getItem('authToken');
     if (token) {
       setIsAuthenticated(true);
+    }
+
+    const spotifyToken = localStorage.getItem('spotifyAccessToken');
+    if (spotifyToken) {
+      setSpotifyAccessToken(spotifyToken);
+      const user = JSON.parse(localStorage.getItem('spotifyUser'));
+      if (user) {
+        setSpotifyUser(user);
+      }
     }
 
     const discordToken = localStorage.getItem('discordAccessToken');
@@ -31,10 +42,26 @@ export const AuthProvider = ({ children }) => {
   const logout = () => {
     localStorage.removeItem('authToken');
     setIsAuthenticated(false);
+
+    localStorage.removeItem('spotifyAccessToken');
+    localStorage.removeItem('spotifyUser');
+    setSpotifyAccessToken(null);
+    setSpotifyUser(null);
+
     localStorage.removeItem('discordAccessToken');
     localStorage.removeItem('discordUser');
     setDiscordAccessToken(null);
     setDiscordUser(null);
+  };
+
+  const saveSpotifyAccessToken = (token) => {
+    localStorage.setItem('spotifyAccessToken', token);
+    setSpotifyAccessToken(token);
+  };
+
+  const saveSpotifyUser = (user) => {
+    localStorage.setItem('spotifyUser', JSON.stringify(user));
+    setSpotifyUser(user);
   };
 
   const saveDiscordAccessToken = (token) => {
@@ -52,10 +79,14 @@ export const AuthProvider = ({ children }) => {
       isAuthenticated,
       login,
       logout,
-      discordAccessToken,
       discordUser,
+      discordAccessToken,
       setDiscordAccessToken: saveDiscordAccessToken,
-      setDiscordUser: saveDiscordUser
+      setDiscordUser: saveDiscordUser,
+      spotifyUser,
+      spotifyAccessToken,
+      setSpotifyAccessToken: saveSpotifyAccessToken,
+      setSpotifyUser: saveSpotifyUser,
     }}>
       {children}
     </AuthContext.Provider>

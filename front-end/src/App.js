@@ -9,6 +9,7 @@ import PrivateRoute from './components/routes/PrivateRoute';
 import PublicRoute from './components/routes/PublicRoutes';
 import HomePage from './pages/home/Home';
 import DiscordCallback from './pages/discord/DiscordCallback';
+import SpotifyCallback from './pages/spotify/SpotifyCallback';
 import './App.css';
 
 const queryClient = new QueryClient();
@@ -48,6 +49,7 @@ function App() {
               />
               <Route path="*" element={<Navigate to="/" />} />
               <Route path="/discord/callback" element={<DiscordCallback />} />
+              <Route path="/spotify/callback" element={<SpotifyCallback />} />
             </Routes>
           </Router>
         </QueryClientProvider>
