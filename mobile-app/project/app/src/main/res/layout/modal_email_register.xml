@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:ignore="ContentDescription">
+    tools:ignore="all">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
@@ -135,10 +135,10 @@
                     android:layout_marginTop="5dp"
                     android:layout_marginEnd="15dp"
                     android:layout_marginBottom="5dp"
-                    android:textColor="@color/light_primary"
                     android:background="@color/transparent"
                     android:fontFamily="@font/priego_light"
                     android:hint="@string/last_name"
+                    android:textColor="@color/light_primary"
                     android:textColorHint="@color/light_secondary"
                     android:textSize="16sp"
                     app:layout_constraintBottom_toBottomOf="parent"
@@ -231,6 +231,7 @@
                     android:layout_height="40dp"
                     android:layout_marginStart="50dp"
                     android:layout_marginTop="5dp"
+                    android:inputType="textPassword"
                     android:layout_marginEnd="15dp"
                     android:layout_marginBottom="5dp"
                     android:textColor="@color/light_primary"
@@ -280,6 +281,7 @@
                     android:layout_height="40dp"
                     android:layout_marginStart="50dp"
                     android:layout_marginTop="5dp"
+                    android:inputType="textPassword"
                     android:layout_marginEnd="15dp"
                     android:layout_marginBottom="5dp"
                     android:textColor="@color/light_primary"
@@ -320,7 +322,7 @@
                 android:gravity="center"
                 android:text="@string/create_my_account"
                 android:textColor="@color/dark_primary"
-                android:textSize="16dp" />
+                android:textSize="16sp" />
 
             <com.airbnb.lottie.LottieAnimationView
                 android:id="@+id/loading"

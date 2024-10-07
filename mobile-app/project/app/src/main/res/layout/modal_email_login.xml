@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:ignore="ContentDescription">
+    tools:ignore="all">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
@@ -141,6 +141,7 @@
                     android:textColor="@color/light_primary"
                     android:textColorHint="@color/light_secondary"
                     android:textSize="16sp"
+                    android:inputType="textPassword"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
@@ -173,7 +174,7 @@
                 android:gravity="center"
                 android:text="@string/login"
                 android:textColor="@color/dark_primary"
-                android:textSize="16dp" />
+                android:textSize="16sp" />
 
             <com.airbnb.lottie.LottieAnimationView
                 android:id="@+id/loading"
