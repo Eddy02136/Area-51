@@ -40,8 +40,12 @@ jobs:
 
       - name: Stop front-end
         run: |
-          kill $FRONTEND_PID
-          echo "Front-end stopped."
+          if ps -p $FRONTEND_PID > /dev/null; then
+              kill $FRONTEND_PID
+              echo "Front-end stopped."
+            else
+              echo "No process found with PID $FRONTEND_PID."
+            fi
 
       - name: Install back-end dependencies
         run: |
