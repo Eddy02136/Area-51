@@ -13,7 +13,7 @@ export class UsersService {
     private jwtService: JwtService,
   ) {}
 
-  async register(createUserDto: CreateUserDto) : Promise<User> {
+  async register(createUserDto: CreateUserDto) : Promise<{ token: string }> {
     if (!createUserDto.firstname || !createUserDto.lastname || !createUserDto.email || !createUserDto.password) {
       throw new BadRequestException('Required fields are missing in the request body.');
     }
@@ -31,7 +31,12 @@ export class UsersService {
       password: hashedPassword,
     });
 
-    return newUser.save();
+    const user = await newUser.save();
+    const payload = { email: user.email, sub: user._id };
+
+    const token : string = this.jwtService.sign(payload);
+
+    return { token };
   }
 
   async login(createUserDto: CreateUserDto) : Promise<{ token: string }>  {
