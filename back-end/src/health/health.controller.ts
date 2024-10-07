@@ -11,7 +11,7 @@ export class HealthController {
     @Get('ping')
     @ApiOperation({ summary: 'Get response from Area51 API' })
     @ApiResponse({ status: 200, description: 'Area51 API responded successfully.' })
-    async getIssPosition() {
+    async getPing() {
         return this.healthService.getPing();
     }
 }
