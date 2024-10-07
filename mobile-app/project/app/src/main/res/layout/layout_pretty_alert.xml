@@ -13,7 +13,7 @@
 
         <androidx.cardview.widget.CardView
             android:layout_width="0dp"
-            android:layout_height="70dp"
+            android:layout_height="60dp"
             android:layout_marginStart="16dp"
             android:layout_marginEnd="16dp"
             android:layout_marginBottom="16dp"
@@ -34,8 +34,8 @@
 
                 <ImageView
                     android:id="@+id/alertIcon"
-                    android:layout_width="30dp"
-                    android:layout_height="30dp"
+                    android:layout_width="25dp"
+                    android:layout_height="25dp"
                     android:layout_marginStart="20dp"
                     android:layout_marginEnd="10dp" />
 
@@ -45,6 +45,7 @@
                     android:layout_height="wrap_content"
                     android:fontFamily="@font/priego_regular"
                     android:text="Alert message here"
+                    android:layout_marginTop="1dp"
                     android:textColor="@color/light_primary"
                     android:textSize="16sp" />
             </LinearLayout>
