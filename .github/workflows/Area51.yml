@@ -1,0 +1,64 @@
+name: Area51
+on:
+  push:
+    branches:
+      - dev
+      - main
+  pull_request:
+    branches:
+      - dev
+      - main
+jobs:
+  check_program_build:
+    name: Check back-end and front-end launch
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: '20'
+
+      - name: Install front-end dependencies
+        run: |
+          cd front-end
+          npm install
+
+      - name: Start front-end
+        run: |
+          cd front-end
+          npm start & 
+          FRONTEND_PID=$!
+          echo "Front-end started with PID $FRONTEND_PID"
+          sleep 5
+
+      - name: Check if front-end is running
+        run: |
+          curl -f http://localhost:3000/
+
+      - name: Install back-end dependencies
+        run: |
+          cd back-end
+          npm install
+        
+      - name: Start back-end in background
+        run: |
+          cd back-end
+          echo "PORT= 3000" >> .env
+          echo "NODE_ENV=mongodb://localhost:27017/" >> .env
+          npm run start:dev & 
+          BACKEND_PID=$!
+          echo "Back-end started with PID $BACKEND_PID"
+          sleep 5
+  
+      - name: Check if back-end is running
+        run: |
+          response=$(curl -s -o /dev/null -w "%{http_code}" http://localhost:3000/health/ping)
+          if [[ "$response" -eq 200 ]]; then
+            echo "Back-end is running successfully."
+          else
+            echo "Back-end is running but returned status code: $response."
+            exit 1
+          fi
