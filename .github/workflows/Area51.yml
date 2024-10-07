@@ -36,13 +36,7 @@ jobs:
 
       - name: Check if front-end is running
         run: |
-          response=$(curl -s -o /dev/null -w "%{http_code}" http://localhost:3001/)
-          if [[ "$response" -eq 200 ]]; then
-            echo "Front-end is running successfully."
-          else
-            echo "Front-end is not running. Status code: $response."
-            exit 1
-          fi
+          curl -f http://localhost:3001/
 
       - name: Stop front-end
         run: |
