@@ -1,13 +1,13 @@
-package com.usukae.area.Classes.Api.Auth;
+package com.usukae.area.Classes.Api.User.Auth;
 
 import android.content.Context;
-import android.widget.Toast;
 
 import com.usukae.area.Classes.Api.ApiClient;
 import com.usukae.area.Classes.Api.ApiService;
-import com.usukae.area.Classes.Api.Login.LoginRequest;
-import com.usukae.area.Classes.Api.Login.LoginResponse;
-import com.usukae.area.Classes.Api.Register.CreateUserDto;
+import com.usukae.area.Classes.Api.User.Login.LoginRequest;
+import com.usukae.area.Classes.Api.User.Login.LoginResponse;
+import com.usukae.area.Classes.Api.User.Register.RegisterRequest;
+import com.usukae.area.Classes.Api.User.Register.RegisterResponse;
 import com.usukae.area.Classes.Managers.AccountManager;
 
 import retrofit2.Call;
@@ -22,23 +22,22 @@ public class AuthManager {
         apiService = ApiClient.getClient().create(ApiService.class);
     }
 
-    public void registerUser(Context context, CreateUserDto userDto, AccountManager.AuthCallback callback) {
-        Call<Void> call = apiService.registerUser(userDto);
-        call.enqueue(new Callback<Void>() {
+    public void registerUser(Context context, RegisterRequest registerRequest, AccountManager.AuthCallback callback) {
+        Call<RegisterResponse> call = apiService.registerUser(registerRequest);
+        call.enqueue(new Callback<RegisterResponse>() {
             @Override
-            public void onResponse(Call<Void> call, Response<Void> response) {
+            public void onResponse(Call<RegisterResponse> call, Response<RegisterResponse> response) {
                 if (response.isSuccessful()) {
+                    String token = response.body().getToken();
                     callback.onResult(true);
                 } else {
                     callback.onResult(false);
                 }
-                Toast.makeText(context, ""+response.message(), Toast.LENGTH_SHORT).show();
             }
 
             @Override
-            public void onFailure(Call<Void> call, Throwable t) {
+            public void onFailure(Call<RegisterResponse> call, Throwable t) {
                 callback.onResult(false);
-                Toast.makeText(context, ""+t.getMessage(), Toast.LENGTH_SHORT).show();
             }
         });
     }

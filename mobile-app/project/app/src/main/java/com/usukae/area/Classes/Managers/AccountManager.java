@@ -2,9 +2,9 @@ package com.usukae.area.Classes.Managers;
 
 import android.content.Context;
 
-import com.usukae.area.Classes.Api.Auth.AuthManager;
-import com.usukae.area.Classes.Api.Login.LoginRequest;
-import com.usukae.area.Classes.Api.Register.CreateUserDto;
+import com.usukae.area.Classes.Api.User.Auth.AuthManager;
+import com.usukae.area.Classes.Api.User.Login.LoginRequest;
+import com.usukae.area.Classes.Api.User.Register.RegisterRequest;
 import com.usukae.area.Classes.Models.User;
 
 public class AccountManager {
@@ -16,7 +16,7 @@ public class AccountManager {
     }
 
     public void register(Context context, User user, AuthCallback callback) {
-        CreateUserDto userDto = new CreateUserDto(user.getFirstName(), user.getLastName(), user.getEmail(), user.getPassword());
+        RegisterRequest userDto = new RegisterRequest(user.getFirstName(), user.getLastName(), user.getEmail(), user.getPassword());
         authManager.registerUser(context, userDto, callback);
     }
 

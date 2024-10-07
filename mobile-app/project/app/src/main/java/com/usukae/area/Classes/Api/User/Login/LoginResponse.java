@@ -1,4 +1,4 @@
-package com.usukae.area.Classes.Api.Login;
+package com.usukae.area.Classes.Api.User.Login;
 
 public class LoginResponse {
     private String token;
