@@ -1,4 +1,4 @@
-package com.usukae.area.Classes.Api.User.Login;
+package com.usukae.area.Classes.Api.Auth.Login;
 
 public class LoginRequest {
     private String email;

@@ -1,0 +1,25 @@
+package com.usukae.area.Classes.Utils;
+
+import com.usukae.area.R;
+
+public class ErrorUtil {
+    public int getAuthError(int code) {
+        if (code == 401) {
+            return R.string.invalid_email_or_password;
+        }
+        return R.string.login_failed;
+    }
+
+    public int getRegisterError(int code) {
+        switch (code) {
+            case 400:
+                return R.string.required_field_empty;
+            case 401:
+                return R.string.invalid_password;
+            case 500:
+                return R.string.internal_server_error;
+            default:
+                return R.string.registration_failed;
+        }
+    }
+}

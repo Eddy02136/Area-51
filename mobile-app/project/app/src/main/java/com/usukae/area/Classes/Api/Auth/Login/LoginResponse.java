@@ -1,6 +1,6 @@
-package com.usukae.area.Classes.Api.User.Register;
+package com.usukae.area.Classes.Api.Auth.Login;
 
-public class RegisterResponse {
+public class LoginResponse {
     private String token;
 
     public String getToken() {

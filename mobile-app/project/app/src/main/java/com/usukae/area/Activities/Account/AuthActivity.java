@@ -74,25 +74,25 @@ public class AuthActivity extends AppCompatActivity {
         if (invalidateLogin(email, password)) {
             return;
         }
-        accountManager.login(this, email, password, success -> {
+        accountManager.login(this, email, password, (success, code) -> {
             if (success) {
-                prettyAlert.success("Login Success", 3000);
+                prettyAlert.success(getString(R.string.login_success), 3000);
                 loginDialog.dismiss();
                 startActivity(new Intent(getApplicationContext(), MainActivity.class));
                 finish();
             } else {
-                prettyAlert.error("Login Failed", 3000);
+                prettyAlert.error(getString(R.string.login_failed), 3000);
             }
         });
     }
 
     private boolean invalidateLogin(String email, String password) {
         if (!textUtil.isValidEmail(email)) {
-            prettyAlert.error("Invalid Email Address", 3000);
+            prettyAlert.error(getString(R.string.invalid_email_address), 3000);
             return true;
         }
         if (!textUtil.isValidPassword(password)) {
-            prettyAlert.error("Invalid Password", 3000);
+            prettyAlert.error(getString(R.string.invalid_password), 3000);
             return true;
         }
         return false;
@@ -108,29 +108,29 @@ public class AuthActivity extends AppCompatActivity {
         if (invalidateRegister(email, password, passwordConfirm)) {
             return;
         }
-        accountManager.register(this, new User(firstName, lastName, email, password), success -> {
+        accountManager.register(this, new User(firstName, lastName, email, password), (success, code) -> {
             if (success) {
-                prettyAlert.success("Registration Success", 3000);
+                prettyAlert.success(getString(R.string.registration_success), 3000);
                 registerDialog.dismiss();
                 startActivity(new Intent(getApplicationContext(), MainActivity.class));
                 finish();
             } else {
-                prettyAlert.error("Registration Failed", 3000);
+                prettyAlert.error(getString(R.string.registration_failed), 3000);
             }
         });
     }
 
     private boolean invalidateRegister(String email, String password, String passwordConfirm) {
         if (!textUtil.isValidEmail(email)) {
-            prettyAlert.error("Invalid Email Address", 3000);
+            prettyAlert.error(getString(R.string.invalid_email_address), 3000);
             return true;
         }
         if (!textUtil.isValidPassword(password)) {
-            prettyAlert.error("Password must be between 5 and 25 characters", 3000);
+            prettyAlert.error(getString(R.string.password_length_error), 3000);
             return true;
         }
         if (!password.equals(passwordConfirm)) {
-            prettyAlert.error("Passwords do not match", 3000);
+            prettyAlert.error(getString(R.string.passwords_do_not_match), 3000);
             return true;
         }
         return false;

@@ -2,9 +2,9 @@ package com.usukae.area.Classes.Managers;
 
 import android.content.Context;
 
-import com.usukae.area.Classes.Api.User.Auth.AuthManager;
-import com.usukae.area.Classes.Api.User.Login.LoginRequest;
-import com.usukae.area.Classes.Api.User.Register.RegisterRequest;
+import com.usukae.area.Classes.Api.Auth.AuthManager;
+import com.usukae.area.Classes.Api.Auth.Login.LoginRequest;
+import com.usukae.area.Classes.Api.Auth.Register.RegisterRequest;
 import com.usukae.area.Classes.Models.User;
 
 public class AccountManager {
@@ -16,8 +16,8 @@ public class AccountManager {
     }
 
     public void register(Context context, User user, AuthCallback callback) {
-        RegisterRequest userDto = new RegisterRequest(user.getFirstName(), user.getLastName(), user.getEmail(), user.getPassword());
-        authManager.registerUser(context, userDto, callback);
+        RegisterRequest registerRequest = new RegisterRequest(user);
+        authManager.registerUser(context, registerRequest, callback);
     }
 
     public void login(Context context, String email, String password, AuthCallback callback) {
@@ -25,7 +25,11 @@ public class AccountManager {
         authManager.loginUser(context, loginRequest, callback);
     }
 
+    public void checkToken(Context context, String token, AuthCallback callback) {
+        authManager.checkToken(context, token, callback);
+    }
+
     public interface AuthCallback {
-        void onResult(boolean success);
+        void onResult(boolean success, int code);
     }
 }
