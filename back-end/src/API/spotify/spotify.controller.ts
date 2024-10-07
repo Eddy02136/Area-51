@@ -1,11 +1,14 @@
-import {Body, Controller, Get, Put, Query, Response, Headers} from '@nestjs/common';
+import { Body, Controller, Get, Put, Query, Response, Headers, UseGuards } from '@nestjs/common';
 import { SpotifyService } from './spotify.service';
 import { FastifyReply } from 'fastify';
+import { AuthGuard } from '@nestjs/passport';
+
 
 @Controller('spotify')
 export class SpotifyController {
   constructor(private readonly spotifyService: SpotifyService) {}
 
+  @UseGuards(AuthGuard('jwt'))
   @Get('auth-url')
   getAuthUrl(): string {
     return this.spotifyService.getSpotifyAuthUrl();

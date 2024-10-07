@@ -1,4 +1,4 @@
-import { BadRequestException, Injectable, UnauthorizedException } from '@nestjs/common';
+import {BadRequestException, Headers, Injectable, UnauthorizedException} from '@nestjs/common';
 import { User } from '../schema/User.schema';
 import { Model } from 'mongoose';
 import { InjectModel } from '@nestjs/mongoose';
@@ -62,5 +62,9 @@ export class UsersService {
     return {
       token,
     };
+  }
+
+  async checkToken(accessToken: string) : Promise<{ token : string }> {
+    return { token: accessToken };
   }
 }
