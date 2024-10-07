@@ -46,6 +46,7 @@ jobs:
       - name: Start back-end in background
         run: |
           cd back-end
+          echo "MONGO_URI=mongodb://localhost:27017/" >> .env
           npm run start:dev &
           BACKEND_PID=$!
           echo "Back-end started with PID $BACKEND_PID"
