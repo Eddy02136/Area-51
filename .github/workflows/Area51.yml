@@ -4,14 +4,10 @@ on:
     branches:
       - dev
       - main
-    branches-ignore:
-      - 'ga-ignore-*'
   pull_request:
     branches:
       - dev
       - main
-    branches-ignore:
-      - 'ga-ignore-*'
 jobs:
   check_program_compilation:
     name: Check back-end and front-end launch
