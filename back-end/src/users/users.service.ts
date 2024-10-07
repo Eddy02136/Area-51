@@ -1,4 +1,4 @@
-import { BadRequestException, Injectable, UnauthorizedException } from '@nestjs/common';
+import {BadRequestException, Headers, Injectable, UnauthorizedException} from '@nestjs/common';
 import { User } from '../schema/User.schema';
 import { Model } from 'mongoose';
 import { InjectModel } from '@nestjs/mongoose';
@@ -13,7 +13,7 @@ export class UsersService {
     private jwtService: JwtService,
   ) {}
 
-  async register(createUserDto: CreateUserDto) : Promise<User> {
+  async register(createUserDto: CreateUserDto) : Promise<{ token: string }> {
     if (!createUserDto.firstname || !createUserDto.lastname || !createUserDto.email || !createUserDto.password) {
       throw new BadRequestException('Required fields are missing in the request body.');
     }
@@ -31,7 +31,12 @@ export class UsersService {
       password: hashedPassword,
     });
 
-    return newUser.save();
+    const user = await newUser.save();
+    const payload = { email: user.email, sub: user._id };
+
+    const token : string = this.jwtService.sign(payload);
+
+    return { token };
   }
 
   async login(createUserDto: CreateUserDto) : Promise<{ token: string }>  {
@@ -57,5 +62,9 @@ export class UsersService {
     return {
       token,
     };
+  }
+
+  async checkToken(accessToken: string) : Promise<{ token : string }> {
+    return { token: accessToken };
   }
 }
