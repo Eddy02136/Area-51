@@ -9,17 +9,19 @@ on:
       - dev
       - main
 jobs:
-  check_program_compilation:
+  check_program_build:
     name: Check back-end and front-end launch
     runs-on: ubuntu-latest
     steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
 
       - name: Set up Node.js
         uses: actions/setup-node@v3
         with:
           node-version: '20'
 
-      - name: Install dependencies
+      - name: Install front-end dependencies
         run: |
           cd front-end
           npm install
@@ -34,14 +36,20 @@ jobs:
 
       - name: Check if front-end is running
         run: |
-          curl -f http://localhost:3001/
+          response=$(curl -s -o /dev/null -w "%{http_code}" http://localhost:3001/)
+          if [[ "$response" -eq 200 ]]; then
+            echo "Front-end is running successfully."
+          else
+            echo "Front-end is not running. Status code: $response."
+            exit 1
+          fi
 
-      - name: Stop back-end
+      - name: Stop front-end
         run: |
           kill $FRONTEND_PID
           echo "Front-end stopped."
 
-      - name: Install dependencies
+      - name: Install back-end dependencies
         run: |
           cd back-end
           npm install
@@ -61,6 +69,7 @@ jobs:
             echo "Back-end is running successfully."
           else
             echo "Back-end is running but returned status code: $response."
+            exit 1
           fi
               
       - name: Stop back-end
