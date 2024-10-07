@@ -28,4 +28,12 @@
     <string name="nothing_to_show">Nothing to show...</string>
     <string name="all_our_functionnal_area_s">All our functionnal Area\'s</string>
     <string name="area_s_catalog">Area\'s catalog</string>
+    <string name="login_success">Login Success</string>
+    <string name="login_failed">Login Failed</string>
+    <string name="registration_success">Registration Success</string>
+    <string name="registration_failed">Registration Failed</string>
+    <string name="invalid_email_address">Invalid Email Address</string>
+    <string name="invalid_password">Invalid Password</string>
+    <string name="password_length_error">Password must be between 5 and 25 characters</string>
+    <string name="passwords_do_not_match">Passwords do not match</string>
 </resources>
