@@ -30,7 +30,7 @@
             android:fontFamily="@font/priego_bold"
             android:text="@string/login_with_email_title"
             android:textColor="@color/light_primary"
-            android:textSize="25sp"
+            android:textSize="22sp"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
@@ -45,7 +45,7 @@
             android:gravity="start"
             android:text="@string/use_your_credentials_to_login_to_your_account"
             android:textColor="@color/light_primary"
-            android:textSize="18sp"
+            android:textSize="16sp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/title" />
@@ -69,8 +69,8 @@
                 android:layout_height="match_parent">
 
                 <ImageView
-                    android:layout_width="20dp"
-                    android:layout_height="20dp"
+                    android:layout_width="18dp"
+                    android:layout_height="18dp"
                     android:layout_marginStart="20dp"
                     android:src="@drawable/envelope"
                     app:layout_constraintBottom_toBottomOf="parent"
@@ -81,7 +81,7 @@
                 <EditText
                     android:id="@+id/email"
                     android:layout_width="match_parent"
-                    android:layout_height="50dp"
+                    android:layout_height="40dp"
                     android:layout_marginStart="50dp"
                     android:layout_marginTop="5dp"
                     android:layout_marginEnd="15dp"
@@ -91,7 +91,7 @@
                     android:hint="@string/email"
                     android:textColor="@color/light_primary"
                     android:textColorHint="@color/light_secondary"
-                    android:textSize="18sp"
+                    android:textSize="16sp"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
@@ -118,8 +118,8 @@
                 android:layout_height="match_parent">
 
                 <ImageView
-                    android:layout_width="20dp"
-                    android:layout_height="20dp"
+                    android:layout_width="18dp"
+                    android:layout_height="18dp"
                     android:layout_marginStart="20dp"
                     android:src="@drawable/key"
                     app:layout_constraintBottom_toBottomOf="parent"
@@ -130,7 +130,7 @@
                 <EditText
                     android:id="@+id/password"
                     android:layout_width="match_parent"
-                    android:layout_height="50dp"
+                    android:layout_height="40dp"
                     android:layout_marginStart="50dp"
                     android:layout_marginTop="5dp"
                     android:layout_marginEnd="15dp"
@@ -140,7 +140,7 @@
                     android:hint="@string/password"
                     android:textColor="@color/light_primary"
                     android:textColorHint="@color/light_secondary"
-                    android:textSize="18sp"
+                    android:textSize="16sp"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
@@ -151,7 +151,7 @@
         <androidx.cardview.widget.CardView
             android:id="@+id/login"
             android:layout_width="match_parent"
-            android:layout_height="60dp"
+            android:layout_height="50dp"
             android:layout_marginStart="30dp"
             android:layout_marginTop="20dp"
             android:layout_marginEnd="30dp"
@@ -173,7 +173,7 @@
                 android:gravity="center"
                 android:text="@string/login"
                 android:textColor="@color/dark_primary"
-                android:textSize="20sp" />
+                android:textSize="16dp" />
 
             <com.airbnb.lottie.LottieAnimationView
                 android:id="@+id/loading"

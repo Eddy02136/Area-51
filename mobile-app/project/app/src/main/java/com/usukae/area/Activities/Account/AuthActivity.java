@@ -5,7 +5,6 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.widget.TextView;
 
-import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.cardview.widget.CardView;
 
@@ -31,7 +30,6 @@ public class AuthActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        EdgeToEdge.enable(this);
         setContentView(R.layout.activity_auth);
 
         createClasses();
@@ -73,16 +71,10 @@ public class AuthActivity extends AppCompatActivity {
         String email = textUtil.sanitize(loginDialog.findViewById(R.id.email));
         String password = textUtil.sanitize(loginDialog.findViewById(R.id.password));
 
-        if (!textUtil.isValidEmail(email)) {
-            prettyAlert.error("Invalid Email Address", 3000);
+        if (invalidateLogin(email, password)) {
             return;
         }
-        if (!textUtil.isValidPassword(password)) {
-            prettyAlert.error("Invalid Password", 3000);
-            return;
-        }
-
-        accountManager.login(email, password, success -> {
+        accountManager.login(this, email, password, success -> {
             if (success) {
                 prettyAlert.success("Login Success", 3000);
                 loginDialog.dismiss();
@@ -94,6 +86,18 @@ public class AuthActivity extends AppCompatActivity {
         });
     }
 
+    private boolean invalidateLogin(String email, String password) {
+        if (!textUtil.isValidEmail(email)) {
+            prettyAlert.error("Invalid Email Address", 3000);
+            return true;
+        }
+        if (!textUtil.isValidPassword(password)) {
+            prettyAlert.error("Invalid Password", 3000);
+            return true;
+        }
+        return false;
+    }
+
     private void validateRegister() {
         String firstName = textUtil.sanitize(registerDialog.findViewById(R.id.firstName));
         String lastName = textUtil.sanitize(registerDialog.findViewById(R.id.lastName));
@@ -101,19 +105,10 @@ public class AuthActivity extends AppCompatActivity {
         String password = textUtil.sanitize(registerDialog.findViewById(R.id.password));
         String passwordConfirm = textUtil.sanitize(registerDialog.findViewById(R.id.passwordConfirm));
 
-        if (!textUtil.isValidEmail(email)) {
-            prettyAlert.error("Invalid Email Address", 3000);
+        if (invalidateRegister(email, password, passwordConfirm)) {
             return;
         }
-        if (!textUtil.isValidPassword(password)) {
-            prettyAlert.error("Password must be between 5 and 25 characters", 3000);
-            return;
-        }
-        if (!password.equals(passwordConfirm)) {
-            prettyAlert.error("Passwords do not match", 3000);
-            return;
-        }
-        accountManager.register(new User(firstName, lastName, email, password), success -> {
+        accountManager.register(this, new User(firstName, lastName, email, password), success -> {
             if (success) {
                 prettyAlert.success("Registration Success", 3000);
                 registerDialog.dismiss();
@@ -123,5 +118,21 @@ public class AuthActivity extends AppCompatActivity {
                 prettyAlert.error("Registration Failed", 3000);
             }
         });
+    }
+
+    private boolean invalidateRegister(String email, String password, String passwordConfirm) {
+        if (!textUtil.isValidEmail(email)) {
+            prettyAlert.error("Invalid Email Address", 3000);
+            return true;
+        }
+        if (!textUtil.isValidPassword(password)) {
+            prettyAlert.error("Password must be between 5 and 25 characters", 3000);
+            return true;
+        }
+        if (!password.equals(passwordConfirm)) {
+            prettyAlert.error("Passwords do not match", 3000);
+            return true;
+        }
+        return false;
     }
 }

@@ -30,7 +30,7 @@
             android:fontFamily="@font/priego_bold"
             android:text="@string/area_s_catalog"
             android:textColor="@color/light_primary"
-            android:textSize="25sp"
+            android:textSize="22sp"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
@@ -45,7 +45,7 @@
             android:gravity="start"
             android:text="@string/all_our_functionnal_area_s"
             android:textColor="@color/light_primary"
-            android:textSize="18sp"
+            android:textSize="16sp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/title" />

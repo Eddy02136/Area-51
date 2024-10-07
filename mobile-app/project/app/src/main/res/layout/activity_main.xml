@@ -36,7 +36,7 @@
         android:fontFamily="@font/priego_light"
         android:text="@string/welcome_back"
         android:textColor="@color/light_primary"
-        android:textSize="60sp"
+        android:textSize="35sp"
         app:layout_constraintEnd_toStartOf="@+id/profilePictureButton"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
@@ -45,11 +45,11 @@
         android:id="@+id/userName"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginTop="15dp"
+        android:layout_marginTop="10dp"
         android:fontFamily="@font/priego_medium"
         android:text="@string/benjamin"
         android:textColor="@color/white"
-        android:textSize="35sp"
+        android:textSize="30sp"
         app:layout_constraintEnd_toEndOf="@+id/welcomeBack"
         app:layout_constraintStart_toStartOf="@+id/welcomeBack"
         app:layout_constraintTop_toBottomOf="@+id/welcomeBack" />
@@ -64,7 +64,7 @@
         android:fontFamily="@font/priego_regular"
         android:text="@string/dashboard"
         android:textColor="@color/light_primary"
-        android:textSize="20sp"
+        android:textSize="16sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/userName" />
@@ -79,7 +79,7 @@
         android:fontFamily="@font/priego_regular"
         android:text="Your Area's"
         android:textColor="@color/light_primary"
-        android:textSize="20sp"
+        android:textSize="16sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/dashboardCardActive" />
@@ -110,7 +110,7 @@
                 android:fontFamily="@font/priego_regular"
                 android:text="5"
                 android:textColor="@color/accent"
-                android:textSize="50sp"
+                android:textSize="40sp"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
 
@@ -124,7 +124,7 @@
                 android:fontFamily="@font/priego_light"
                 android:text="@string/active"
                 android:textColor="@color/light_primary"
-                android:textSize="20sp"
+                android:textSize="18sp"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="@+id/dashboardActiveValue"
@@ -159,7 +159,7 @@
                 android:fontFamily="@font/priego_regular"
                 android:text="399"
                 android:textColor="@color/accent"
-                android:textSize="50sp"
+                android:textSize="40sp"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
 
@@ -173,7 +173,7 @@
                 android:fontFamily="@font/priego_light"
                 android:text="@string/total_executions"
                 android:textColor="@color/light_primary"
-                android:textSize="16sp"
+                android:textSize="18sp"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="@+id/dashboardExecutionsValue"
@@ -184,12 +184,12 @@
     <androidx.cardview.widget.CardView
         android:id="@+id/noAreasButton"
         android:layout_width="0dp"
-        android:layout_height="60dp"
+        android:layout_height="50dp"
         android:layout_marginStart="15dp"
         android:layout_marginTop="15dp"
         android:layout_marginEnd="15dp"
         app:cardBackgroundColor="@color/accent"
-        app:cardCornerRadius="15dp"
+        app:cardCornerRadius="10dp"
         app:cardElevation="0dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -203,6 +203,6 @@
             android:gravity="center"
             android:text="Add an Area"
             android:textColor="@color/dark_primary"
-            android:textSize="20sp"/>
+            android:textSize="16sp"/>
     </androidx.cardview.widget.CardView>
 </androidx.constraintlayout.widget.ConstraintLayout>
