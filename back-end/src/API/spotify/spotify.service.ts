@@ -41,12 +41,11 @@ export class SpotifyService {
     };
 
     try {
-      // Utilisation de axios pour faire la requête POST
       const response = await axios.post(tokenUrl, stringify(body), {
         headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
       });
 
-      return response.data.access_token;
+      return response.data;
     } catch (error) {
       throw new Error(`Failed to get Spotify access token: ${error.response?.data?.error?.message || error.message}`);
     }
