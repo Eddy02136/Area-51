@@ -1,15 +1,17 @@
-import {BadRequestException, Headers, Injectable, UnauthorizedException} from '@nestjs/common';
+import {BadRequestException, Headers, Injectable, Response, UnauthorizedException} from '@nestjs/common';
 import { User } from '../schema/User.schema';
 import { Model } from 'mongoose';
 import { InjectModel } from '@nestjs/mongoose';
 import { CreateUserDto } from './dto/CreateUser.dto';
 import * as bcrypt from 'bcrypt';
 import { JwtService } from '@nestjs/jwt';
+import { ApiToken } from "../schema/ApiToken.schema";
 
 @Injectable()
 export class UsersService {
   constructor(
     @InjectModel(User.name) private userModel: Model<User>,
+    @InjectModel('ApiToken') private readonly apiTokenModel: Model<ApiToken>,
     private jwtService: JwtService,
   ) {}
 
@@ -66,5 +68,24 @@ export class UsersService {
 
   async checkToken(accessToken: string) : Promise<{ token : string }> {
     return { token: accessToken };
+  }
+
+  async saveToken(apiName: string, accessToken: string, refreshToken: string, expiresIn: number, userId: string): Promise<void> {
+    const expiresAt = new Date(Date.now() + expiresIn * 1000);
+    const user = await this.userModel.findOne({ _id: userId });
+    if (!user) {
+      throw new Error('User not found');
+    }
+
+    const existingTokenIndex = user.apiTokens.findIndex(token => token.apiName === apiName);
+
+    const apiToken = new this.apiTokenModel({ apiName, accessToken, refreshToken, expiresAt });
+
+    if (existingTokenIndex > -1) {
+      user.apiTokens[existingTokenIndex] = apiToken;
+    } else {
+      user.apiTokens.push(apiToken);
+    }
+    await user.save();
   }
 }

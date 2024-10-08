@@ -5,14 +5,14 @@ import { JwtStrategy } from '../utils/jwt.strategy';
 import { UsersService } from './users.service';
 import { MongooseModule } from '@nestjs/mongoose';
 import { User, UserSchema } from '../schema/User.schema';
+import {AuthGuard} from "@nestjs/passport";
+import {ApiTokenSchema} from "../schema/ApiToken.schema";
 
 @Module({
   imports: [
     MongooseModule.forFeature([
-      {
-        name: User.name,
-        schema: UserSchema,
-      },
+        { name: 'User', schema: UserSchema },
+        { name: 'ApiToken', schema: ApiTokenSchema }
     ]),
     JwtModule.register({
       secret: 'unhommebleuquiaimelesbananes',
@@ -21,8 +21,7 @@ import { User, UserSchema } from '../schema/User.schema';
   ],
   controllers: [UsersController],
   providers: [UsersService, JwtStrategy],
-  exports: [
-    MongooseModule.forFeature([{ name: User.name, schema: UserSchema }]),
-  ],
+  exports: [MongooseModule, UsersService],
 })
+
 export class UsersModule {}
