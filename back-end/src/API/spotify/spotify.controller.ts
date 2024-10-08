@@ -27,7 +27,7 @@ export class SpotifyController {
       const decoded = jwt.verify(jwtToken, process.env.JWT_SECRET);
       const userId = (decoded as { sub: string }).sub;
       const authUrl = this.spotifyService.getSpotifyAuthUrl(userId);
-      return reply.send(authUrl);
+      return reply.send({ url: authUrl});
     } catch (error) {
       reply.status(401).send('Invalid or expired token');
     }
@@ -64,7 +64,8 @@ export class SpotifyController {
       const { accessToken, refreshToken, expiresIn } = await this.spotifyService.getSpotifyAccessToken(code);
       const { userId } = JSON.parse(Buffer.from(state, 'base64').toString('utf-8'));
       await this.usersService.saveToken('Spotify', accessToken, refreshToken, expiresIn, userId);
-      return reply.send({ message: 'Spotify login successful' });
+      const frontendUrl = `http://localhost:3001/`;
+      return reply.redirect(302, frontendUrl);
     } catch (error) {
       return reply.status(500).send({ error: error.message });
     }
