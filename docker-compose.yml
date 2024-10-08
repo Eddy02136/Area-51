@@ -1,16 +1,11 @@
 version: '3'
 
 services:
+
   server:
     build: './back-end'
-    depends_on:
-      - mongo_db
     ports:
       - "8080:8080"
-    networks:
-      - back-end
-    environment:
-      - MONGO_URI=mongodb://mongo_db:27017/mydatabase
 
   client_web:
     build: './front-end'
@@ -22,21 +17,20 @@ services:
     volumes:
       - apk:/mobile_app/
 
-  client_mobile:
-    build: './mobile-app'
-    volumes:
-      - apk:/mobile_app/
+  # client_mobile:
+    # build: './mobile-app'
+    # volumes:
+      # - apk:/mobile_app/
 
-  mongo_db:
-    image: mongo:4.4
-    ports:
-      - "27017:27017"
-    volumes:
-      - mongo-data:/data/db
-
-networks:
-  back-end:
+  # mongo_db:
+    # image: mongo:4.4
+    # ports:
+      # - "27017:27017"
+    # volumes:
+      # - mongo-data:/data/db
+    # networks:
+      # - my_net
 
 volumes:
-  mongo-data:
+  # mongo-data:
   apk:

@@ -8,7 +8,7 @@
 - Antonin Campi
 - Jacques Sapin
 
-## GRAPHIQUE TECHNIQUE
+## Technos :
 
 ### Front
 ```mermaid
