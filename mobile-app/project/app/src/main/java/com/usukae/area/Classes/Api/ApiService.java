@@ -4,6 +4,7 @@ import com.usukae.area.Classes.Api.Auth.Login.LoginRequest;
 import com.usukae.area.Classes.Api.Auth.Login.LoginResponse;
 import com.usukae.area.Classes.Api.Auth.Register.RegisterRequest;
 import com.usukae.area.Classes.Api.Auth.Register.RegisterResponse;
+import com.usukae.area.Classes.Api.Connections.AuthUrlResponse;
 
 import retrofit2.Call;
 import retrofit2.http.Body;
@@ -24,4 +25,10 @@ public interface ApiService {
 
     @GET("/users/checkToken")
     Call<Void> checkTokenUser(@Header("Authorization") String token);
+
+    @GET("/discord/auth-url")
+    Call<AuthUrlResponse> getDiscordAuthUrl(@Header("Authorization") String token);
+
+    @GET("/spotify/auth-url")
+    Call<AuthUrlResponse> getSpotifyAuthUrl(@Header("Authorization") String token);
 }

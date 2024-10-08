@@ -1,4 +1,4 @@
-package com.usukae.area.Activities.Account;
+package com.usukae.area.Activities;
 
 import android.app.Dialog;
 import android.content.Intent;
@@ -9,10 +9,10 @@ import android.widget.TextView;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.cardview.widget.CardView;
 
-import com.usukae.area.Activities.MainActivity;
 import com.usukae.area.Classes.Managers.AccountManager;
 import com.usukae.area.Classes.Models.User;
 import com.usukae.area.Classes.Utils.DialogUtil;
+import com.usukae.area.Classes.Utils.ErrorUtil;
 import com.usukae.area.Classes.Utils.PrettyAlert;
 import com.usukae.area.Classes.Utils.TextUtil;
 import com.usukae.area.R;
@@ -23,10 +23,11 @@ public class AuthActivity extends AppCompatActivity {
     private TextUtil textUtil;
     private DialogUtil dialogUtil;
     private PrettyAlert prettyAlert;
-
     private CardView loginEmailButton, loginGoogleButton, loginDialogButton, registerDialogButton;
     private TextView registerButton;
     private Dialog registerDialog, loginDialog;
+    private ErrorUtil errorUtil;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -47,6 +48,7 @@ public class AuthActivity extends AppCompatActivity {
         textUtil = new TextUtil();
         dialogUtil = new DialogUtil();
         prettyAlert = new PrettyAlert(this);
+        errorUtil = new ErrorUtil();
     }
 
     private void createDialogs() {
@@ -83,6 +85,7 @@ public class AuthActivity extends AppCompatActivity {
         registerButton = findViewById(R.id.register);
         loginDialogButton = loginDialog.findViewById(R.id.login);
         registerDialogButton = registerDialog.findViewById(R.id.register);
+
         assignButtons();
     }
 
@@ -109,7 +112,7 @@ public class AuthActivity extends AppCompatActivity {
                 startActivity(new Intent(getApplicationContext(), MainActivity.class));
                 finish();
             } else {
-                prettyAlert.error(getString(R.string.login_failed), 3000);
+                prettyAlert.error(getString(errorUtil.getAuthError(code)), 3000);
             }
         });
     }
@@ -143,7 +146,7 @@ public class AuthActivity extends AppCompatActivity {
                 startActivity(new Intent(getApplicationContext(), MainActivity.class));
                 finish();
             } else {
-                prettyAlert.error(getString(R.string.registration_failed), 3000);
+                prettyAlert.error(getString(errorUtil.getRegisterError(code)), 3000);
             }
         });
     }

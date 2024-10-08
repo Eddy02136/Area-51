@@ -82,7 +82,6 @@
                 android:layout_marginTop="15dp"
                 app:cardBackgroundColor="@color/dark_secondary"
                 app:cardCornerRadius="20dp"
-                app:cardElevation="0dp"
                 app:layout_constraintEnd_toStartOf="@+id/dashboardCardExecutions"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/dashboardLabel">
@@ -131,7 +130,6 @@
                 android:layout_marginEnd="15dp"
                 app:cardBackgroundColor="@color/dark_secondary"
                 app:cardCornerRadius="20dp"
-                app:cardElevation="0dp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toEndOf="@+id/dashboardCardActive"
                 app:layout_constraintTop_toTopOf="@+id/dashboardCardActive">
@@ -195,7 +193,6 @@
                 android:layout_marginEnd="15dp"
                 app:cardBackgroundColor="@color/accent"
                 app:cardCornerRadius="10dp"
-                app:cardElevation="0dp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/listTitle">
@@ -243,7 +240,6 @@
                 android:layout_marginEnd="15dp"
                 app:cardBackgroundColor="@color/accent"
                 app:cardCornerRadius="10dp"
-                app:cardElevation="0dp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/listConnectionsTitle">

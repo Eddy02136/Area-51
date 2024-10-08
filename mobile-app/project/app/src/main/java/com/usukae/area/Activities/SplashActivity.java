@@ -10,7 +10,6 @@ import android.widget.TextView;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.airbnb.lottie.LottieAnimationView;
-import com.usukae.area.Activities.Account.AuthActivity;
 import com.usukae.area.Classes.Managers.AccountManager;
 import com.usukae.area.Classes.Utils.SharedPreferencesManager;
 import com.usukae.area.R;

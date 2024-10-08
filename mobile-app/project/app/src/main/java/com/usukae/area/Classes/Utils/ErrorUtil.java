@@ -4,10 +4,14 @@ import com.usukae.area.R;
 
 public class ErrorUtil {
     public int getAuthError(int code) {
-        if (code == 401) {
-            return R.string.invalid_email_or_password;
+        switch (code) {
+            case 401:
+                return R.string.invalid_email_or_password;
+            case 500:
+                return R.string.internal_server_error;
+            default:
+                return R.string.login_failed;
         }
-        return R.string.login_failed;
     }
 
     public int getRegisterError(int code) {
@@ -20,6 +24,17 @@ public class ErrorUtil {
                 return R.string.internal_server_error;
             default:
                 return R.string.registration_failed;
+        }
+    }
+
+    public int getAuthUrlError(int code) {
+        switch (code) {
+            case 401:
+                return R.string.jwt_problem;
+            case 500:
+                return R.string.internal_server_error;
+            default:
+                return R.string.login_failed;
         }
     }
 }

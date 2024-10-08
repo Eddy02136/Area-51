@@ -43,6 +43,8 @@
     <string name="add_an_area">Ajouter une action-réaction</string>
     <string name="add_a_connection">Ajouter une connexion</string>
     <string name="your_connections">Tes connexions</string>
+    <string name="jwt_problem">Problème de JWT</string>
+    <string name="invalid_url">URL invalide</string>
     <string name="your_area_s">Tes actions et réactions</string>
     <string name="_0">0</string>
 </resources>
