@@ -2,13 +2,17 @@ import { Body, Controller, Get, Put, Query, Response, Headers, UseGuards } from 
 import { SpotifyService } from './spotify.service';
 import { FastifyReply } from 'fastify';
 import { AuthGuard } from '@nestjs/passport';
-import {ApiBody, ApiHeader, ApiOperation, ApiQuery, ApiResponse, ApiTags} from "@nestjs/swagger";
-
+import { ApiBody, ApiHeader, ApiOperation, ApiQuery, ApiResponse, ApiTags } from "@nestjs/swagger";
+import * as jwt from 'jsonwebtoken';
+import * as process from "node:process";
+import { SpotifyTokenResponse } from './spotify.interface';
+import { UsersService } from "../../users/users.service";
 
 @Controller('spotify')
 @ApiTags('Spotify')
 export class SpotifyController {
-  constructor(private readonly spotifyService: SpotifyService) {}
+  constructor(private readonly spotifyService: SpotifyService,
+  private readonly usersService: UsersService) {}
 
   @UseGuards(AuthGuard('jwt'))
   @ApiOperation({ summary: 'Get Spotify authentication URL' })
@@ -17,8 +21,16 @@ export class SpotifyController {
   @ApiResponse({ status: 401, description: 'Unauthorized. Invalid or missing JWT.' })
   @ApiResponse({ status: 500, description: 'Internal server error.' })
   @Get('auth-url')
-  getAuthUrl(): string {
-    return this.spotifyService.getSpotifyAuthUrl();
+  getAuthUrl(@Headers('authorization') authorization: string, @Response() reply: FastifyReply) {
+    const jwtToken = authorization.replace('Bearer ', '');
+    try {
+      const decoded = jwt.verify(jwtToken, process.env.JWT_SECRET);
+      const userId = (decoded as { sub: string }).sub;
+      const authUrl = this.spotifyService.getSpotifyAuthUrl(userId);
+      return reply.send(authUrl);
+    } catch (error) {
+      reply.status(401).send('Invalid or expired token');
+    }
   }
 
   @UseGuards(AuthGuard('jwt'))
@@ -30,7 +42,7 @@ export class SpotifyController {
   @ApiResponse({ status: 401, description: 'Unauthorized. Invalid or missing JWT.' })
   @ApiResponse({ status: 500, description: 'Internal server error.' })
   @Get('access-token')
-  async getAccessToken(@Query('code') code: string): Promise<string> {
+  async getAccessToken(@Query('code') code: string): Promise<SpotifyTokenResponse> {
     if (!code) {
       throw new Error('Authorization code is required');
     }
@@ -39,18 +51,20 @@ export class SpotifyController {
 
   @ApiOperation({ summary: 'Handle Spotify callback and retrieve access token' })
   @ApiQuery({ name: 'code', required: true, description: 'The authorization code obtained from Spotify' })
-  @ApiResponse({ status: 200, description: 'Successful retrieval of the access token.' })
+  @ApiResponse({ status: 200, description: 'Spotify login successful' })
   @ApiResponse({ status: 400, description: 'Bad Request. Authorization code is required.' })
   @ApiResponse({ status: 500, description: 'Internal server error.' })
   @Get('callback')
-  async handleSpotifyCallback(@Query('code') code: string, @Response() reply: FastifyReply) {
-    if (!code) {
-      return reply.status(400).send('Authorization code is required');
+  async handleSpotifyCallback(@Query('code') code: string, @Query('state') state: string, @Response() reply: FastifyReply) {
+    if (!code || !state) {
+      return reply.status(400).send('Authorization code and state are required');
     }
 
     try {
-      const accessToken = await this.spotifyService.getSpotifyAccessToken(code);
-      return reply.send({ accessToken });
+      const { accessToken, refreshToken, expiresIn } = await this.spotifyService.getSpotifyAccessToken(code);
+      const { userId } = JSON.parse(Buffer.from(state, 'base64').toString('utf-8'));
+      await this.usersService.saveToken('Spotify', accessToken, refreshToken, expiresIn, userId);
+      return reply.send({ message: 'Spotify login successful' });
     } catch (error) {
       return reply.status(500).send({ error: error.message });
     }
