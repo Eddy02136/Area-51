@@ -16,7 +16,6 @@ const Register = () => {
     },
     onSuccess: () => {
       queryClient.invalidateQueries(['users']);
-      alert('User successfully created!');
       navigate('/login');
     },
     onError: (error) => {

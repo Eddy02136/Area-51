@@ -25,3 +25,51 @@
   font-size: 570%;
   color: #fdff91;
 }
+
+.home-page-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  background-color: white;
+  padding: 3vh;
+  border-radius: 10px;
+}
+
+.home-page-button {
+    background-color: #0015d0;
+    color: white;
+    border: none;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 100%;
+    cursor: pointer;
+    border-radius: 4px;
+    height: 5vh;
+    width: 35vw;
+    font-family: PriegoRegular;
+}
+
+.home-page-spotify-button {
+  background-color: #1DB954;
+  color: white;
+  border: none;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 100%;
+  cursor: pointer;
+  border-radius: 4px;
+  height: 5vh;
+  width: 35vw;
+  font-family: PriegoRegular;
+  margin-bottom: 2vh;
+}
+
+.action-reaction-form {
+  display: flex;
+  flex-direction: column;
+  gap: 2vh;
+  padding-top: 5vh;
+  font-family: PriegoRegular;
+}

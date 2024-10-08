@@ -21,7 +21,6 @@ const LoginEmailDialog = ({ onCancel }) => {
 
       const { token } = response.data || {};
       if (token) {
-        alert('Login successful!');
         login(token);
         navigate('/');
       } else {
