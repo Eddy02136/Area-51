@@ -14,7 +14,7 @@ export class SystemController {
     @InjectModel(User.name) private userModel: Model<User>,
   ) {}
 
-  @Interval(6000)
+  @Interval(300000)
   async checkAndManageActionsReactionsUsers(): Promise<void>{
     const users = await this.userModel.find().exec()
     for (const user of users) {

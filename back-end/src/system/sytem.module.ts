@@ -16,5 +16,6 @@ import {UsersModule} from "../users/users.module";
   ],
   controllers: [SystemController],
   providers: [SystemService],
+  exports: [MongooseModule],
 })
 export class SystemModule {}

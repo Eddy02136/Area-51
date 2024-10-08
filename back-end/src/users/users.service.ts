@@ -88,4 +88,20 @@ export class UsersService {
     }
     await user.save();
   }
+
+  async getToken(apiName: string, userId: unknown): Promise<string> {
+    const user = await this.userModel.findOne({ _id: userId });
+
+    if (!user) {
+      throw new Error('User not found');
+    }
+
+    const apiToken = user.apiTokens.find((token: ApiToken) => token.apiName === apiName);
+
+    if (!apiToken) {
+      return null;
+    }
+
+    return apiToken.accessToken;
+  }
 }

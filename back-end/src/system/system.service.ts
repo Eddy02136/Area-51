@@ -1,10 +1,11 @@
 import { Injectable } from "@nestjs/common";
 import { InjectModel } from "@nestjs/mongoose";
-import { Model } from "mongoose";
+import {Model, Types} from "mongoose";
 import { SpotifyService } from "../API/spotify/spotify.service";
 import { NasaService } from "../API/nasa/nasa.service";
 import { ActionReaction } from "../schema/ActionReaction.schema";
 import { haversine } from "../utils/haversine";
+import {UsersService} from "../users/users.service";
 
 @Injectable()
 export class SystemService {
@@ -18,22 +19,24 @@ export class SystemService {
   constructor(
     private readonly spotifyService: SpotifyService,
     private readonly nasaService: NasaService,
+    private readonly userService: UsersService,
     @InjectModel(ActionReaction.name) private actionReactionModel: Model<ActionReaction>,
   ) {}
 
-  async handleActionReaction(userId: unknown): Promise<void> {
-    const actionsReactions = await this.actionReactionModel.find({ userId }).exec();
+  async handleActionReaction(userId : any): Promise<void> {
+    const actionsReactions = await this.actionReactionModel.find({userId});
 
     for (const ar of actionsReactions) {
       if (ar.actionType === 'iss_get_pos') {
         const { iss_position: issPosition } = await this.nasaService.getIssPosition();
-        const { city, token, trackId } = ar.parameters;
+        const { city, trackId } = ar.parameters;
 
         if (this.CITY_COORDINATES[city]) {
           const { latitude, longitude } = this.CITY_COORDINATES[city];
           const distance = haversine(latitude, longitude, issPosition.latitude, issPosition.longitude);
 
-          if (ar.reactionType === "spotify_play_music" && distance <= 1000) {
+          if (ar.reactionType === "spotify_play_music" && distance <= 2000) {
+            const token = await this.userService.getToken('Spotify', userId);
             await this.spotifyService.playMusic(token, trackId);
           }
         }

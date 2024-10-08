@@ -10,6 +10,7 @@ import { DiscordModule } from './API/discord/discord.module';
 import { HealthModule } from "./health/health.module";
 import { SystemModule } from "./system/sytem.module";
 import * as process from 'node:process';
+import {ManageModule} from "./manage/manage.module";
 
 dotenv.config();
 
@@ -27,7 +28,8 @@ console.log(process.env.MONGO_URI);
     NasaModule,
     SpotifyModule,
     HealthModule,
-    SystemModule
+    SystemModule,
+    ManageModule,
   ],
   controllers: [],
   providers: [],

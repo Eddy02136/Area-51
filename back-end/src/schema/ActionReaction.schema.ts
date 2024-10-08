@@ -1,10 +1,11 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import {Document, Types} from 'mongoose';
+import * as string_decoder from "node:string_decoder";
 
 @Schema()
 export class ActionReaction extends Document {
-  @Prop({ type: Types.ObjectId, required: true })
-  userId: Types.ObjectId;
+  @Prop({ type: String, required: true })
+  userId: string;
 
   @Prop({ required: true, type: String })
   actionType: string;
