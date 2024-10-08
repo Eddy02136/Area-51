@@ -27,7 +27,7 @@ export class SpotifyController {
       const decoded = jwt.verify(jwtToken, process.env.JWT_SECRET);
       const userId = (decoded as { sub: string }).sub;
       const authUrl = this.spotifyService.getSpotifyAuthUrl(userId);
-      return reply.send(authUrl);
+      return reply.send({ url: authUrl});
     } catch (error) {
       reply.status(401).send('Invalid or expired token');
     }
