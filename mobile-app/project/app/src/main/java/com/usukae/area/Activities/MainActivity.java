@@ -17,7 +17,7 @@ public class MainActivity extends AppCompatActivity {
     private Dialog addAreaDialog;
     private ImageView profilePicture;
     private CardView activesAreas, totalExecutions, addArea;
-    private TextView activesAreasValue, totalExecutionsValue;
+    private TextView userName, activesAreasValue, totalExecutionsValue;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -47,6 +47,7 @@ public class MainActivity extends AppCompatActivity {
         totalExecutions = findViewById(R.id.dashboardCardExecutions);
         totalExecutionsValue = findViewById(R.id.dashboardExecutionsValue);
         addArea = findViewById(R.id.noAreasButton);
+        userName = findViewById(R.id.userName);
         assignButtons();
         setValues();
     }
@@ -60,6 +61,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void setValues() {
+        userName.setText("NULL");
         activesAreasValue.setText("" + getActiveAreas());
         totalExecutionsValue.setText("" + getTotalExecutions());
     }

@@ -39,4 +39,10 @@
     <string name="required_field_empty">Required fields are missing in the request body</string>
     <string name="invalid_email_or_password">Invalid email or password</string>
     <string name="internal_server_error">Internal server error</string>
+    <string name="all_our_functionnal_connections">All our functionnal connections</string>
+    <string name="add_a_connection">Add a connection</string>
+    <string name="add_an_area">Add an action-reaction</string>
+    <string name="your_connections">Your connections</string>
+    <string name="your_area_s">Your actions and reactions</string>
+    <string name="_0">0</string>
 </resources>
