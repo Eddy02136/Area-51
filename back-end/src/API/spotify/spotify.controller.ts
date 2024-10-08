@@ -107,4 +107,22 @@ export class SpotifyController {
       return reply.status(500).send({ error: error.message });
     }
   }
+
+  @UseGuards(AuthGuard('jwt'))
+  @ApiOperation({ summary: 'Check connection spotify' })
+  @ApiHeader({ name: 'authorization', required: true, description: 'Bearer token for Spotify API access' })
+  @ApiResponse({ status: 200, description: 'Spotify login successfully.' })
+  @ApiResponse({ status: 400, description: 'Bad Request. Authorization code is required.' })
+  @ApiResponse({ status: 401, description: 'Unauthorized. Invalid or missing JWT.' })
+  @Get('check-connection')
+  async checkConnection(@Headers('authorization') authorization: string, @Response() reply: FastifyReply) {
+    const jwtToken = authorization.replace('Bearer ', '');
+    const decoded = jwt.verify(jwtToken, process.env.JWT_SECRET);
+    const userId = (decoded as { sub: string }).sub;
+    const token = this.usersService.getToken('Spotify', userId);
+    if (!token) {
+      return reply.status(400).send({'connected': false});
+    }
+    return reply.status(200).send({'connected': true});
+  }
 }
