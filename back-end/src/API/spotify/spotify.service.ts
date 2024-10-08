@@ -2,6 +2,7 @@ import { Injectable } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import axios from 'axios';
 import { stringify } from 'querystring';
+import { SpotifyTokenResponse } from './spotify.interface';
 
 @Injectable()
 export class SpotifyService {
@@ -9,7 +10,8 @@ export class SpotifyService {
     private readonly configService: ConfigService,
   ) {}
 
-  getSpotifyAuthUrl(): string {
+  getSpotifyAuthUrl(userId: string): string {
+    const state = Buffer.from(JSON.stringify({ userId })).toString('base64');
     const clientId = this.configService.get<string>('SPOTIFY_CLIENT_ID');
     const redirectUri = this.configService.get<string>('SPOTIFY_REDIRECT_URI');
     const scopes = 'user-read-playback-state user-modify-playback-state playlist-read-private user-read-email';
@@ -19,13 +21,14 @@ export class SpotifyService {
       response_type: 'code',
       redirect_uri: redirectUri,
       scope: scopes,
+      state: state,
     };
 
     const queryString = stringify(queryParams);
     return `https://accounts.spotify.com/authorize?${queryString}`;
   }
 
-  async getSpotifyAccessToken(code: string): Promise<string> {
+  async getSpotifyAccessToken(code: string): Promise<SpotifyTokenResponse> {
     const clientId = this.configService.get<string>('SPOTIFY_CLIENT_ID');
     const clientSecret = this.configService.get<string>('SPOTIFY_CLIENT_SECRET');
     const redirectUri = this.configService.get<string>('SPOTIFY_REDIRECT_URI');
@@ -45,7 +48,8 @@ export class SpotifyService {
         headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
       });
 
-      return response.data;
+      const { access_token, refresh_token, expires_in } = response.data;
+      return { accessToken: access_token, refreshToken: refresh_token, expiresIn: expires_in };
     } catch (error) {
       throw new Error(`Failed to get Spotify access token: ${error.response?.data?.error?.message || error.message}`);
     }
