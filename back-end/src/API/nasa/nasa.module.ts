@@ -7,5 +7,6 @@ import { NasaService } from './nasa.service';
   imports: [HttpModule],
   controllers: [NasaController],
   providers: [NasaService],
+  exports: [NasaService],
 })
 export class NasaModule {}
