@@ -11,5 +11,6 @@ import { HttpModule } from '@nestjs/axios';
   ],
   controllers: [SpotifyController],
   providers: [SpotifyService],
+  exports: [SpotifyService],
 })
 export class SpotifyModule {}

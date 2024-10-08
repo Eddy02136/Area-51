@@ -1,0 +1,43 @@
+import { Injectable } from "@nestjs/common";
+import { InjectModel } from "@nestjs/mongoose";
+import { Model } from "mongoose";
+import { SpotifyService } from "../API/spotify/spotify.service";
+import { NasaService } from "../API/nasa/nasa.service";
+import { ActionReaction } from "../schema/ActionReaction.schema";
+import { haversine } from "../utils/haversine";
+
+@Injectable()
+export class SystemService {
+  private readonly CITY_COORDINATES: { [key: string]: { latitude: number; longitude: number } } = {
+    'New-York': { latitude: 40.712784, longitude: -74.005941 },
+    'Paris': { latitude: 48.856613, longitude: 2.352222 },
+    'Londres': { latitude: 51.507351, longitude: -0.127758 },
+    'Tokyo': { latitude: 35.682839, longitude: 139.759455 }
+  };
+
+  constructor(
+    private readonly spotifyService: SpotifyService,
+    private readonly nasaService: NasaService,
+    @InjectModel(ActionReaction.name) private actionReactionModel: Model<ActionReaction>,
+  ) {}
+
+  async handleActionReaction(userId: unknown): Promise<void> {
+    const actionsReactions = await this.actionReactionModel.find({ userId }).exec();
+
+    for (const ar of actionsReactions) {
+      if (ar.actionType === 'iss_get_pos') {
+        const { iss_position: issPosition } = await this.nasaService.getIssPosition();
+        const { city, token, trackId } = ar.parameters;
+
+        if (this.CITY_COORDINATES[city]) {
+          const { latitude, longitude } = this.CITY_COORDINATES[city];
+          const distance = haversine(latitude, longitude, issPosition.latitude, issPosition.longitude);
+
+          if (ar.reactionType === "spotify_play_music" && distance <= 1000) {
+            await this.spotifyService.playMusic(token, trackId);
+          }
+        }
+      }
+    }
+  }
+}
