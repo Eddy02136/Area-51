@@ -3,6 +3,7 @@ package com.usukae.area.Activities.Account;
 import android.app.Dialog;
 import android.content.Intent;
 import android.os.Bundle;
+import android.widget.EditText;
 import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -32,10 +33,13 @@ public class AuthActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_auth);
 
+        init();
+    }
+
+    private void init() {
         createClasses();
         createDialogs();
         bindViews();
-        assignButtons();
     }
 
     private void createClasses() {
@@ -48,6 +52,29 @@ public class AuthActivity extends AppCompatActivity {
     private void createDialogs() {
         registerDialog = dialogUtil.createRegisterDialog(this);
         loginDialog = dialogUtil.createLoginDialog(this);
+        manageDismiss();
+    }
+
+    private void manageDismiss() {
+        registerDialog.setOnDismissListener(dialogInterface -> {
+            EditText editText = registerDialog.findViewById(R.id.firstName);
+            editText.setText("");
+            editText = registerDialog.findViewById(R.id.lastName);
+            editText.setText("");
+            editText = registerDialog.findViewById(R.id.email);
+            editText.setText("");
+            editText = registerDialog.findViewById(R.id.password);
+            editText.setText("");
+            editText = registerDialog.findViewById(R.id.passwordConfirm);
+            editText.setText("");
+        });
+
+        loginDialog.setOnDismissListener(dialogInterface -> {
+            EditText emailField = loginDialog.findViewById(R.id.email);
+            emailField.setText("");
+            EditText passwordField = loginDialog.findViewById(R.id.password);
+            passwordField.setText("");
+        });
     }
 
     private void bindViews() {
@@ -56,6 +83,7 @@ public class AuthActivity extends AppCompatActivity {
         registerButton = findViewById(R.id.register);
         loginDialogButton = loginDialog.findViewById(R.id.login);
         registerDialogButton = registerDialog.findViewById(R.id.register);
+        assignButtons();
     }
 
     private void assignButtons() {

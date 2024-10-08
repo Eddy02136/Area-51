@@ -3,13 +3,10 @@ package com.usukae.area.Activities;
 import android.app.Dialog;
 import android.os.Bundle;
 import android.widget.ImageView;
+import android.widget.TextView;
 
-import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.cardview.widget.CardView;
-import androidx.core.graphics.Insets;
-import androidx.core.view.ViewCompat;
-import androidx.core.view.WindowInsetsCompat;
 
 import com.usukae.area.Classes.Utils.DialogUtil;
 import com.usukae.area.R;
@@ -20,16 +17,20 @@ public class MainActivity extends AppCompatActivity {
     private Dialog addAreaDialog;
     private ImageView profilePicture;
     private CardView activesAreas, totalExecutions, addArea;
+    private TextView activesAreasValue, totalExecutionsValue;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        init();
+    }
+
+    private void init() {
         createClasses();
         createDialogs();
         bindViews();
-        assignButtons();
     }
 
     private void createClasses() {
@@ -42,17 +43,32 @@ public class MainActivity extends AppCompatActivity {
 
     private void bindViews() {
         activesAreas = findViewById(R.id.dashboardCardActive);
+        activesAreasValue = findViewById(R.id.dashboardActiveValue);
         totalExecutions = findViewById(R.id.dashboardCardExecutions);
+        totalExecutionsValue = findViewById(R.id.dashboardExecutionsValue);
         addArea = findViewById(R.id.noAreasButton);
+        assignButtons();
+        setValues();
     }
 
     private void assignButtons() {
         activesAreas.setOnClickListener(v -> {
-
         });
         totalExecutions.setOnClickListener(v -> {
-
         });
         addArea.setOnClickListener(v -> addAreaDialog.show());
+    }
+
+    private void setValues() {
+        activesAreasValue.setText("" + getActiveAreas());
+        totalExecutionsValue.setText("" + getTotalExecutions());
+    }
+
+    private int getActiveAreas() {
+        return 0;
+    }
+
+    private int getTotalExecutions() {
+        return 0;
     }
 }
