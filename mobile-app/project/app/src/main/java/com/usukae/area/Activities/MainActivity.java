@@ -4,6 +4,7 @@ import android.app.Dialog;
 import android.os.Bundle;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.cardview.widget.CardView;
@@ -14,9 +15,9 @@ import com.usukae.area.R;
 public class MainActivity extends AppCompatActivity {
 
     private DialogUtil dialogUtil;
-    private Dialog addAreaDialog;
+    private Dialog addAreaDialog, addConnectionDialog;
     private ImageView profilePicture;
-    private CardView activesAreas, totalExecutions, addArea;
+    private CardView activesAreas, totalExecutions, addArea, addConnection;
     private TextView userName, activesAreasValue, totalExecutionsValue;
 
     @Override
@@ -39,6 +40,7 @@ public class MainActivity extends AppCompatActivity {
 
     private void createDialogs() {
         addAreaDialog = dialogUtil.createAddAreaDialog(this);
+        addConnectionDialog = dialogUtil.createAddConnectionDialog(this);
     }
 
     private void bindViews() {
@@ -47,7 +49,9 @@ public class MainActivity extends AppCompatActivity {
         totalExecutions = findViewById(R.id.dashboardCardExecutions);
         totalExecutionsValue = findViewById(R.id.dashboardExecutionsValue);
         addArea = findViewById(R.id.noAreasButton);
+        addConnection = findViewById(R.id.addConnectionButton);
         userName = findViewById(R.id.userName);
+        profilePicture = findViewById(R.id.profileButton);
         assignButtons();
         setValues();
     }
@@ -58,6 +62,9 @@ public class MainActivity extends AppCompatActivity {
         totalExecutions.setOnClickListener(v -> {
         });
         addArea.setOnClickListener(v -> addAreaDialog.show());
+        addConnection.setOnClickListener(v -> addConnectionDialog.show());
+        profilePicture.setOnClickListener(v -> Toast.makeText(this, "@TODO", Toast.LENGTH_SHORT).show());
+
     }
 
     private void setValues() {
