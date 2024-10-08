@@ -1,18 +1,18 @@
-package com.usukae.area.Activities.Account;
+package com.usukae.area.Activities;
 
 import android.app.Dialog;
 import android.content.Intent;
 import android.os.Bundle;
+import android.widget.EditText;
 import android.widget.TextView;
 
-import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.cardview.widget.CardView;
 
-import com.usukae.area.Activities.MainActivity;
 import com.usukae.area.Classes.Managers.AccountManager;
 import com.usukae.area.Classes.Models.User;
 import com.usukae.area.Classes.Utils.DialogUtil;
+import com.usukae.area.Classes.Utils.ErrorUtil;
 import com.usukae.area.Classes.Utils.PrettyAlert;
 import com.usukae.area.Classes.Utils.TextUtil;
 import com.usukae.area.R;
@@ -23,21 +23,24 @@ public class AuthActivity extends AppCompatActivity {
     private TextUtil textUtil;
     private DialogUtil dialogUtil;
     private PrettyAlert prettyAlert;
-
     private CardView loginEmailButton, loginGoogleButton, loginDialogButton, registerDialogButton;
     private TextView registerButton;
     private Dialog registerDialog, loginDialog;
+    private ErrorUtil errorUtil;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        EdgeToEdge.enable(this);
         setContentView(R.layout.activity_auth);
 
+        init();
+    }
+
+    private void init() {
         createClasses();
         createDialogs();
         bindViews();
-        assignButtons();
     }
 
     private void createClasses() {
@@ -45,11 +48,35 @@ public class AuthActivity extends AppCompatActivity {
         textUtil = new TextUtil();
         dialogUtil = new DialogUtil();
         prettyAlert = new PrettyAlert(this);
+        errorUtil = new ErrorUtil();
     }
 
     private void createDialogs() {
         registerDialog = dialogUtil.createRegisterDialog(this);
         loginDialog = dialogUtil.createLoginDialog(this);
+        manageDismiss();
+    }
+
+    private void manageDismiss() {
+        registerDialog.setOnDismissListener(dialogInterface -> {
+            EditText editText = registerDialog.findViewById(R.id.firstName);
+            editText.setText("");
+            editText = registerDialog.findViewById(R.id.lastName);
+            editText.setText("");
+            editText = registerDialog.findViewById(R.id.email);
+            editText.setText("");
+            editText = registerDialog.findViewById(R.id.password);
+            editText.setText("");
+            editText = registerDialog.findViewById(R.id.passwordConfirm);
+            editText.setText("");
+        });
+
+        loginDialog.setOnDismissListener(dialogInterface -> {
+            EditText emailField = loginDialog.findViewById(R.id.email);
+            emailField.setText("");
+            EditText passwordField = loginDialog.findViewById(R.id.password);
+            passwordField.setText("");
+        });
     }
 
     private void bindViews() {
@@ -58,6 +85,8 @@ public class AuthActivity extends AppCompatActivity {
         registerButton = findViewById(R.id.register);
         loginDialogButton = loginDialog.findViewById(R.id.login);
         registerDialogButton = registerDialog.findViewById(R.id.register);
+
+        assignButtons();
     }
 
     private void assignButtons() {
@@ -73,25 +102,31 @@ public class AuthActivity extends AppCompatActivity {
         String email = textUtil.sanitize(loginDialog.findViewById(R.id.email));
         String password = textUtil.sanitize(loginDialog.findViewById(R.id.password));
 
-        if (!textUtil.isValidEmail(email)) {
-            prettyAlert.error("Invalid Email Address", 3000);
+        if (invalidateLogin(email, password)) {
             return;
         }
-        if (!textUtil.isValidPassword(password)) {
-            prettyAlert.error("Invalid Password", 3000);
-            return;
-        }
-
-        accountManager.login(email, password, success -> {
+        accountManager.login(this, email, password, (success, code) -> {
             if (success) {
-                prettyAlert.success("Login Success", 3000);
+                prettyAlert.success(getString(R.string.login_success), 3000);
                 loginDialog.dismiss();
                 startActivity(new Intent(getApplicationContext(), MainActivity.class));
                 finish();
             } else {
-                prettyAlert.error("Login Failed", 3000);
+                prettyAlert.error(getString(errorUtil.getAuthError(code)), 3000);
             }
         });
+    }
+
+    private boolean invalidateLogin(String email, String password) {
+        if (!textUtil.isValidEmail(email)) {
+            prettyAlert.error(getString(R.string.invalid_email_address), 3000);
+            return true;
+        }
+        if (!textUtil.isValidPassword(password)) {
+            prettyAlert.error(getString(R.string.invalid_password), 3000);
+            return true;
+        }
+        return false;
     }
 
     private void validateRegister() {
@@ -101,27 +136,34 @@ public class AuthActivity extends AppCompatActivity {
         String password = textUtil.sanitize(registerDialog.findViewById(R.id.password));
         String passwordConfirm = textUtil.sanitize(registerDialog.findViewById(R.id.passwordConfirm));
 
-        if (!textUtil.isValidEmail(email)) {
-            prettyAlert.error("Invalid Email Address", 3000);
+        if (invalidateRegister(email, password, passwordConfirm)) {
             return;
         }
-        if (!textUtil.isValidPassword(password)) {
-            prettyAlert.error("Password must be between 5 and 25 characters", 3000);
-            return;
-        }
-        if (!password.equals(passwordConfirm)) {
-            prettyAlert.error("Passwords do not match", 3000);
-            return;
-        }
-        accountManager.register(new User(firstName, lastName, email, password), success -> {
+        accountManager.register(this, new User(firstName, lastName, email, password), (success, code) -> {
             if (success) {
-                prettyAlert.success("Registration Success", 3000);
+                prettyAlert.success(getString(R.string.registration_success), 3000);
                 registerDialog.dismiss();
                 startActivity(new Intent(getApplicationContext(), MainActivity.class));
                 finish();
             } else {
-                prettyAlert.error("Registration Failed", 3000);
+                prettyAlert.error(getString(errorUtil.getRegisterError(code)), 3000);
             }
         });
+    }
+
+    private boolean invalidateRegister(String email, String password, String passwordConfirm) {
+        if (!textUtil.isValidEmail(email)) {
+            prettyAlert.error(getString(R.string.invalid_email_address), 3000);
+            return true;
+        }
+        if (!textUtil.isValidPassword(password)) {
+            prettyAlert.error(getString(R.string.password_length_error), 3000);
+            return true;
+        }
+        if (!password.equals(passwordConfirm)) {
+            prettyAlert.error(getString(R.string.passwords_do_not_match), 3000);
+            return true;
+        }
+        return false;
     }
 }

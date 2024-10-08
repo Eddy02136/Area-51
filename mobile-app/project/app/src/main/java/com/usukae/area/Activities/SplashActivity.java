@@ -7,36 +7,32 @@ import android.os.Handler;
 import android.view.animation.AnimationUtils;
 import android.widget.TextView;
 
-import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.graphics.Insets;
-import androidx.core.view.ViewCompat;
-import androidx.core.view.WindowInsetsCompat;
 
 import com.airbnb.lottie.LottieAnimationView;
-import com.usukae.area.Activities.Account.AuthActivity;
+import com.usukae.area.Classes.Managers.AccountManager;
+import com.usukae.area.Classes.Utils.SharedPreferencesManager;
 import com.usukae.area.R;
 
 @SuppressLint("CustomSplashScreen")
 public class SplashActivity extends AppCompatActivity {
+    private AccountManager accountManager;
     private TextView titleText, subtitleText;
     private LottieAnimationView loading;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        EdgeToEdge.enable(this);
         setContentView(R.layout.activity_splash);
-        ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main), (v, insets) -> {
-            Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
-            v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
-            return insets;
-        });
 
+        createClasses();
         bindView();
         animateView();
-        navigate();
-        loginProtocol();
+        checkToken();
+    }
+
+    private void createClasses() {
+        accountManager = new AccountManager();
     }
 
     private void bindView() {
@@ -51,18 +47,25 @@ public class SplashActivity extends AppCompatActivity {
         loading.startAnimation(AnimationUtils.loadAnimation(this, R.anim.slide_from_bottom));
     }
 
-    private void loginProtocol() {
-        setStatus(getString(R.string.loading_account_informations));
+    private void checkToken() {
+        SharedPreferencesManager preferences = new SharedPreferencesManager(getApplicationContext());
+        String token = preferences.getString("auth_token");
+        if (token.isEmpty()) {
+            open(false);
+            return;
+        }
+        accountManager.checkToken(getApplicationContext(), token, (success, code) -> {
+            open(success);
+            if (code == 401) {
+                preferences.setString("auth_token", "");
+            }
+        });
     }
 
-    private void navigate() {
+    private void open(boolean isLogged) {
         new Handler().postDelayed(() -> {
-            startActivity(new Intent(SplashActivity.this, AuthActivity.class));
+            startActivity(new Intent(SplashActivity.this, isLogged ? MainActivity.class : AuthActivity.class));
             finish();
-        }, 3000);
-    }
-
-    private void setStatus(String newStatus) {
-        subtitleText.setText(newStatus);
+        }, 1000);
     }
 }
