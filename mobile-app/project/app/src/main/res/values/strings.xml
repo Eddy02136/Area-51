@@ -47,4 +47,5 @@
     <string name="your_area_s">Your actions and reactions</string>
     <string name="invalid_url">Invalid URL</string>
     <string name="_0">0</string>
+    <string name="server_unreachable">Unreachable server, please contact an administrator</string>
 </resources>

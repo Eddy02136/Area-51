@@ -45,6 +45,7 @@
     <string name="your_connections">Tes connexions</string>
     <string name="jwt_problem">Problème de JWT</string>
     <string name="invalid_url">URL invalide</string>
+    <string name="server_unreachable">Serveur innaccessible, veuillez contacter un administrateur</string>
     <string name="your_area_s">Tes actions et réactions</string>
     <string name="_0">0</string>
 </resources>
