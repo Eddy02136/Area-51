@@ -6,8 +6,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/dark_primary"
-    tools:context=".Activities.SplashActivity"
-    tools:ignore="all">
+    tools:context=".Activities.SplashActivity">
 
     <TextView
         android:id="@+id/title"
@@ -16,7 +15,7 @@
         android:layout_marginStart="70dp"
         android:layout_marginEnd="70dp"
         android:layout_marginBottom="55dp"
-        android:fontFamily="@font/priego_black"
+        android:fontFamily="@font/gotham_rounded_bold"
         android:gravity="center"
         android:text="@string/area51"
         android:textColor="@color/light_primary"
@@ -31,9 +30,8 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="70dp"
-        android:layout_marginTop="20dp"
         android:layout_marginEnd="70dp"
-        android:fontFamily="@font/priego_light"
+        android:fontFamily="@font/gotham_rounded_light"
         android:gravity="center"
         android:text="@string/loading"
         android:textColor="@color/light_secondary"

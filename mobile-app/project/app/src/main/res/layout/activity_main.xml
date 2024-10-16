@@ -10,10 +10,11 @@
 
     <ImageView
         android:id="@+id/profileButton"
-        android:layout_width="30dp"
-        android:layout_height="30dp"
+        android:layout_width="25dp"
+        android:layout_height="25dp"
         android:layout_marginEnd="20dp"
         android:src="@drawable/ic_user"
+        app:layout_constraintBottom_toBottomOf="@+id/welcomeBack"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="@+id/welcomeBack"
         app:tint="@color/white" />
@@ -23,12 +24,11 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="30dp"
-        android:layout_marginTop="35dp"
-        android:layout_marginEnd="20dp"
-        android:fontFamily="@font/priego_light"
+        android:layout_marginTop="30dp"
+        android:fontFamily="@font/gotham_rounded_light"
         android:text="@string/welcome_back"
         android:textColor="@color/light_primary"
-        android:textSize="35sp"
+        android:textSize="30sp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
@@ -36,8 +36,7 @@
         android:id="@+id/userName"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginTop="10dp"
-        android:fontFamily="@font/priego_medium"
+        android:fontFamily="@font/gotham_rounded_bold"
         android:text="@string/benjamin"
         android:textColor="@color/white"
         android:textSize="30sp"
@@ -49,6 +48,9 @@
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:layout_marginTop="15dp"
+        android:nestedScrollingEnabled="false"
+        android:scrollbars="none"
+        android:fillViewport="true"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -66,7 +68,7 @@
                 android:layout_marginStart="25dp"
                 android:layout_marginTop="15dp"
                 android:layout_marginEnd="25dp"
-                android:fontFamily="@font/priego_regular"
+                android:fontFamily="@font/gotham_rounded_book"
                 android:text="@string/dashboard"
                 android:textColor="@color/light_primary"
                 android:textSize="16sp"
@@ -81,7 +83,7 @@
                 android:layout_marginStart="15dp"
                 android:layout_marginTop="15dp"
                 app:cardBackgroundColor="@color/dark_secondary"
-                app:cardCornerRadius="20dp"
+                app:cardCornerRadius="25dp"
                 app:layout_constraintEnd_toStartOf="@+id/dashboardCardExecutions"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/dashboardLabel">
@@ -95,8 +97,8 @@
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_marginStart="30dp"
-                        android:layout_marginTop="20dp"
-                        android:fontFamily="@font/priego_regular"
+                        android:layout_marginTop="10dp"
+                        android:fontFamily="@font/gotham_rounded_bold"
                         android:text="@string/_0"
                         android:textColor="@color/accent"
                         android:textSize="40sp"
@@ -107,13 +109,12 @@
                         android:id="@+id/dashboardActiveTitle"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
-                        android:layout_marginTop="5dp"
                         android:layout_marginEnd="30dp"
                         android:layout_marginBottom="20dp"
-                        android:fontFamily="@font/priego_light"
+                        android:fontFamily="@font/gotham_rounded_book"
                         android:text="@string/active"
                         android:textColor="@color/light_primary"
-                        android:textSize="18sp"
+                        android:textSize="16sp"
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toStartOf="@+id/dashboardActiveValue"
@@ -129,7 +130,7 @@
                 android:layout_marginStart="15dp"
                 android:layout_marginEnd="15dp"
                 app:cardBackgroundColor="@color/dark_secondary"
-                app:cardCornerRadius="20dp"
+                app:cardCornerRadius="25dp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toEndOf="@+id/dashboardCardActive"
                 app:layout_constraintTop_toTopOf="@+id/dashboardCardActive">
@@ -143,8 +144,8 @@
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_marginStart="30dp"
-                        android:layout_marginTop="20dp"
-                        android:fontFamily="@font/priego_regular"
+                        android:layout_marginTop="10dp"
+                        android:fontFamily="@font/gotham_rounded_bold"
                         android:text="@string/_0"
                         android:textColor="@color/accent"
                         android:textSize="40sp"
@@ -155,17 +156,18 @@
                         android:id="@+id/dashboardExecutionsTitle"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
-                        android:layout_marginTop="5dp"
                         android:layout_marginEnd="30dp"
                         android:layout_marginBottom="20dp"
-                        android:fontFamily="@font/priego_light"
+                        android:fontFamily="@font/gotham_rounded_book"
                         android:text="@string/total_executions"
                         android:textColor="@color/light_primary"
-                        android:textSize="18sp"
+                        android:textSize="16sp"
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintHorizontal_bias="0.0"
                         app:layout_constraintStart_toStartOf="@+id/dashboardExecutionsValue"
-                        app:layout_constraintTop_toBottomOf="@+id/dashboardExecutionsValue" />
+                        app:layout_constraintTop_toBottomOf="@+id/dashboardExecutionsValue"
+                        app:layout_constraintVertical_bias="0.0" />
                 </androidx.constraintlayout.widget.ConstraintLayout>
             </androidx.cardview.widget.CardView>
 
@@ -176,7 +178,7 @@
                 android:layout_marginStart="25dp"
                 android:layout_marginTop="45dp"
                 android:layout_marginEnd="25dp"
-                android:fontFamily="@font/priego_regular"
+                android:fontFamily="@font/gotham_rounded_book"
                 android:text="@string/your_area_s"
                 android:textColor="@color/light_primary"
                 android:textSize="16sp"
@@ -192,29 +194,34 @@
                 android:layout_marginTop="15dp"
                 android:layout_marginEnd="15dp"
                 app:cardBackgroundColor="@color/accent"
-                app:cardCornerRadius="10dp"
+                app:cardCornerRadius="15dp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/listTitle">
+                app:layout_constraintTop_toBottomOf="@+id/areasList">
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
-                    android:fontFamily="@font/priego_regular"
+                    android:fontFamily="@font/gotham_rounded_medium"
                     android:gravity="center"
                     android:text="@string/add_an_area"
                     android:textColor="@color/dark_primary"
-                    android:textSize="16sp" />
+                    android:textSize="15sp" />
             </androidx.cardview.widget.CardView>
 
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/areasList"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:clipToPadding="false"
+                android:nestedScrollingEnabled="false"
+                android:orientation="horizontal"
+                android:paddingStart="5dp"
+                android:paddingEnd="15dp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/noAreasButton" />
+                app:layout_constraintTop_toBottomOf="@+id/listTitle" />
 
             <TextView
                 android:id="@+id/listConnectionsTitle"
@@ -223,13 +230,13 @@
                 android:layout_marginStart="25dp"
                 android:layout_marginTop="30dp"
                 android:layout_marginEnd="25dp"
-                android:fontFamily="@font/priego_regular"
+                android:fontFamily="@font/gotham_rounded_book"
                 android:text="@string/your_connections"
                 android:textColor="@color/light_primary"
                 android:textSize="16sp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/areasList" />
+                app:layout_constraintTop_toBottomOf="@+id/noAreasButton" />
 
             <androidx.cardview.widget.CardView
                 android:id="@+id/addConnectionButton"
@@ -238,21 +245,23 @@
                 android:layout_marginStart="15dp"
                 android:layout_marginTop="15dp"
                 android:layout_marginEnd="15dp"
+                android:layout_marginBottom="30dp"
                 app:cardBackgroundColor="@color/accent"
-                app:cardCornerRadius="10dp"
+                app:cardCornerRadius="15dp"
+                app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/listConnectionsTitle">
+                app:layout_constraintTop_toBottomOf="@+id/connectionsList">
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
-                    android:fontFamily="@font/priego_regular"
+                    android:fontFamily="@font/gotham_rounded_medium"
                     android:gravity="center"
                     android:text="@string/add_a_connection"
                     android:textColor="@color/dark_primary"
-                    android:textSize="16sp" />
+                    android:textSize="15sp" />
 
             </androidx.cardview.widget.CardView>
 
@@ -260,9 +269,14 @@
                 android:id="@+id/connectionsList"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:clipToPadding="false"
+                android:nestedScrollingEnabled="false"
+                android:orientation="horizontal"
+                android:paddingStart="5dp"
+                android:paddingEnd="15dp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/addConnectionButton" />
+                app:layout_constraintTop_toBottomOf="@+id/listConnectionsTitle" />
         </androidx.constraintlayout.widget.ConstraintLayout>
     </ScrollView>
 </androidx.constraintlayout.widget.ConstraintLayout>
