@@ -48,4 +48,5 @@
     <string name="server_unreachable">Serveur innaccessible, veuillez contacter un administrateur</string>
     <string name="your_area_s">Tes actions et réactions</string>
     <string name="_0">0</string>
+    <string name="label_aa_123">Label Aa 123</string>
 </resources>
