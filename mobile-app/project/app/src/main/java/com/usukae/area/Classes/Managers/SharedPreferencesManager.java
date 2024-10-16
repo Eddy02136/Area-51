@@ -3,15 +3,43 @@ package com.usukae.area.Classes.Managers;
 import android.content.Context;
 import android.content.SharedPreferences;
 
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
+
+import java.lang.reflect.Type;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+
 public class SharedPreferencesManager {
 
     private static final String PREF_NAME = "AreaPreferences";
     private final SharedPreferences sharedPreferences;
     private final SharedPreferences.Editor editor;
+    private final Gson gson;
 
     public SharedPreferencesManager(Context context) {
         sharedPreferences = context.getSharedPreferences(PREF_NAME, Context.MODE_PRIVATE);
         editor = sharedPreferences.edit();
+        gson = new Gson();
+    }
+
+    public void setStringList(String key, String... values) {
+        List<String> stringList = new ArrayList<>();
+        Collections.addAll(stringList, values);
+        String json = gson.toJson(stringList);
+        editor.putString(key, json);
+        editor.apply();
+    }
+
+    public List<String> getStringList(String key) {
+        String json = sharedPreferences.getString(key, null);
+        if (json != null) {
+            Type type = new TypeToken<List<String>>() {
+            }.getType();
+            return gson.fromJson(json, type);
+        }
+        return new ArrayList<>();
     }
 
     public void setString(String key, String value) {
