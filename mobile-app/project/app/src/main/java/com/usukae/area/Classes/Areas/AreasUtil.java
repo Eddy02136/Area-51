@@ -16,6 +16,7 @@ public class AreasUtil {
         issMusicParams.put("music", "Space Oddity");
 
         Area issMusicArea = new Area(
+                "iss_get_pos#spotify_play_music#1",
                 "iss_get_pos",
                 "spotify_play_music",
                 "ISS Music",
@@ -28,8 +29,9 @@ public class AreasUtil {
         twitterWhatsAppParams.put("group", "Tech Enthusiasts");
 
         Area twitterWhatsAppArea = new Area(
+                "twitter_get_id#twitter_get_id#1",
                 "twitter_get_id",
-                "whatsapp_post_message",
+                "twitter_get_id",
                 "Twitter WhatsApp",
                 "Envoi le tweet d'un utilisateur spécifique sur un groupe WhatsApp.",
                 twitterWhatsAppParams
@@ -40,6 +42,7 @@ public class AreasUtil {
         weatherParams.put("notificationTime", "08:00 AM");
 
         Area weatherNotificationArea = new Area(
+                "weather_get_forecast#send_notification#1",
                 "weather_get_forecast",
                 "send_notification",
                 "Weather Alert",
@@ -52,6 +55,7 @@ public class AreasUtil {
         emailReminderParams.put("reminderTime", "09:00 AM");
 
         Area emailReminderArea = new Area(
+                "calendar_get_event#email_send_reminder#1",
                 "calendar_get_event",
                 "email_send_reminder",
                 "Daily Email Reminder",

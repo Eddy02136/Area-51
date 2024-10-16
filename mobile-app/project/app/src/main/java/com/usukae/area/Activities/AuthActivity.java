@@ -53,8 +53,8 @@ public class AuthActivity extends AppCompatActivity {
     }
 
     private void createDialogs() {
-        registerDialog = dialogUtil.createRegisterDialog(this);
-        loginDialog = dialogUtil.createLoginDialog(this);
+        registerDialog = dialogUtil.createBottomDialog(this, R.layout.modal_email_register);
+        loginDialog = dialogUtil.createBottomDialog(this, R.layout.modal_email_login);
         manageDismiss();
     }
 
@@ -110,7 +110,6 @@ public class AuthActivity extends AppCompatActivity {
             if (success) {
                 prettyAlert.success(getString(R.string.login_success), 3000);
                 startActivity(new Intent(getApplicationContext(), MainActivity.class));
-                finish();
             } else {
                 prettyAlert.error(getString(errorUtil.getAuthError(code)), 3000);
             }

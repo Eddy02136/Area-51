@@ -1,14 +1,16 @@
 package com.usukae.area.Classes.Connections;
 
+import java.util.List;
+
 public class Connection {
     private final String name;
     private final int drawable;
-    private final boolean logged;
+    private final List<String> data;
 
-    public Connection(String name, int drawable, boolean logged) {
+    public Connection(String name, int drawable, List<String> data) {
         this.name = name;
         this.drawable = drawable;
-        this.logged = logged;
+        this.data = data;
     }
 
     public String getName() {
@@ -19,5 +21,7 @@ public class Connection {
         return drawable;
     }
 
-    public boolean getLogged() { return logged; }
+    public List<String> getData() {
+        return data;
+    }
 }
