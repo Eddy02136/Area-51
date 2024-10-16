@@ -1,5 +1,6 @@
 package com.usukae.area.Classes.Areas;
 
+import android.app.Dialog;
 import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -10,18 +11,22 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.usukae.area.Classes.Connections.AddConnectionAdapter;
+import com.usukae.area.Classes.Utils.DialogUtil;
 import com.usukae.area.R;
 
 import java.util.List;
 
-public class AreaAdapter extends RecyclerView.Adapter<AreaAdapter.AreaViewHolder> {
+public class AddAreaAdapter extends RecyclerView.Adapter<AddAreaAdapter.AreaViewHolder> {
 
     private final Context context;
     private final List<Area> areas;
 
     private AreasUtil areasUtil;
+    private DialogUtil dialogUtil;
+    private Dialog newAreaDialog;
 
-    public AreaAdapter(Context context, List<Area> areas) {
+    public AddAreaAdapter(Context context, List<Area> areas) {
         this.context = context;
         this.areas = areas;
     }
@@ -37,11 +42,21 @@ public class AreaAdapter extends RecyclerView.Adapter<AreaAdapter.AreaViewHolder
     public void onBindViewHolder(@NonNull AreaViewHolder holder, int position) {
         Area area = areas.get(position);
         createClasses();
+        createDialogs();
         holder.bind(area, areasUtil);
     }
 
     private void createClasses() {
         areasUtil = new AreasUtil();
+        dialogUtil = new DialogUtil();
+    }
+
+    private void createDialogs() {
+        newAreaDialog = dialogUtil.createBottomDialog(context, R.layout.modal_new_area);
+    }
+
+    private void bindButtons(AddConnectionAdapter.ConnectionViewHolder holder, Area area) {
+        holder.itemView.setOnClickListener(v -> newAreaDialog.show());
     }
 
     @Override

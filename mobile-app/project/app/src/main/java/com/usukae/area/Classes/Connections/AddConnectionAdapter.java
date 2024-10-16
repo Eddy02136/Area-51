@@ -20,8 +20,9 @@ import com.usukae.area.Classes.Utils.PrettyAlert;
 import com.usukae.area.R;
 
 import java.util.List;
+import java.util.Objects;
 
-public class ConnectionsAdapter extends RecyclerView.Adapter<ConnectionsAdapter.ConnectionViewHolder> {
+public class AddConnectionAdapter extends RecyclerView.Adapter<AddConnectionAdapter.ConnectionViewHolder> {
 
     private final List<Connection> connections;
     private final Context context;
@@ -29,7 +30,7 @@ public class ConnectionsAdapter extends RecyclerView.Adapter<ConnectionsAdapter.
     private PrettyAlert prettyAlert;
     private ErrorUtil errorUtil;
 
-    public ConnectionsAdapter(Context context, List<Connection> connections) {
+    public AddConnectionAdapter(Context context, List<Connection> connections) {
         this.context = context;
         this.connections = connections;
     }
@@ -98,7 +99,7 @@ public class ConnectionsAdapter extends RecyclerView.Adapter<ConnectionsAdapter.
         public void bind(Connection connection, Context context) {
             connectionName.setText(connection.getName());
             connectionIcon.setImageResource(connection.getDrawable());
-            if (connection.getLogged()) {
+            if (connection.getData() != null && !connection.getData().isEmpty() && Objects.equals(connection.getData().get(0), "true")) {
                 connectionLoggedIcon.setVisibility(View.VISIBLE);
                 connectionMainCard.setCardBackgroundColor(ContextCompat.getColor(context, R.color.success));
             }
