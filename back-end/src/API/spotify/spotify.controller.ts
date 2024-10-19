@@ -109,7 +109,7 @@ export class SpotifyController {
   }
 
   @UseGuards(AuthGuard('jwt'))
-  @ApiOperation({ summary: 'Check connection spotify' })
+  @ApiOperation({ summary: 'Check spotify connection' })
   @ApiHeader({ name: 'authorization', required: true, description: 'Bearer token for Spotify API access' })
   @ApiResponse({ status: 200, description: 'Spotify login successfully.' })
   @ApiResponse({ status: 400, description: 'Bad Request. Authorization code is required.' })
