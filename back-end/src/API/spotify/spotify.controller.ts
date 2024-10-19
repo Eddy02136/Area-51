@@ -5,7 +5,6 @@ import { AuthGuard } from '@nestjs/passport';
 import { ApiBody, ApiHeader, ApiOperation, ApiQuery, ApiResponse, ApiTags } from "@nestjs/swagger";
 import * as jwt from 'jsonwebtoken';
 import * as process from "node:process";
-import { SpotifyTokenResponse } from './spotify.interface';
 import { UsersService } from "../../users/users.service";
 
 @Controller('spotify')
@@ -31,22 +30,6 @@ export class SpotifyController {
     } catch (error) {
       reply.status(401).send('Invalid or expired token');
     }
-  }
-
-  @UseGuards(AuthGuard('jwt'))
-  @ApiOperation({ summary: 'Get Spotify access token' })
-  @ApiHeader({ name: 'authorization', required: true, description: 'Bearer token for Area51 API access' })
-  @ApiQuery({ name: 'code', required: true, description: 'The authorization code obtained from Spotify' })
-  @ApiResponse({ status: 200, description: 'Successful retrieval of the access token.', type: String })
-  @ApiResponse({ status: 400, description: 'Bad Request. Authorization code is required.' })
-  @ApiResponse({ status: 401, description: 'Unauthorized. Invalid or missing JWT.' })
-  @ApiResponse({ status: 500, description: 'Internal server error.' })
-  @Get('access-token')
-  async getAccessToken(@Query('code') code: string): Promise<SpotifyTokenResponse> {
-    if (!code) {
-      throw new Error('Authorization code is required');
-    }
-    return this.spotifyService.getSpotifyAccessToken(code);
   }
 
   @ApiOperation({ summary: 'Handle Spotify callback and retrieve access token' })
