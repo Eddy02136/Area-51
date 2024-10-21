@@ -111,7 +111,7 @@ export class UsersService {
     const apiToken = user.apiTokens.find((token: ApiToken) => token.apiName === apiName);
 
     if (!apiToken) {
-      return null;
+      return "";
     }
 
     return apiToken.accessToken;
