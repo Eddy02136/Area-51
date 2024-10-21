@@ -11,6 +11,7 @@ import { HealthModule } from "./health/health.module";
 import { SystemModule } from "./system/sytem.module";
 import * as process from 'node:process';
 import {ManageModule} from "./manage/manage.module";
+import {YoutubeModule} from "./API/youtube/youtube.module";
 
 dotenv.config();
 
@@ -27,6 +28,7 @@ console.log(process.env.MONGO_URI);
     DiscordModule,
     NasaModule,
     SpotifyModule,
+    YoutubeModule,
     HealthModule,
     SystemModule,
     ManageModule,

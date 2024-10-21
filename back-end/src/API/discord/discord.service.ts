@@ -1,32 +1,55 @@
 import { Injectable } from '@nestjs/common';
 import axios from 'axios';
+import {stringify} from "querystring";
+import { ConfigService } from '@nestjs/config';
 
 @Injectable()
 export class DiscordService {
-  private readonly clientID = process.env.DISCORD_CLIENT_ID;
-  private readonly clientSecret = process.env.DISCORD_CLIENT_SECRET;
-  private readonly redirectUri = process.env.DISCORD_REDIRECT_URI;
+  constructor(
+      private readonly configService: ConfigService,
+  ) {}
+
   private readonly scopes: string[] = ['identify', 'email', 'dm_channels.messages.write', 'dm_channels.messages.read', 'guilds'];
 
-  async getAccessToken(code: string): Promise<string> {
+  getDiscordAuthUrl(userId: string): string {
+    const state = Buffer.from(JSON.stringify({ userId })).toString('base64');
+    const clientId = this.configService.get<string>('DISCORD_CLIENT_ID');
+    const redirectUri = this.configService.get<string>('DISCORD_REDIRECT_URI');
+    const scopes = this.scopes;
+
+    const queryParams = {
+      client_id: clientId,
+      response_type: 'code',
+      redirect_uri: redirectUri,
+      scope: scopes,
+      state: state,
+    };
+
+    const queryString = stringify(queryParams);
+    return `https://discord.com/api/oauth2/authorize?${queryString}`;
+  }
+
+  async getDiscordAccessToken(code: string) {
+    const clientId = this.configService.get<string>('DISCORD_CLIENT_ID');
+    const clientSecret = this.configService.get<string>('DISCORD_CLIENT_SECRET');
+    const redirectUri = this.configService.get<string>('DISCORD_REDIRECT_URI');
     try {
       const response = await axios.post('https://discord.com/api/oauth2/token', new URLSearchParams({
-        client_id: this.clientID,
-        client_secret: this.clientSecret,
+        client_id: clientId,
+        client_secret: clientSecret,
         grant_type: 'authorization_code',
         code: code,
-        redirect_uri: this.redirectUri,
+        redirect_uri: redirectUri,
         scope: this.scopes.join('+'),
       }).toString(), {
         headers: {
           'Content-Type': 'application/x-www-form-urlencoded',
         },
       });
-
-      return response.data.access_token;
+      const { access_token, refresh_token, expires_in } = response.data;
+      return { accessToken: access_token, refreshToken: refresh_token, expiresIn: expires_in };
     } catch (error) {
-      console.error('Error getting access token:', error.response?.status, error.response?.data || error.message);
-      throw new Error('Failed to get access token');
+      throw new Error(`Failed to get Discord access token: ${error.response?.data?.error?.message || error.message}`);
     }
   }
 
