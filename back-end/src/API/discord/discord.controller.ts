@@ -65,9 +65,9 @@ export class DiscordController {
     const jwtToken = authorization.replace('Bearer ', '');
     const decoded = jwt.verify(jwtToken, process.env.JWT_SECRET);
     const userId = (decoded as { sub: string }).sub;
-    const token = this.usersService.getToken('Discord', userId);
+    const token = await this.usersService.getToken('Discord', userId);
     if (!token) {
-      return reply.status(400).send({'connected': false});
+      return reply.status(200).send({'connected': false});
     }
     return reply.status(200).send({'connected': true});
   }
