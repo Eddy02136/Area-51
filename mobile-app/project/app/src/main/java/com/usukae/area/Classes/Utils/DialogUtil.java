@@ -10,50 +10,14 @@ import com.usukae.area.R;
 
 public class DialogUtil {
 
-    public Dialog createRegisterDialog(Context context) {
+    public Dialog createBottomDialog(Context context, int layout) {
         Dialog dialog = new Dialog(context);
-        dialog.setContentView(R.layout.modal_email_register);
+        dialog.setContentView(layout);
+        dialog.setCancelable(true);
         if (dialog.getWindow() != null) {
             dialog.getWindow().setLayout(WindowManager.LayoutParams.MATCH_PARENT, WindowManager.LayoutParams.WRAP_CONTENT);
             dialog.getWindow().getAttributes().windowAnimations = R.style.DialogAnimation;
             dialog.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE);
-            dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
-        }
-        dialog.create();
-        return dialog;
-    }
-
-    public Dialog createLoginDialog(Context context) {
-        Dialog dialog = new Dialog(context);
-        dialog.setContentView(R.layout.modal_email_login);
-        if (dialog.getWindow() != null) {
-            dialog.getWindow().setLayout(WindowManager.LayoutParams.MATCH_PARENT, WindowManager.LayoutParams.WRAP_CONTENT);
-            dialog.getWindow().getAttributes().windowAnimations = R.style.DialogAnimation;
-            dialog.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE);
-            dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
-        }
-        dialog.create();
-        return dialog;
-    }
-
-    public Dialog createAddAreaDialog(Context context) {
-        Dialog dialog = new Dialog(context);
-        dialog.setContentView(R.layout.modal_add_area);
-        if (dialog.getWindow() != null) {
-            dialog.getWindow().setLayout(WindowManager.LayoutParams.MATCH_PARENT, WindowManager.LayoutParams.WRAP_CONTENT);
-            dialog.getWindow().getAttributes().windowAnimations = R.style.DialogAnimation;
-            dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
-        }
-        dialog.create();
-        return dialog;
-    }
-
-    public Dialog createAddConnectionDialog(Context context) {
-        Dialog dialog = new Dialog(context);
-        dialog.setContentView(R.layout.modal_add_connection);
-        if (dialog.getWindow() != null) {
-            dialog.getWindow().setLayout(WindowManager.LayoutParams.MATCH_PARENT, WindowManager.LayoutParams.WRAP_CONTENT);
-            dialog.getWindow().getAttributes().windowAnimations = R.style.DialogAnimation;
             dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
         }
         dialog.create();

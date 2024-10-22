@@ -40,7 +40,7 @@ public class PrettyAlert {
         Dialog dialog = createDialog(time);
 
         ImageView imageView = dialog.findViewById(R.id.alertIcon);
-        imageView.setImageResource(R.drawable.check_circle);
+        imageView.setImageResource(R.drawable.ic_check_circle);
         imageView.setColorFilter(ContextCompat.getColor(activity, R.color.success));
 
         TextView textView = dialog.findViewById(R.id.alertTextView);
@@ -54,7 +54,7 @@ public class PrettyAlert {
         Dialog dialog = createDialog(time);
 
         ImageView imageView = dialog.findViewById(R.id.alertIcon);
-        imageView.setImageResource(R.drawable.circle_xmark);
+        imageView.setImageResource(R.drawable.ic_xmark);
         imageView.setColorFilter(ContextCompat.getColor(activity, R.color.error));
 
         TextView textView = dialog.findViewById(R.id.alertTextView);

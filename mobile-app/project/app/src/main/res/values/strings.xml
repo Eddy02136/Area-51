@@ -47,4 +47,9 @@
     <string name="your_area_s">Your actions and reactions</string>
     <string name="invalid_url">Invalid URL</string>
     <string name="_0">0</string>
+    <string name="server_unreachable">Unreachable server, please contact an administrator</string>
+    <string name="label_aa_123">Label Aa 123</string>
+    <string name="validate">Validate</string>
+    <string name="save">Save</string>
+    <string name="delete">Delete</string>
 </resources>
