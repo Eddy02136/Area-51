@@ -1,4 +1,4 @@
-import {BadRequestException, Headers, Injectable, Response, UnauthorizedException} from '@nestjs/common';
+import { BadRequestException, Headers, Injectable, NotFoundException, Response, UnauthorizedException } from '@nestjs/common';
 import { User } from '../schema/User.schema';
 import { Model } from 'mongoose';
 import { InjectModel } from '@nestjs/mongoose';
@@ -133,5 +133,26 @@ export class UsersService {
 
     await user.save();
     return ""
+  }
+
+  async updateUser(userId: string, updateUserDto : Partial<User>) {
+
+    const allowedFields = ['firstname', 'lastname', 'email'];
+
+    const fieldsToUpdate = Object.keys(updateUserDto).reduce((acc, key) => {
+      if (updateUserDto[key] !== undefined && allowedFields.includes(key)) {
+        acc[key] = updateUserDto[key];
+      }
+      return acc;
+    }, {});
+
+    const updatedUser = await this.userModel.findByIdAndUpdate(userId, fieldsToUpdate, {
+      new: true,
+    });
+
+    if (!updatedUser) {
+      throw new NotFoundException('User not found');
+    }
+    return 'User successfully updated';
   }
 }
