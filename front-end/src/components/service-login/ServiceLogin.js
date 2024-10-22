@@ -28,14 +28,19 @@ const ServiceLogin = ({
             Authorization: `Bearer ${authToken}`,
           },
         });
-        setIsConnected(response.data.connected);
+
+        if (response.status === 200) {
+          setIsConnected(true);
+        } else if (response.status === 201) {
+          setIsConnected(false);
+        }
       } catch (error) {
         console.error(
-          `Erreur lors de la vérification de la connexion pour ${service}:`,
+          `Error checking connection for ${service}:`,
           error
         );
         setError(
-          `Erreur lors de la vérification de la connexion pour ${service}`
+          `Error checking connection for ${service}`
         );
       } finally {
         setLoading(false);
@@ -49,7 +54,7 @@ const ServiceLogin = ({
     try {
       const authToken = localStorage.getItem("authToken");
       if (!authToken) {
-        console.error("Erreur : jeton JWT manquant.");
+        console.error("Error no JWT token.");
         return;
       }
 
@@ -69,28 +74,25 @@ const ServiceLogin = ({
     try {
       const authToken = localStorage.getItem("authToken");
       if (!authToken) {
-        console.error("Erreur : jeton JWT manquant.");
+        console.error("Error no JWT token.");
         return;
       }
-
-      await axios.post(
-        disconnectUrl,
-        {},
-        {
-          headers: {
-            Authorization: `Bearer ${authToken}`,
-          },
-        }
-      );
+  
+      await axios.delete(disconnectUrl, {
+        headers: {
+          Authorization: `Bearer ${authToken}`,
+        },
+      });
+  
       setIsConnected(false);
     } catch (error) {
-      console.error(`Erreur lors de la déconnexion de ${service}:`, error);
-      setError(`Erreur lors de la déconnexion de ${service}`);
+      console.error(`Error disconnect ${service}:`, error);
+      setError(`Error disconnect ${service}`);
     }
   };
-
+  
   if (loading) {
-    return <p>Chargement...</p>;
+    return <p>Loading...</p>;
   }
 
   return (
