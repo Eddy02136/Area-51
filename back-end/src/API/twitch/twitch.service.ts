@@ -50,4 +50,23 @@ export class TwitchService {
       throw new Error(`Failed to get Twitch access token: ${error.message}`);
     }
   }
+
+  async checkNasaLive(nasaTwitchId: string, twitchToken: string): Promise<boolean> {
+    const clientId = process.env.TWITCH_CLIENT_ID;
+    try {
+      const url = `https://api.twitch.tv/helix/streams?user_id=${nasaTwitchId}`;
+
+      const headers = {
+        'Client-ID': clientId,
+        'Authorization': twitchToken
+      };
+
+      const response = await axios.get(url, { headers });
+      const streamData = response.data.data;
+
+      return streamData.length > 0 && streamData[0].type === 'live';
+    } catch (err) {
+      throw new Error(`Failed to checkNasaLive: ${err}`);
+    }
+  }
 }
