@@ -1,0 +1,87 @@
+@font-face {
+    font-family: 'PriegoRegular';
+    src: url('../../fonts/Priego-Regular.otf') format('truetype');
+  }
+  
+  @font-face {
+    font-family: 'PriegoBold';
+    src: url('../../fonts/Priego-Bold.otf') format('truetype');
+  }
+  
+  @font-face {
+    font-family: 'PriegoSemibold';
+    src: url('../../fonts/Priego-SemiBold.otf') format('truetype');
+  }
+
+.login-email-dialog {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  background-color: #ffffff;
+  color: black;
+  height: 60vh;
+  width: 40vw;
+  border-radius: 10px;
+}
+
+.login-email-dialog h2 {
+  font-family: PriegoBold;
+  font-size: 200%;
+  margin-bottom: 5vh;
+}
+
+.login-email-dialog-inputs {
+  display: flex;
+  flex-direction: column;
+  gap: 2vh;
+}
+
+.login-input {
+    background-color: white;
+    color: #737373;
+    border-color: #e2e2e2;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 100%;
+    cursor: pointer;
+    border-radius: 4px;
+    height: 5vh;
+    width: 35vw;
+    font-family: PriegoRegular;
+    margin-bottom: 2vh;
+}
+
+.login-input:focus {
+    color: black;
+}
+
+.login-input::placeholder {
+    color: #737373;
+}
+
+.login-email-dialog-button {
+    background-color: #0015d0;
+    color: white;
+    border: none;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 100%;
+    cursor: pointer;
+    border-radius: 4px;
+    height: 5vh;
+    width: 35vw;
+    font-family: PriegoRegular;
+}
+
+.login-email-buttons-container {
+    display: flex;
+    flex-direction: column;
+    gap : 2vh;
+    font-family: PriegoRegular;
+    text-align: center;
+    align-items: center;
+    justify-content: center;
+}

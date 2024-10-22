@@ -12,6 +12,7 @@ import { SystemModule } from "./system/sytem.module";
 import * as process from 'node:process';
 import {ManageModule} from "./manage/manage.module";
 import {YoutubeModule} from "./API/youtube/youtube.module";
+import {TwitchModule} from "./API/twitch/twitch.module";
 
 dotenv.config();
 
@@ -32,6 +33,7 @@ console.log(process.env.MONGO_URI);
     HealthModule,
     SystemModule,
     ManageModule,
+    TwitchModule,
   ],
   controllers: [],
   providers: [],
