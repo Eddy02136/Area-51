@@ -5,14 +5,14 @@ services:
   server:
     build: './back-end'
     ports:
-      - "8080:8080"
+      - "8080:3030"
 
   client_web:
     build: './front-end'
     depends_on:
       - server
     ports:
-      - "8081:8081"
+      - "8081:3000"
     volumes:
       - apk:/mobile_app/
 
