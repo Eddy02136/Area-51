@@ -1,7 +1,7 @@
-import {Controller, Get, Headers, Query, Response, UseGuards} from "@nestjs/common";
-import { TwitchService } from "./twitch.service";
-import { AuthGuard } from "@nestjs/passport";
-import { FastifyReply } from "fastify";
+import {Controller, Get, Headers, Post, Query, Response, UseGuards} from "@nestjs/common";
+import {TwitchService} from "./twitch.service";
+import {AuthGuard} from "@nestjs/passport";
+import {FastifyReply} from "fastify";
 import * as jwt from 'jsonwebtoken';
 import * as process from "node:process";
 import {UsersService} from "../../users/users.service";
@@ -19,9 +19,9 @@ export class TwitchController {
       const decoded = jwt.verify(jwtToken, process.env.JWT_SECRET);
       const userId = (decoded as { sub: string }).sub;
       const authUrl = this.twitchService.generateAuthUrl(userId);
-      reply.send({ authUrl });
+      reply.send({ url: authUrl });
     } catch (error) {
-      reply.status(401).send('Invalid or expired token');
+      reply.status(401).send(error.message);
     }
   }
 
@@ -36,6 +36,7 @@ export class TwitchController {
       const { userId } = JSON.parse(Buffer.from(state, 'base64').toString('utf-8'));
       await this.usersService.saveToken('Twitch', accessToken, refreshToken, expiresIn, userId);
       const frontendUrl = `http://localhost:3001/`;
+      console.log(accessToken)
       return reply.redirect(302, frontendUrl);
     } catch (error) {
       return reply.status(500).send({ error: error.message });
@@ -49,9 +50,32 @@ export class TwitchController {
     const userId = (decoded as { sub: string }).sub;
     const token = await this.usersService.getToken('Twitch', userId);
     if (!token) {
-      return reply.status(200).send({'connected': false});
+      return reply.status(201).send('Not connected');
     }
-    return reply.status(200).send({'connected': true});
+    return reply.status(200).send('Connected');
   }
 
+  @Get("check-nasa-live")
+  async checkTwitchNasaLive(@Headers('authorization') authorization: string, @Response() reply: FastifyReply) {
+    try {
+      const nasaTwitchId = "151920918"
+      const response = await this.twitchService.checkTwitchNasaLive(nasaTwitchId, authorization)
+      reply.status(200).send({message: response})
+    } catch(error) {
+      return reply.status(500).send({ error: error.message });
+    }
+  }
+
+  @Post('send-twitch-message')
+  async sendTwitchNasaMessage(@Headers('authorization') authorization: string, @Response() reply: FastifyReply) {
+    try {
+      const nasaTwitchId = "151920918"
+      const senderId = await this.twitchService.getMyTwitchid(authorization)
+      const response = await this.twitchService.sendTwitchNasaMessage(nasaTwitchId, senderId, authorization)
+
+      reply.status(200).send({message: response})
+    } catch (error) {
+      return reply.status(500).send({ error: error.message });
+    }
+  }
   }
