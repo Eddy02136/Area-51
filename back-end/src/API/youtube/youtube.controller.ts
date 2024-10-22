@@ -57,10 +57,11 @@ export class YouTubeController {
 
     @UseGuards(AuthGuard('jwt'))
     @ApiOperation({ summary: 'Check youtube connection' })
-    @ApiHeader({ name: 'authorization', required: true, description: 'Bearer token for Spotify API access' })
-    @ApiResponse({ status: 200, description: 'Check connection successfully.', schema: { example: {"connected": 'boolean'}} })
-    @ApiResponse({ status: 400, description: 'Bad Request. Authorization code is required.' })
+    @ApiHeader({ name: 'authorization', required: true, description: 'Bearer token for Area51 API access' })
+    @ApiResponse({ status: 200, description: 'User is connected to YouTube', schema: { example: 'Connected'}})
+    @ApiResponse({ status: 201, description: 'User is not connected to YouTube', schema: { example: 'Not connected'}})
     @ApiResponse({ status: 401, description: 'Unauthorized. Invalid or missing JWT.' })
+    @ApiResponse({ status: 500, description: 'Internal server error.' })
     @Get('check-connection')
     async checkConnection(@Headers('authorization') authorization: string, @Response() reply: FastifyReply) {
         const jwtToken = authorization.replace('Bearer ', '');
@@ -68,8 +69,8 @@ export class YouTubeController {
         const userId = (decoded as { sub: string }).sub;
         const token = await this.usersService.getToken('YouTube', userId);
         if (!token) {
-            return reply.status(200).send({'connected': false});
+            return reply.status(201).send('Not connected');
         }
-        return reply.status(200).send({'connected': true});
+        return reply.status(200).send('Connected');
     }
 }

@@ -94,8 +94,10 @@ export class SpotifyController {
   @UseGuards(AuthGuard('jwt'))
   @ApiOperation({ summary: 'Check spotify connection' })
   @ApiHeader({ name: 'authorization', required: true, description: 'Bearer token for Area51 API access' })
-  @ApiResponse({ status: 200, description: 'Spotify login successfully.' })
+  @ApiResponse({ status: 200, description: 'User is connected to Spotify', schema: { example: 'Connected'}})
+  @ApiResponse({ status: 201, description: 'User is not connected to Spotify', schema: { example: 'Not connected'}})
   @ApiResponse({ status: 401, description: 'Unauthorized. Invalid or missing JWT.' })
+  @ApiResponse({ status: 500, description: 'Internal server error.' })
   @Get('check-connection')
   async checkConnection(@Headers('authorization') authorization: string, @Response() reply: FastifyReply) {
     const jwtToken = authorization.replace('Bearer ', '');
@@ -103,9 +105,9 @@ export class SpotifyController {
     const userId = (decoded as { sub: string }).sub;
     const token = await this.usersService.getToken('Spotify', userId);
     if (!token) {
-      return reply.status(200).send({'connected': false});
+      return reply.status(201).send('Not connected');
     }
-    return reply.status(200).send({'connected': true});
+    return reply.status(200).send('Connected');
   }
 
   @UseGuards(AuthGuard('jwt'))
@@ -120,8 +122,8 @@ export class SpotifyController {
     const userId = (decoded as { sub: string }).sub;
     const result = await this.usersService.removeToken('Spotify', userId);
     if (result === "") {
-      return reply.status(200).send({'logout': 'Spotify logout successfully.'});
+      return reply.status(200).send('Spotify logout successfully.');
     }
-    return reply.status(401).send({'logout': result});
+    return reply.status(401).send(result);
   }
 }
