@@ -10,13 +10,15 @@ import android.widget.TextView;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.airbnb.lottie.LottieAnimationView;
-import com.usukae.area.Classes.Managers.AccountManager;
-import com.usukae.area.Classes.Utils.SharedPreferencesManager;
+import com.usukae.area.Classes.Auth.AuthApiProtocol;
+import com.usukae.area.Classes.Managers.SharedPreferencesManager;
 import com.usukae.area.R;
 
 @SuppressLint("CustomSplashScreen")
 public class SplashActivity extends AppCompatActivity {
-    private AccountManager accountManager;
+
+    private AuthApiProtocol authApiProtocol;
+
     private TextView titleText, subtitleText;
     private LottieAnimationView loading;
 
@@ -32,7 +34,7 @@ public class SplashActivity extends AppCompatActivity {
     }
 
     private void createClasses() {
-        accountManager = new AccountManager();
+        authApiProtocol = new AuthApiProtocol();
     }
 
     private void bindView() {
@@ -54,7 +56,7 @@ public class SplashActivity extends AppCompatActivity {
             open(false);
             return;
         }
-        accountManager.checkToken(getApplicationContext(), token, (success, code) -> {
+        authApiProtocol.checkToken(token, (success, code) -> {
             open(success);
             if (code == 401) {
                 preferences.setString("auth_token", "");
@@ -64,7 +66,7 @@ public class SplashActivity extends AppCompatActivity {
 
     private void open(boolean isLogged) {
         new Handler().postDelayed(() -> {
-            startActivity(new Intent(SplashActivity.this, isLogged ? MainActivity.class : AuthActivity.class));
+            startActivity(new Intent(getApplicationContext(), isLogged ? MainActivity.class : AuthActivity.class));
             finish();
         }, 1000);
     }

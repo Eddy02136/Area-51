@@ -19,11 +19,14 @@ import com.usukae.area.R;
 
 public class WebViewActivity extends AppCompatActivity {
 
-    private WebView webView;
-    private Handler handler;
-    private Runnable urlCheckRunnable;
+    private static final String REDIRECT_URL = "localhost:3001";
+
     private PrettyAlert prettyAlert;
-    private final String REDIRECT_URL = "localhost:3001";
+    
+    private Handler handler;
+    private Runnable runnable;
+
+    private WebView webView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -72,7 +75,7 @@ public class WebViewActivity extends AppCompatActivity {
 
     private void startUrlChecking() {
         handler = new Handler();
-        urlCheckRunnable = new Runnable() {
+        runnable = new Runnable() {
             @Override
             public void run() {
                 if (webView.getUrl() != null && webView.getUrl().contains(REDIRECT_URL)) {
@@ -82,10 +85,11 @@ public class WebViewActivity extends AppCompatActivity {
                 }
             }
         };
-        handler.postDelayed(urlCheckRunnable, 100);
+        handler.postDelayed(runnable, 100);
     }
 
     private class CustomWebViewClient extends WebViewClient {
+        @SuppressLint("WebViewClientOnReceivedSslError")
         @Override
         public void onReceivedSslError(WebView view, SslErrorHandler handler, SslError error) {
             handler.proceed();
@@ -112,8 +116,8 @@ public class WebViewActivity extends AppCompatActivity {
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        if (handler != null && urlCheckRunnable != null) {
-            handler.removeCallbacks(urlCheckRunnable);
+        if (handler != null && runnable != null) {
+            handler.removeCallbacks(runnable);
         }
     }
 }

@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:ignore="all">
+    tools:ignore="ContentDescription">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
@@ -17,9 +17,8 @@
             android:layout_marginStart="16dp"
             android:layout_marginEnd="16dp"
             android:layout_marginBottom="16dp"
-
-            app:cardCornerRadius="10dp"
             app:cardBackgroundColor="@color/dark_card"
+            app:cardCornerRadius="15dp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -43,9 +42,8 @@
                     android:id="@+id/alertTextView"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:fontFamily="@font/priego_regular"
-                    android:text="Alert message here"
-                    android:layout_marginTop="1dp"
+                    android:fontFamily="@font/gotham_rounded_medium"
+                    android:text="@string/label_aa_123"
                     android:textColor="@color/light_primary"
                     android:textSize="16sp" />
             </LinearLayout>

@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:ignore="all">
+    tools:ignore="ContentDescription">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
@@ -27,7 +27,7 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="30dp"
             android:layout_marginTop="25dp"
-            android:fontFamily="@font/priego_bold"
+            android:fontFamily="@font/gotham_rounded_bold"
             android:text="@string/login_with_email_title"
             android:textColor="@color/light_primary"
             android:textSize="22sp"
@@ -41,7 +41,7 @@
             android:layout_marginStart="30dp"
             android:layout_marginTop="10dp"
             android:layout_marginEnd="30dp"
-            android:fontFamily="@font/priego_light"
+            android:fontFamily="@font/gotham_rounded_light"
             android:gravity="start"
             android:text="@string/use_your_credentials_to_login_to_your_account"
             android:textColor="@color/light_primary"
@@ -61,7 +61,8 @@
             <ScrollView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:scrollbars="none">
+                android:scrollbars="none"
+                tools:ignore="MissingConstraints">
 
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -72,11 +73,11 @@
                         android:id="@+id/emailInput"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginStart="30dp"
-                        android:layout_marginEnd="30dp"
+                        android:layout_marginStart="20dp"
+                        android:layout_marginTop="20dp"
+                        android:layout_marginEnd="20dp"
                         app:cardBackgroundColor="@color/dark_card"
-                        app:cardCornerRadius="10dp"
-                        >
+                        app:cardCornerRadius="15dp">
 
                         <androidx.constraintlayout.widget.ConstraintLayout
                             android:layout_width="match_parent"
@@ -86,11 +87,11 @@
                                 android:layout_width="18dp"
                                 android:layout_height="18dp"
                                 android:layout_marginStart="20dp"
-                                android:src="@drawable/envelope"
+                                android:src="@drawable/ic_envelope"
                                 app:layout_constraintBottom_toBottomOf="parent"
                                 app:layout_constraintStart_toStartOf="parent"
                                 app:layout_constraintTop_toTopOf="parent"
-                                app:tint="@color/light_secondary" />
+                                app:tint="@color/accent" />
 
                             <EditText
                                 android:id="@+id/email"
@@ -101,8 +102,11 @@
                                 android:layout_marginEnd="15dp"
                                 android:layout_marginBottom="5dp"
                                 android:background="@color/transparent"
-                                android:fontFamily="@font/priego_light"
+                                android:fontFamily="@font/gotham_rounded_light"
                                 android:hint="@string/email"
+                                android:inputType="textEmailAddress"
+                                android:lines="1"
+                                android:maxLines="1"
                                 android:textColor="@color/light_primary"
                                 android:textColorHint="@color/light_secondary"
                                 android:textSize="16sp"
@@ -117,12 +121,11 @@
                         android:id="@+id/passwordInput"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginStart="30dp"
+                        android:layout_marginStart="20dp"
                         android:layout_marginTop="10dp"
-                        android:layout_marginEnd="30dp"
+                        android:layout_marginEnd="20dp"
                         app:cardBackgroundColor="@color/dark_card"
-                        app:cardCornerRadius="10dp"
-                        >
+                        app:cardCornerRadius="15dp">
 
                         <androidx.constraintlayout.widget.ConstraintLayout
                             android:layout_width="match_parent"
@@ -132,11 +135,11 @@
                                 android:layout_width="18dp"
                                 android:layout_height="18dp"
                                 android:layout_marginStart="20dp"
-                                android:src="@drawable/key"
+                                android:src="@drawable/ic_key"
                                 app:layout_constraintBottom_toBottomOf="parent"
                                 app:layout_constraintStart_toStartOf="parent"
                                 app:layout_constraintTop_toTopOf="parent"
-                                app:tint="@color/light_secondary" />
+                                app:tint="@color/accent" />
 
                             <EditText
                                 android:id="@+id/password"
@@ -147,9 +150,11 @@
                                 android:layout_marginEnd="15dp"
                                 android:layout_marginBottom="5dp"
                                 android:background="@color/transparent"
-                                android:fontFamily="@font/priego_light"
+                                android:fontFamily="@font/gotham_rounded_light"
                                 android:hint="@string/password"
                                 android:inputType="textPassword"
+                                android:lines="1"
+                                android:maxLines="1"
                                 android:textColor="@color/light_primary"
                                 android:textColorHint="@color/light_secondary"
                                 android:textSize="16sp"
@@ -167,28 +172,26 @@
             android:id="@+id/login"
             android:layout_width="match_parent"
             android:layout_height="50dp"
-            android:layout_marginStart="30dp"
+            android:layout_marginStart="20dp"
             android:layout_marginTop="20dp"
-            android:layout_marginEnd="30dp"
+            android:layout_marginEnd="20dp"
             android:layout_marginBottom="20dp"
             android:elevation="0dp"
             app:cardBackgroundColor="@color/accent"
-            app:cardCornerRadius="10dp"
-
+            app:cardCornerRadius="15dp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/passwordInput">
+            app:layout_constraintStart_toStartOf="parent">
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
-                android:fontFamily="@font/priego_regular"
+                android:fontFamily="@font/gotham_rounded_medium"
                 android:gravity="center"
                 android:text="@string/login"
                 android:textColor="@color/dark_primary"
-                android:textSize="16sp" />
+                android:textSize="15sp" />
 
             <com.airbnb.lottie.LottieAnimationView
                 android:id="@+id/loading"

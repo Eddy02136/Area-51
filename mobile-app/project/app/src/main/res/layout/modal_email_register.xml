@@ -3,8 +3,8 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    tools:ignore="all">
+    tools:ignore="ContentDescription"
+    android:layout_height="wrap_content">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
@@ -27,7 +27,7 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="30dp"
             android:layout_marginTop="25dp"
-            android:fontFamily="@font/priego_bold"
+            android:fontFamily="@font/gotham_rounded_bold"
             android:text="@string/register_with_email"
             android:textColor="@color/light_primary"
             android:textSize="22sp"
@@ -39,9 +39,9 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="30dp"
-            android:layout_marginTop="10dp"
+            android:layout_marginTop="5dp"
             android:layout_marginEnd="30dp"
-            android:fontFamily="@font/priego_light"
+            android:fontFamily="@font/gotham_rounded_light"
             android:gravity="start"
             android:text="@string/create_your_area51_account"
             android:textColor="@color/light_primary"
@@ -61,7 +61,8 @@
             <ScrollView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:scrollbars="none">
+                android:scrollbars="none"
+                tools:ignore="MissingConstraints">
 
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -72,10 +73,10 @@
                         android:id="@+id/firstNameInput"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginStart="30dp"
-                        android:layout_marginEnd="30dp"
+                        android:layout_marginStart="20dp"
+                        android:layout_marginEnd="20dp"
                         app:cardBackgroundColor="@color/dark_card"
-                        app:cardCornerRadius="10dp"
+                        app:cardCornerRadius="15dp"
 
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
@@ -89,13 +90,14 @@
                                 android:layout_width="18dp"
                                 android:layout_height="18dp"
                                 android:layout_marginStart="20dp"
-                                android:src="@drawable/user"
+                                android:src="@drawable/ic_user"
                                 app:layout_constraintBottom_toBottomOf="parent"
                                 app:layout_constraintStart_toStartOf="parent"
                                 app:layout_constraintTop_toTopOf="parent"
-                                app:tint="@color/light_secondary" />
+                                app:tint="@color/accent" />
 
                             <EditText
+                                android:autofillHints="name"
                                 android:id="@+id/firstName"
                                 android:layout_width="match_parent"
                                 android:layout_height="40dp"
@@ -104,8 +106,11 @@
                                 android:layout_marginEnd="15dp"
                                 android:layout_marginBottom="5dp"
                                 android:background="@color/transparent"
-                                android:fontFamily="@font/priego_light"
+                                android:fontFamily="@font/gotham_rounded_light"
                                 android:hint="@string/first_name"
+                                android:inputType="textPersonName"
+                                android:maxLines="1"
+                                android:lines="1"
                                 android:textColor="@color/light_primary"
                                 android:textColorHint="@color/light_secondary"
                                 android:textSize="16sp"
@@ -120,11 +125,11 @@
                         android:id="@+id/lastNameInput"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginStart="30dp"
+                        android:layout_marginStart="20dp"
                         android:layout_marginTop="10dp"
-                        android:layout_marginEnd="30dp"
+                        android:layout_marginEnd="20dp"
                         app:cardBackgroundColor="@color/dark_card"
-                        app:cardCornerRadius="10dp"
+                        app:cardCornerRadius="15dp"
 
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
@@ -138,13 +143,14 @@
                                 android:layout_width="18dp"
                                 android:layout_height="18dp"
                                 android:layout_marginStart="20dp"
-                                android:src="@drawable/user"
+                                android:src="@drawable/ic_user"
                                 app:layout_constraintBottom_toBottomOf="parent"
                                 app:layout_constraintStart_toStartOf="parent"
                                 app:layout_constraintTop_toTopOf="parent"
-                                app:tint="@color/light_secondary" />
+                                app:tint="@color/accent" />
 
                             <EditText
+                                android:autofillHints="name"
                                 android:id="@+id/lastName"
                                 android:layout_width="match_parent"
                                 android:layout_height="40dp"
@@ -153,8 +159,11 @@
                                 android:layout_marginEnd="15dp"
                                 android:layout_marginBottom="5dp"
                                 android:background="@color/transparent"
-                                android:fontFamily="@font/priego_light"
+                                android:fontFamily="@font/gotham_rounded_light"
                                 android:hint="@string/last_name"
+                                android:inputType="textPersonName"
+                                android:maxLines="1"
+                                android:lines="1"
                                 android:textColor="@color/light_primary"
                                 android:textColorHint="@color/light_secondary"
                                 android:textSize="16sp"
@@ -169,11 +178,11 @@
                         android:id="@+id/emailInput"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginStart="30dp"
+                        android:layout_marginStart="20dp"
                         android:layout_marginTop="20dp"
-                        android:layout_marginEnd="30dp"
+                        android:layout_marginEnd="20dp"
                         app:cardBackgroundColor="@color/dark_card"
-                        app:cardCornerRadius="10dp"
+                        app:cardCornerRadius="15dp"
 
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
@@ -187,11 +196,11 @@
                                 android:layout_width="18dp"
                                 android:layout_height="18dp"
                                 android:layout_marginStart="20dp"
-                                android:src="@drawable/envelope"
+                                android:src="@drawable/ic_envelope"
                                 app:layout_constraintBottom_toBottomOf="parent"
                                 app:layout_constraintStart_toStartOf="parent"
                                 app:layout_constraintTop_toTopOf="parent"
-                                app:tint="@color/light_secondary" />
+                                app:tint="@color/accent" />
 
                             <EditText
                                 android:id="@+id/email"
@@ -201,9 +210,13 @@
                                 android:layout_marginTop="5dp"
                                 android:layout_marginEnd="15dp"
                                 android:layout_marginBottom="5dp"
+                                android:autofillHints="emailAddress"
                                 android:background="@color/transparent"
-                                android:fontFamily="@font/priego_light"
+                                android:fontFamily="@font/gotham_rounded_light"
                                 android:hint="@string/email"
+                                android:inputType="textEmailAddress"
+                                android:maxLines="1"
+                                android:lines="1"
                                 android:textColor="@color/light_primary"
                                 android:textColorHint="@color/light_secondary"
                                 android:textSize="16sp"
@@ -218,11 +231,11 @@
                         android:id="@+id/passwordInput"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginStart="30dp"
+                        android:layout_marginStart="20dp"
                         android:layout_marginTop="20dp"
-                        android:layout_marginEnd="30dp"
+                        android:layout_marginEnd="20dp"
                         app:cardBackgroundColor="@color/dark_card"
-                        app:cardCornerRadius="10dp"
+                        app:cardCornerRadius="15dp"
 
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
@@ -236,11 +249,11 @@
                                 android:layout_width="18dp"
                                 android:layout_height="18dp"
                                 android:layout_marginStart="20dp"
-                                android:src="@drawable/key"
+                                android:src="@drawable/ic_key"
                                 app:layout_constraintBottom_toBottomOf="parent"
                                 app:layout_constraintStart_toStartOf="parent"
                                 app:layout_constraintTop_toTopOf="parent"
-                                app:tint="@color/light_secondary" />
+                                app:tint="@color/accent" />
 
                             <EditText
                                 android:id="@+id/password"
@@ -250,10 +263,13 @@
                                 android:layout_marginTop="5dp"
                                 android:layout_marginEnd="15dp"
                                 android:layout_marginBottom="5dp"
+                                android:autofillHints="password"
                                 android:background="@color/transparent"
-                                android:fontFamily="@font/priego_light"
+                                android:fontFamily="@font/gotham_rounded_light"
                                 android:hint="@string/password"
                                 android:inputType="textPassword"
+                                android:maxLines="1"
+                                android:lines="1"
                                 android:textColor="@color/light_primary"
                                 android:textColorHint="@color/light_secondary"
                                 android:textSize="16sp"
@@ -268,11 +284,11 @@
                         android:id="@+id/passwordInputConfirm"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginStart="30dp"
+                        android:layout_marginStart="20dp"
                         android:layout_marginTop="10dp"
-                        android:layout_marginEnd="30dp"
+                        android:layout_marginEnd="20dp"
                         app:cardBackgroundColor="@color/dark_card"
-                        app:cardCornerRadius="10dp"
+                        app:cardCornerRadius="15dp"
 
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
@@ -286,13 +302,14 @@
                                 android:layout_width="18dp"
                                 android:layout_height="18dp"
                                 android:layout_marginStart="20dp"
-                                android:src="@drawable/key"
+                                android:src="@drawable/ic_key"
                                 app:layout_constraintBottom_toBottomOf="parent"
                                 app:layout_constraintStart_toStartOf="parent"
                                 app:layout_constraintTop_toTopOf="parent"
-                                app:tint="@color/light_secondary" />
+                                app:tint="@color/accent" />
 
                             <EditText
+                                android:autofillHints="password"
                                 android:id="@+id/passwordConfirm"
                                 android:layout_width="match_parent"
                                 android:layout_height="40dp"
@@ -301,9 +318,11 @@
                                 android:layout_marginEnd="15dp"
                                 android:layout_marginBottom="5dp"
                                 android:background="@color/transparent"
-                                android:fontFamily="@font/priego_light"
+                                android:fontFamily="@font/gotham_rounded_light"
                                 android:hint="@string/confirm_password"
                                 android:inputType="textPassword"
+                                android:maxLines="1"
+                                android:lines="1"
                                 android:textColor="@color/light_primary"
                                 android:textColorHint="@color/light_secondary"
                                 android:textSize="16sp"
@@ -321,28 +340,26 @@
             android:id="@+id/register"
             android:layout_width="match_parent"
             android:layout_height="50dp"
-            android:layout_marginStart="30dp"
+            android:layout_marginStart="20dp"
             android:layout_marginTop="20dp"
-            android:layout_marginEnd="30dp"
+            android:layout_marginEnd="20dp"
             android:layout_marginBottom="20dp"
             android:elevation="0dp"
             app:cardBackgroundColor="@color/accent"
-            app:cardCornerRadius="10dp"
-
+            app:cardCornerRadius="15dp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/passwordInputConfirm">
+            app:layout_constraintStart_toStartOf="parent">
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
-                android:fontFamily="@font/priego_regular"
+                android:fontFamily="@font/gotham_rounded_medium"
                 android:gravity="center"
                 android:text="@string/create_my_account"
                 android:textColor="@color/dark_primary"
-                android:textSize="16sp" />
+                android:textSize="15sp" />
 
             <com.airbnb.lottie.LottieAnimationView
                 android:id="@+id/loading"

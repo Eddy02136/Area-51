@@ -1,16 +1,17 @@
 package com.usukae.area.Classes.Api;
 
-import com.usukae.area.Classes.Api.Auth.Login.LoginRequest;
-import com.usukae.area.Classes.Api.Auth.Login.LoginResponse;
-import com.usukae.area.Classes.Api.Auth.Register.RegisterRequest;
-import com.usukae.area.Classes.Api.Auth.Register.RegisterResponse;
-import com.usukae.area.Classes.Api.Connections.AuthUrlResponse;
+import com.usukae.area.Classes.Areas.AreasAuthUrlResponse;
+import com.usukae.area.Classes.Auth.Login.LoginRequest;
+import com.usukae.area.Classes.Auth.Login.LoginResponse;
+import com.usukae.area.Classes.Auth.Register.RegisterRequest;
+import com.usukae.area.Classes.Auth.Register.RegisterResponse;
 
 import retrofit2.Call;
 import retrofit2.http.Body;
 import retrofit2.http.GET;
 import retrofit2.http.Header;
 import retrofit2.http.POST;
+import retrofit2.http.Url;
 
 public interface ApiService {
 
@@ -26,9 +27,9 @@ public interface ApiService {
     @GET("/users/checkToken")
     Call<Void> checkTokenUser(@Header("Authorization") String token);
 
-    @GET("/discord/auth-url")
-    Call<AuthUrlResponse> getDiscordAuthUrl(@Header("Authorization") String token);
+    @GET
+    Call<AreasAuthUrlResponse> getAuthUrl(@Url String url, @Header("Authorization") String token);
 
-    @GET("/spotify/auth-url")
-    Call<AuthUrlResponse> getSpotifyAuthUrl(@Header("Authorization") String token);
+    @GET
+    Call<Void> getCheckConnection(@Url String url, @Header("Authorization") String token);
 }

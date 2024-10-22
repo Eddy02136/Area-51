@@ -9,8 +9,8 @@ import android.widget.TextView;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.cardview.widget.CardView;
 
-import com.usukae.area.Classes.Managers.AccountManager;
-import com.usukae.area.Classes.Models.User;
+import com.usukae.area.Classes.Auth.AuthApiProtocol;
+import com.usukae.area.Classes.User.User;
 import com.usukae.area.Classes.Utils.DialogUtil;
 import com.usukae.area.Classes.Utils.ErrorUtil;
 import com.usukae.area.Classes.Utils.PrettyAlert;
@@ -19,14 +19,15 @@ import com.usukae.area.R;
 
 public class AuthActivity extends AppCompatActivity {
 
-    private AccountManager accountManager;
-    private TextUtil textUtil;
-    private DialogUtil dialogUtil;
+    private AuthApiProtocol authApiProtocol;
     private PrettyAlert prettyAlert;
+    private ErrorUtil errorUtil;
+    private DialogUtil dialogUtil;
+    private TextUtil textUtil;
+
+    private Dialog registerDialog, loginDialog;
     private CardView loginEmailButton, loginGoogleButton, loginDialogButton, registerDialogButton;
     private TextView registerButton;
-    private Dialog registerDialog, loginDialog;
-    private ErrorUtil errorUtil;
 
 
     @Override
@@ -44,7 +45,7 @@ public class AuthActivity extends AppCompatActivity {
     }
 
     private void createClasses() {
-        accountManager = new AccountManager();
+        authApiProtocol = new AuthApiProtocol();
         textUtil = new TextUtil();
         dialogUtil = new DialogUtil();
         prettyAlert = new PrettyAlert(this);
@@ -52,8 +53,8 @@ public class AuthActivity extends AppCompatActivity {
     }
 
     private void createDialogs() {
-        registerDialog = dialogUtil.createRegisterDialog(this);
-        loginDialog = dialogUtil.createLoginDialog(this);
+        registerDialog = dialogUtil.createBottomDialog(this, R.layout.modal_email_register);
+        loginDialog = dialogUtil.createBottomDialog(this, R.layout.modal_email_login);
         manageDismiss();
     }
 
@@ -105,12 +106,10 @@ public class AuthActivity extends AppCompatActivity {
         if (invalidateLogin(email, password)) {
             return;
         }
-        accountManager.login(this, email, password, (success, code) -> {
+        authApiProtocol.login(this, email, password, (success, code) -> {
             if (success) {
                 prettyAlert.success(getString(R.string.login_success), 3000);
-                loginDialog.dismiss();
                 startActivity(new Intent(getApplicationContext(), MainActivity.class));
-                finish();
             } else {
                 prettyAlert.error(getString(errorUtil.getAuthError(code)), 3000);
             }
@@ -139,10 +138,9 @@ public class AuthActivity extends AppCompatActivity {
         if (invalidateRegister(email, password, passwordConfirm)) {
             return;
         }
-        accountManager.register(this, new User(firstName, lastName, email, password), (success, code) -> {
+        authApiProtocol.register(this, new User(firstName, lastName, email, password), (success, code) -> {
             if (success) {
                 prettyAlert.success(getString(R.string.registration_success), 3000);
-                registerDialog.dismiss();
                 startActivity(new Intent(getApplicationContext(), MainActivity.class));
                 finish();
             } else {
@@ -165,5 +163,17 @@ public class AuthActivity extends AppCompatActivity {
             return true;
         }
         return false;
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+
+        if (registerDialog != null && registerDialog.isShowing()) {
+            registerDialog.dismiss();
+        }
+        if (loginDialog != null && loginDialog.isShowing()) {
+            loginDialog.dismiss();
+        }
     }
 }
