@@ -3,6 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="140dp"
     android:layout_height="wrap_content"
+    tools:ignore="ContentDescription"
     android:layout_marginStart="10dp"
     android:layout_marginTop="10dp"
     android:orientation="horizontal"
@@ -72,12 +73,12 @@
             android:id="@+id/imageView"
             android:layout_width="22dp"
             android:layout_height="22dp"
-            android:tint="@color/white"
             app:layout_constraintBottom_toBottomOf="@+id/cardBehind"
             app:layout_constraintEnd_toStartOf="@+id/cardAbove"
             app:layout_constraintStart_toEndOf="@+id/cardBehind"
             app:layout_constraintTop_toTopOf="@+id/cardBehind"
-            app:srcCompat="@drawable/ic_arrow" />
+            app:srcCompat="@drawable/ic_arrow"
+            app:tint="@color/white" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

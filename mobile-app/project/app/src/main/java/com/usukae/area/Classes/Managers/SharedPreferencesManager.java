@@ -9,7 +9,9 @@ import com.google.gson.reflect.TypeToken;
 import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class SharedPreferencesManager {
 
@@ -22,6 +24,10 @@ public class SharedPreferencesManager {
         sharedPreferences = context.getSharedPreferences(PREF_NAME, Context.MODE_PRIVATE);
         editor = sharedPreferences.edit();
         gson = new Gson();
+    }
+
+    public Map<String, ?> getAll() {
+        return sharedPreferences.getAll();
     }
 
     public void setStringList(String key, String... values) {
@@ -40,6 +46,21 @@ public class SharedPreferencesManager {
             return gson.fromJson(json, type);
         }
         return new ArrayList<>();
+    }
+
+    public void setStringMap(String key, Map<String, String> map) {
+        String json = gson.toJson(map);
+        editor.putString(key, json);
+        editor.apply();
+    }
+
+    public Map<String, String> getStringMap(String key) {
+        String json = sharedPreferences.getString(key, null);
+        if (json == null) {
+            return new HashMap<>();
+        }
+        Type type = new TypeToken<Map<String, String>>(){}.getType();
+        return gson.fromJson(json, type);
     }
 
     public void setString(String key, String value) {

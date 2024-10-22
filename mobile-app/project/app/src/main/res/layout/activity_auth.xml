@@ -6,6 +6,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/dark_primary"
+    tools:ignore="ContentDescription"
     tools:context=".Activities.AuthActivity">
 
     <TextView
@@ -67,8 +68,8 @@
                 android:gravity="center">
 
                 <ImageView
-                    android:layout_width="18dp"
-                    android:layout_height="18dp"
+                    android:layout_width="15dp"
+                    android:layout_height="15dp"
                     android:layout_marginStart="25dp"
                     android:src="@drawable/ic_google"
                     app:layout_constraintBottom_toBottomOf="parent"

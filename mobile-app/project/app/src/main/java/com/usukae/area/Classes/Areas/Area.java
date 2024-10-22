@@ -1,33 +1,32 @@
 package com.usukae.area.Classes.Areas;
 
-import java.util.Map;
+import com.usukae.area.Classes.Actions.Action;
+import com.usukae.area.Classes.Reactions.Reaction;
 
 public class Area {
     private final String id;
-    private final String action;
-    private final String reaction;
+    private final Action action;
+    private final Reaction reaction;
     private final String name;
     private final String description;
-    private final Map<String, String> parameters;
 
-    public Area(String id, String action, String reaction, String name, String description, Map<String, String> parameters) {
+    public Area(String id, Action action, Reaction reaction, String name, String description) {
         this.id = id;
         this.action = action;
         this.reaction = reaction;
         this.name = name;
         this.description = description;
-        this.parameters = parameters;
     }
 
     public String getId() {
         return id;
     }
 
-    public String getAction() {
+    public Action getAction() {
         return action;
     }
 
-    public String getReaction() {
+    public Reaction getReaction() {
         return reaction;
     }
 
@@ -37,9 +36,5 @@ public class Area {
 
     public String getDescription() {
         return description;
-    }
-
-    public Map<String, String> getParameters() {
-        return parameters;
     }
 }

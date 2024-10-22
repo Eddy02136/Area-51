@@ -10,18 +10,21 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.usukae.area.Classes.Actions.ActionUtil;
+import com.usukae.area.Classes.Reactions.ReactionUtil;
 import com.usukae.area.R;
 
 import java.util.List;
 
-public class DashboardAreaAdapter extends RecyclerView.Adapter<DashboardAreaAdapter.AreaViewHolder> {
+public class AreaAdapter extends RecyclerView.Adapter<AreaAdapter.AreaViewHolder> {
 
     private final Context context;
     private final List<Area> areas;
 
-    private AreasUtil areasUtil;
+    private ActionUtil actionUtil;
+    private ReactionUtil reactionUtil;
 
-    public DashboardAreaAdapter(Context context, List<Area> areas) {
+    public AreaAdapter(Context context, List<Area> areas) {
         this.context = context;
         this.areas = areas;
     }
@@ -36,12 +39,20 @@ public class DashboardAreaAdapter extends RecyclerView.Adapter<DashboardAreaAdap
     @Override
     public void onBindViewHolder(@NonNull AreaViewHolder holder, int position) {
         Area area = areas.get(position);
+
         createClasses();
-        holder.bind(area, areasUtil);
+        setValues(holder, area);
     }
 
     private void createClasses() {
-        areasUtil = new AreasUtil();
+        actionUtil = new ActionUtil();
+        reactionUtil = new ReactionUtil();
+    }
+
+    private void setValues(AreaViewHolder holder, Area area) {
+        holder.areaTitle.setText(area.getName());
+        holder.actionIcon.setImageResource(actionUtil.getActionIcon(area.getId()));
+        holder.reactionIcon.setImageResource(reactionUtil.getReactionIcon(area.getId()));
     }
 
     @Override
@@ -50,20 +61,15 @@ public class DashboardAreaAdapter extends RecyclerView.Adapter<DashboardAreaAdap
     }
 
     public static class AreaViewHolder extends RecyclerView.ViewHolder {
-        private final TextView titleTextView;
-        private final ImageView pictureBehindImageView, pictureAboveImageView;
+        private final TextView areaTitle;
+        private final ImageView actionIcon;
+        private final ImageView reactionIcon;
 
         public AreaViewHolder(@NonNull View itemView) {
             super(itemView);
-            titleTextView = itemView.findViewById(R.id.areaTitle);
-            pictureBehindImageView = itemView.findViewById(R.id.areaBehindPicture);
-            pictureAboveImageView = itemView.findViewById(R.id.areaAbovePicture);
-        }
-
-        public void bind(Area area, AreasUtil areasUtil) {
-            titleTextView.setText(area.getName());
-            pictureBehindImageView.setImageResource(areasUtil.getAreaIcon(area.getReaction()));
-            pictureAboveImageView.setImageResource(areasUtil.getAreaIcon(area.getAction()));
+            areaTitle = itemView.findViewById(R.id.areaTitle);
+            actionIcon = itemView.findViewById(R.id.areaBehindPicture);
+            reactionIcon = itemView.findViewById(R.id.areaAbovePicture);
         }
     }
 }

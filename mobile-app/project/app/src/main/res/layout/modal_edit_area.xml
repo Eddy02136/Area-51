@@ -17,8 +17,10 @@
             android:layout_height="0dp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.0"
             app:srcCompat="@drawable/modal_overlay" />
 
         <TextView
@@ -58,7 +60,48 @@
             android:orientation="vertical"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/subtitle" />
+            app:layout_constraintTop_toBottomOf="@+id/subtitle">
+
+        </LinearLayout>
+
+        <androidx.cardview.widget.CardView
+            android:id="@+id/deleteButton"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:layout_marginStart="20dp"
+            android:layout_marginEnd="20dp"
+            android:layout_marginBottom="20dp"
+            android:elevation="0dp"
+            app:cardBackgroundColor="@color/delete"
+            app:cardCornerRadius="15dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:fontFamily="@font/gotham_rounded_medium"
+                android:gravity="center"
+                android:text="@string/delete"
+                android:textColor="@color/dark_primary"
+                android:textSize="15sp" />
+
+            <com.airbnb.lottie.LottieAnimationView
+                android:id="@+id/deleteLoading"
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:layout_gravity="center"
+                android:visibility="gone"
+                app:layout_constraintEnd_toEndOf="@+id/title"
+                app:layout_constraintStart_toStartOf="@+id/title"
+                app:layout_constraintTop_toBottomOf="@+id/subtitle"
+                app:lottie_autoPlay="true"
+                app:lottie_clipToCompositionBounds="true"
+                app:lottie_loop="true"
+                app:lottie_rawRes="@raw/loading_dark" />
+        </androidx.cardview.widget.CardView>
 
         <androidx.cardview.widget.CardView
             android:id="@+id/validateButton"
@@ -67,11 +110,11 @@
             android:layout_marginStart="20dp"
             android:layout_marginTop="20dp"
             android:layout_marginEnd="20dp"
-            android:layout_marginBottom="20dp"
+            android:layout_marginBottom="10dp"
             android:elevation="0dp"
             app:cardBackgroundColor="@color/accent"
             app:cardCornerRadius="15dp"
-            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintBottom_toTopOf="@+id/deleteButton"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/inputContainer">
@@ -82,7 +125,7 @@
                 android:layout_gravity="center"
                 android:fontFamily="@font/gotham_rounded_medium"
                 android:gravity="center"
-                android:text="@string/validate"
+                android:text="@string/save"
                 android:textColor="@color/dark_primary"
                 android:textSize="15sp" />
 

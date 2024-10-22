@@ -35,8 +35,8 @@ public class DashboardConnectionAdapter extends RecyclerView.Adapter<DashboardCo
     @Override
     public void onBindViewHolder(@NonNull ConnectionViewHolder holder, int position) {
         Connection connection = connections.get(position);
-        holder.bind(connection, context);
         bindButtons(holder, connection);
+        holder.bind(connection, context);
     }
 
     private void bindButtons(ConnectionViewHolder holder, Connection connection) {

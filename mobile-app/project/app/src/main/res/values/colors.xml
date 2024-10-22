@@ -13,6 +13,7 @@
     <color name="dark_card">#37436B</color>
 
     <color name="accent">#B5CFF8</color>
+    <color name="delete">#FF6565</color>
 
     <color name="success">#B5F8DE</color>
     <color name="error">#F8B5C9</color>

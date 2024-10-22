@@ -23,11 +23,11 @@
     <string name="welcome_back">Bon retour,</string>
     <string name="benjamin">Benjamin</string>
     <string name="dashboard">Tableau de bord</string>
-    <string name="active">Area actives</string>
+    <string name="active">Areas actives</string>
     <string name="total_executions">Exécutions totales</string>
     <string name="nothing_to_show">Rien à afficher...</string>
-    <string name="all_our_functional_areas">Tous nos Area fonctionnels</string>
-    <string name="areas_catalog">Catalogue des Area</string>
+    <string name="all_our_functional_areas">Tous nos Areas fonctionnels</string>
+    <string name="areas_catalog">Catalogue des Areas</string>
     <string name="login_success">Connexion réussie</string>
     <string name="login_failed">Échec de la connexion</string>
     <string name="registration_success">Inscription réussie</string>
@@ -39,14 +39,17 @@
     <string name="required_field_empty">Des champs obligatoires sont manquants dans le corps de la requête</string>
     <string name="invalid_email_or_password">Email ou mot de passe invalide</string>
     <string name="internal_server_error">Erreur interne du serveur</string>
-    <string name="all_our_functionnal_connections">Toute nos connexions fonctionnelles</string>
+    <string name="all_our_functionnal_connections">Toutes nos connexions fonctionnelles</string>
     <string name="add_an_area">Ajouter une action-réaction</string>
     <string name="add_a_connection">Ajouter une connexion</string>
     <string name="your_connections">Tes connexions</string>
     <string name="jwt_problem">Problème de JWT</string>
     <string name="invalid_url">URL invalide</string>
-    <string name="server_unreachable">Serveur innaccessible, veuillez contacter un administrateur</string>
+    <string name="server_unreachable">Serveur inaccessible, veuillez contacter un administrateur</string>
     <string name="your_area_s">Tes actions et réactions</string>
     <string name="_0">0</string>
-    <string name="label_aa_123">Label Aa 123</string>
+    <string name="label_aa_123">Étiquette Aa 123</string>
+    <string name="validate">Valider</string>
+    <string name="save">Enregistrer</string>
+    <string name="delete">Supprimer</string>
 </resources>

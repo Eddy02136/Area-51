@@ -6,6 +6,7 @@
     android:layout_marginStart="10dp"
     android:layout_marginTop="10dp"
     android:layout_marginEnd="10dp"
+    tools:ignore="ContentDescription"
     android:orientation="horizontal"
     app:cardBackgroundColor="@color/dark_card"
     app:cardCornerRadius="15dp">
@@ -15,40 +16,22 @@
         android:layout_height="match_parent">
 
         <androidx.cardview.widget.CardView
-            android:id="@+id/cardBehind"
-            android:layout_width="30dp"
-            android:layout_height="30dp"
+            android:id="@+id/cardPicture"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
             android:layout_marginStart="15dp"
             android:layout_marginTop="10dp"
+            android:layout_marginBottom="10dp"
             app:cardBackgroundColor="@color/white"
             app:cardCornerRadius="20dp"
+            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent">
 
             <ImageView
-                android:id="@+id/areaBehindPicture"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                app:srcCompat="@drawable/ic_color_default" />
-        </androidx.cardview.widget.CardView>
-
-        <androidx.cardview.widget.CardView
-            android:id="@+id/cardAbove"
-            android:layout_width="30dp"
-            android:layout_height="30dp"
-            android:layout_marginStart="15dp"
-            android:layout_marginTop="15dp"
-            android:layout_marginBottom="10dp"
-            app:cardBackgroundColor="@color/black"
-            app:cardCornerRadius="20dp"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintStart_toStartOf="@+id/cardBehind"
-            app:layout_constraintTop_toTopOf="@+id/cardBehind">
-
-            <ImageView
-                android:id="@+id/areaAbovePicture"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:id="@+id/areaPicture"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
                 app:srcCompat="@drawable/ic_color_default" />
         </androidx.cardview.widget.CardView>
 
@@ -57,16 +40,16 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="10dp"
-            android:layout_marginTop="3dp"
+            android:layout_marginTop="2dp"
             android:layout_marginEnd="20dp"
             android:ellipsize="end"
             android:fontFamily="@font/gotham_rounded_medium"
             android:maxLines="1"
             android:textColor="@color/white"
-            android:textSize="16sp"
+            android:textSize="15sp"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toEndOf="@+id/cardAbove"
-            app:layout_constraintTop_toTopOf="@+id/cardBehind" />
+            app:layout_constraintStart_toEndOf="@+id/cardPicture"
+            app:layout_constraintTop_toTopOf="@+id/cardPicture" />
 
         <TextView
             android:id="@+id/areaDescription"
@@ -74,10 +57,10 @@
             android:layout_height="wrap_content"
             android:layout_marginEnd="20dp"
             android:ellipsize="end"
-            android:maxLines="1"
             android:fontFamily="@font/gotham_rounded_book"
+            android:maxLines="1"
             android:textColor="@color/light_secondary"
-            android:textSize="12sp"
+            android:textSize="11sp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="@+id/areaTitle"
             app:layout_constraintTop_toBottomOf="@+id/areaTitle" />

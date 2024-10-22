@@ -11,9 +11,11 @@ import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.usukae.area.Classes.Areas.AddAreaAdapter;
-import com.usukae.area.Classes.Areas.AreasUtil;
-import com.usukae.area.Classes.Areas.DashboardAreaAdapter;
+import com.usukae.area.Classes.Actions.ActionUtil;
+import com.usukae.area.Classes.Actions.AddActionAdapter;
+import com.usukae.area.Classes.Areas.Area;
+import com.usukae.area.Classes.Areas.AreaAdapter;
+import com.usukae.area.Classes.Areas.AreaUtil;
 import com.usukae.area.Classes.Connections.AddConnectionAdapter;
 import com.usukae.area.Classes.Connections.ConnectionChecker;
 import com.usukae.area.Classes.Connections.ConnectionsUtil;
@@ -21,11 +23,13 @@ import com.usukae.area.Classes.Connections.DashboardConnectionAdapter;
 import com.usukae.area.Classes.Utils.DialogUtil;
 import com.usukae.area.R;
 
+import java.util.List;
+
 public class MainActivity extends AppCompatActivity {
 
     private DialogUtil dialogUtil;
     private ConnectionsUtil connectionsUtil;
-    private AreasUtil areasUtil;
+    private ActionUtil actionUtil;
     private ConnectionChecker connectionChecker;
 
     private Dialog addAreaDialog, addConnectionDialog;
@@ -53,16 +57,17 @@ public class MainActivity extends AppCompatActivity {
         assignButtons();
 
         initDashboard();
-        initAreasList();
+        initActionsList();
         initConnectionsList();
 
+        //loadAreas();
         checkConnections();
     }
 
     private void createClasses() {
         dialogUtil = new DialogUtil();
         connectionsUtil = new ConnectionsUtil();
-        areasUtil = new AreasUtil();
+        actionUtil = new ActionUtil();
         connectionChecker = new ConnectionChecker(this);
     }
 
@@ -85,18 +90,16 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void bindDialogViews() {
-        connectionsRecyclerView = addConnectionDialog.findViewById(R.id.connectionsRecyclerView);
         areasRecyclerView = addAreaDialog.findViewById(R.id.areasRecyclerView);
+        connectionsRecyclerView = addConnectionDialog.findViewById(R.id.connectionsRecyclerView);
     }
 
     private void assignButtons() {
-        activesAreas.setOnClickListener(v -> {
-        });
-        totalExecutions.setOnClickListener(v -> {
-        });
+        activesAreas.setOnClickListener(v -> Toast.makeText(this, "Actives Areas clicked", Toast.LENGTH_SHORT).show());
+        totalExecutions.setOnClickListener(v -> Toast.makeText(this, "Total Executions clicked", Toast.LENGTH_SHORT).show());
         addArea.setOnClickListener(v -> addAreaDialog.show());
         addConnection.setOnClickListener(v -> addConnectionDialog.show());
-        profilePicture.setOnClickListener(v -> Toast.makeText(this, "@TODO", Toast.LENGTH_SHORT).show());
+        profilePicture.setOnClickListener(v -> Toast.makeText(this, "Profile clicked", Toast.LENGTH_SHORT).show());
     }
 
     private void initDashboard() {
@@ -105,14 +108,10 @@ public class MainActivity extends AppCompatActivity {
         totalExecutionsValue.setText(String.valueOf(0));
     }
 
-    private void initAreasList() {
-        AddAreaAdapter addAreaAdapter = new AddAreaAdapter(this, areasUtil.getAreas());
+    private void initActionsList() {
+        AddActionAdapter addActionAdapter = new AddActionAdapter(this, actionUtil.getActions());
         areasRecyclerView.setLayoutManager(new LinearLayoutManager(this));
-        areasRecyclerView.setAdapter(addAreaAdapter);
-
-        DashboardAreaAdapter dashboardAreaAdapter = new DashboardAreaAdapter(this, areasUtil.getAreas());
-        dashboardAreasRecyclerView.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false));
-        dashboardAreasRecyclerView.setAdapter(dashboardAreaAdapter);
+        areasRecyclerView.setAdapter(addActionAdapter);
     }
 
     private void initConnectionsList() {
@@ -123,6 +122,14 @@ public class MainActivity extends AppCompatActivity {
         DashboardConnectionAdapter dashboardConnectionAdapter = new DashboardConnectionAdapter(this, connectionsUtil.getStateConnections(getApplicationContext(), "true"));
         dashboardConnectionsRecyclerView.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false));
         dashboardConnectionsRecyclerView.setAdapter(dashboardConnectionAdapter);
+    }
+
+    private void loadAreas() {
+        List<Area> areas = AreaUtil.getAllAreas(getApplicationContext());
+        AreaAdapter areaAdapter = new AreaAdapter(this, areas);
+        dashboardAreasRecyclerView.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false));
+        dashboardAreasRecyclerView.setAdapter(areaAdapter);
+        activesAreasValue.setText(String.valueOf(areas.size()));
     }
 
     private void checkConnections() {
