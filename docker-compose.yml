@@ -5,7 +5,7 @@ services:
   server:
     build: './back-end'
     ports:
-      - "8080:3030"
+      - "8080:3000"
 
   client_web:
     build: './front-end'
@@ -15,6 +15,7 @@ services:
       - "8081:3000"
     volumes:
       - apk:/mobile_app/
+
 
 volumes:
   apk:
