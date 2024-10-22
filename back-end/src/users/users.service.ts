@@ -70,6 +70,18 @@ export class UsersService {
     return { token: accessToken };
   }
 
+  async getInfoUser(userId: string) {
+    const user = await this.userModel.findById(userId).select('email firstname lastname');
+    if (!user) {
+      throw new UnauthorizedException('Invalid user');
+    }
+    return {
+      email: user.email,
+      firstname: user.firstname,
+      lastname: user.lastname,
+    };
+  }
+
   async saveToken(apiName: string, accessToken: string, refreshToken: string, expiresIn: number, userId: string): Promise<void> {
     const expiresAt = new Date(Date.now() + expiresIn * 1000);
     const user = await this.userModel.findOne({ _id: userId });
@@ -99,7 +111,7 @@ export class UsersService {
     const apiToken = user.apiTokens.find((token: ApiToken) => token.apiName === apiName);
 
     if (!apiToken) {
-      return null;
+      return "";
     }
 
     return apiToken.accessToken;
