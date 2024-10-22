@@ -28,7 +28,6 @@ const ServiceLogin = ({
             Authorization: `Bearer ${authToken}`,
           },
         });
-
         setIsConnected(response.data.connected);
       } catch (error) {
         console.error(
@@ -99,7 +98,7 @@ const ServiceLogin = ({
       <img
         src={logoUrl}
         alt={`${service} logo`}
-        style={{ width: "70px", height: "70px" }}
+        style={{ width: "70px", height: "auto" }}
       />
       <h2>{service}</h2>
       {isConnected ? (

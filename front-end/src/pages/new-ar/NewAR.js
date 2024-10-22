@@ -1,7 +1,20 @@
 import "./NewAR.css";
+import { useContext } from "react";
 import {Select} from "antd";
+import AuthContext from "../../auth/AuthContext";
+import { useNavigate } from "react-router-dom";
 
 const NewAR = () => {
+
+    const { logout } = useContext(AuthContext);
+
+    const navigate = useNavigate();
+
+    const handleLogout = () => {
+        logout();
+        navigate("/login");
+    }
+
   return (
     <div className='new-ar-page'>
         <h1>Create an action reaction</h1>
@@ -21,6 +34,7 @@ const NewAR = () => {
             </form>
         </div>
     </div>
+    <button className="disconnect-button" onClick={handleLogout}>Disconnect</button>
     </div>
   )
 }
