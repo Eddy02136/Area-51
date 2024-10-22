@@ -42,4 +42,16 @@ export class TwitchController {
     }
   }
 
+  @Get('check-connection')
+  async checkConnection(@Headers('authorization') authorization: string, @Response() reply: FastifyReply) {
+    const jwtToken = authorization.replace('Bearer ', '');
+    const decoded = jwt.verify(jwtToken, process.env.JWT_SECRET);
+    const userId = (decoded as { sub: string }).sub;
+    const token = await this.usersService.getToken('Twitch', userId);
+    if (!token) {
+      return reply.status(200).send({'connected': false});
+    }
+    return reply.status(200).send({'connected': true});
+  }
+
   }
