@@ -1,4 +1,4 @@
-import { Body, Controller, Get, Put, Query, Response, Headers, UseGuards } from '@nestjs/common';
+import {Body, Controller, Get, Put, Query, Response, Headers, UseGuards, Delete} from '@nestjs/common';
 import { SpotifyService } from './spotify.service';
 import { FastifyReply } from 'fastify';
 import { AuthGuard } from '@nestjs/passport';
@@ -93,9 +93,8 @@ export class SpotifyController {
 
   @UseGuards(AuthGuard('jwt'))
   @ApiOperation({ summary: 'Check spotify connection' })
-  @ApiHeader({ name: 'authorization', required: true, description: 'Bearer token for Spotify API access' })
+  @ApiHeader({ name: 'authorization', required: true, description: 'Bearer token for Area51 API access' })
   @ApiResponse({ status: 200, description: 'Spotify login successfully.' })
-  @ApiResponse({ status: 400, description: 'Bad Request. Authorization code is required.' })
   @ApiResponse({ status: 401, description: 'Unauthorized. Invalid or missing JWT.' })
   @Get('check-connection')
   async checkConnection(@Headers('authorization') authorization: string, @Response() reply: FastifyReply) {
@@ -107,5 +106,22 @@ export class SpotifyController {
       return reply.status(200).send({'connected': false});
     }
     return reply.status(200).send({'connected': true});
+  }
+
+  @UseGuards(AuthGuard('jwt'))
+  @ApiOperation({ summary: 'Logout spotify connection'})
+  @ApiHeader({ name: 'authorization', required: true, description: 'Bearer token for Area51 API access' })
+  @ApiResponse({ status: 200, description: 'Spotify logout successfully.' })
+  @ApiResponse({ status: 401, description: 'Unauthorized. Invalid or missing JWT.' })
+  @Delete('logout')
+  async logoutConnection(@Headers('authorization') authorization: string, @Response() reply: FastifyReply) {
+    const jwtToken = authorization.replace('Bearer ', '');
+    const decoded = jwt.verify(jwtToken, process.env.JWT_SECRET);
+    const userId = (decoded as { sub: string }).sub;
+    const result = await this.usersService.removeToken('Spotify', userId);
+    if (result === "") {
+      return reply.status(200).send({'logout': 'Spotify logout successfully.'});
+    }
+    return reply.status(401).send({'logout': result});
   }
 }

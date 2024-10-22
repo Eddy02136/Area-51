@@ -116,4 +116,22 @@ export class UsersService {
 
     return apiToken.accessToken;
   }
+
+  async removeToken(apiName: string, userId: unknown): Promise<string> {
+    const user = await this.userModel.findOne({ _id: userId });
+
+    if (!user) {
+      return 'User not found';
+    }
+
+    const tokenIndex = user.apiTokens.findIndex((token: ApiToken) => token.apiName === apiName);
+    if (tokenIndex === -1) {
+      return 'User not connected to Spotify';
+    }
+
+    user.apiTokens.splice(tokenIndex, 1);
+
+    await user.save();
+    return ""
+  }
 }
