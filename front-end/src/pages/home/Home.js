@@ -1,5 +1,6 @@
 import ServiceLogin from "../../components/service-login/ServiceLogin";
 import "./Home.css";
+
 const HomePage = () => {
   return (
     <div className="home-page">
