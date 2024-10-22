@@ -4,6 +4,9 @@ import { ApiBody, ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
 import {Body, Controller, Get, Headers, Post, UseGuards} from '@nestjs/common';
 import {User} from "../schema/User.schema";
 import {AuthGuard} from "@nestjs/passport";
+import {FastifyReply} from "fastify";
+import * as jwt from "jsonwebtoken";
+import * as process from "node:process";
 
 @Controller('users')
 @ApiTags('Users')
@@ -50,5 +53,20 @@ export class UsersController {
   @ApiResponse({ status: 401, description: 'Invalid token' })
   checkToken(@Headers('authorization') authorization: string) : Promise<{ token: string }> {
     return this.userService.checkToken(authorization);
+  }
+
+  @UseGuards(AuthGuard('jwt'))
+  @Get('infos')
+  @ApiOperation({ summary: 'Info user' })
+  @ApiResponse({status: 201, description: 'Get info user successfully.',
+    schema: {example: { email: 'string', firstname: 'string', lastname: 'string'}},})
+  @ApiResponse({ status: 401, description: 'Invalid token' })
+  @ApiResponse({ status: 401, description: 'Invalid user'})
+  @ApiResponse({ status: 500, description: 'Internal Server Error' })
+  getUserInfo(@Headers('authorization') authorization: string){
+    const jwtToken = authorization.replace('Bearer ', '');
+    const decoded = jwt.verify(jwtToken, process.env.JWT_SECRET);
+    const userId = (decoded as { sub: string }).sub;
+    return this.userService.getInfoUser(userId);
   }
 }

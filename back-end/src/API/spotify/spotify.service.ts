@@ -2,7 +2,6 @@ import { Injectable } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import axios from 'axios';
 import { stringify } from 'querystring';
-import { SpotifyTokenResponse } from './spotify.interface';
 
 @Injectable()
 export class SpotifyService {
@@ -28,7 +27,7 @@ export class SpotifyService {
     return `https://accounts.spotify.com/authorize?${queryString}`;
   }
 
-  async getSpotifyAccessToken(code: string): Promise<SpotifyTokenResponse> {
+  async getSpotifyAccessToken(code: string) {
     const clientId = this.configService.get<string>('SPOTIFY_CLIENT_ID');
     const clientSecret = this.configService.get<string>('SPOTIFY_CLIENT_SECRET');
     const redirectUri = this.configService.get<string>('SPOTIFY_REDIRECT_URI');
