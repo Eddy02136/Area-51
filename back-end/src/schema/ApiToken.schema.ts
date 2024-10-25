@@ -12,7 +12,7 @@ export class ApiToken extends Document {
     @Prop({ required: false, type: String })
     refreshToken: string;
 
-    @Prop({ required: true, type: Date })
+    @Prop({ required: false, type: Date })
     expiresAt: Date;
 }
 
