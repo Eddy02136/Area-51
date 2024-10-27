@@ -1,10 +1,11 @@
-import {Controller, Get, Headers, Post, Query, Response, UseGuards} from "@nestjs/common";
+import {Controller, Delete, Get, Headers, Post, Query, Response, UseGuards} from "@nestjs/common";
 import {TwitchService} from "./twitch.service";
 import {AuthGuard} from "@nestjs/passport";
 import {FastifyReply} from "fastify";
 import * as jwt from 'jsonwebtoken';
 import * as process from "node:process";
 import {UsersService} from "../../users/users.service";
+import {ApiHeader, ApiOperation, ApiResponse} from "@nestjs/swagger";
 
 @Controller('twitch')
 export class TwitchController {
@@ -78,4 +79,21 @@ export class TwitchController {
       return reply.status(500).send({ error: error.message });
     }
   }
+
+  @UseGuards(AuthGuard('jwt'))
+  @ApiOperation({ summary: 'Logout Twitch connection'})
+  @ApiHeader({ name: 'authorization', required: true, description: 'Bearer token for Area51 API access' })
+  @ApiResponse({ status: 200, description: 'Twitch logout successfully.' })
+  @ApiResponse({ status: 401, description: 'Unauthorized. Invalid or missing JWT.' })
+  @Delete('logout')
+  async logoutConnection(@Headers('authorization') authorization: string, @Response() reply: FastifyReply) {
+    const jwtToken = authorization.replace('Bearer ', '');
+    const decoded = jwt.verify(jwtToken, process.env.JWT_SECRET);
+    const userId = (decoded as { sub: string }).sub;
+    const result = await this.usersService.removeToken('Twitch', userId);
+    if (result === "") {
+      return reply.status(200).send('Twitch logout successfully.');
+    }
+    return reply.status(401).send(result);
   }
+}

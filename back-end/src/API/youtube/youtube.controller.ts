@@ -1,4 +1,4 @@
-import {Controller, Get, Headers, Query, Response, UseGuards} from "@nestjs/common";
+import {Controller, Delete, Get, Headers, Query, Response, UseGuards} from "@nestjs/common";
 import {ApiHeader, ApiOperation, ApiQuery, ApiResponse, ApiTags} from "@nestjs/swagger";
 import {YoutubeService} from "./youtube.service";
 import {AuthGuard} from "@nestjs/passport";
@@ -72,5 +72,22 @@ export class YouTubeController {
             return reply.status(201).send('Not connected');
         }
         return reply.status(200).send('Connected');
+    }
+
+    @UseGuards(AuthGuard('jwt'))
+    @ApiOperation({ summary: 'Logout youtube connection'})
+    @ApiHeader({ name: 'authorization', required: true, description: 'Bearer token for Area51 API access' })
+    @ApiResponse({ status: 200, description: 'Youtube logout successfully.' })
+    @ApiResponse({ status: 401, description: 'Unauthorized. Invalid or missing JWT.' })
+    @Delete('logout')
+    async logoutConnection(@Headers('authorization') authorization: string, @Response() reply: FastifyReply) {
+        const jwtToken = authorization.replace('Bearer ', '');
+        const decoded = jwt.verify(jwtToken, process.env.JWT_SECRET);
+        const userId = (decoded as { sub: string }).sub;
+        const result = await this.usersService.removeToken('YouTube', userId);
+        if (result === "") {
+            return reply.status(200).send('Youtube logout successfully.');
+        }
+        return reply.status(401).send(result);
     }
 }
