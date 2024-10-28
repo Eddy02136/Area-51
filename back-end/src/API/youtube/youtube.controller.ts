@@ -1,4 +1,4 @@
-import {Controller, Delete, Get, Headers, Query, Response, UseGuards} from "@nestjs/common";
+import {Controller, Delete, Get, Headers, Post, Query, Response, UseGuards} from "@nestjs/common";
 import {ApiHeader, ApiOperation, ApiQuery, ApiResponse, ApiTags} from "@nestjs/swagger";
 import {YoutubeService} from "./youtube.service";
 import {AuthGuard} from "@nestjs/passport";

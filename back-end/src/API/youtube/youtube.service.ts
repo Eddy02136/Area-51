@@ -57,4 +57,42 @@ export class YoutubeService {
             throw new Error(`Failed to get YouTube access token: ${error.response?.data?.error_description || error.message}`);
         }
     }
+
+    getVideoId(url: string | URL) {
+        const urlObj = new URL(url);
+        return urlObj.searchParams.get('v') || urlObj.searchParams.get('/')[1];
+    }
+
+    async postComment(accessToken: any, url: string | URL, comment: any) : Promise<void> {
+        try {
+            const videoId = this.getVideoId(url);
+            console.log(videoId);
+            const response = await axios.post(
+                'https://www.googleapis.com/youtube/v3/commentThreads',
+                {
+                    snippet: {
+                        videoId: videoId,
+                        topLevelComment: {
+                            snippet: {
+                                textOriginal: comment,
+                            },
+                        },
+                    },
+                },
+                {
+                    headers: {
+                        Authorization: `Bearer ${accessToken}`,
+                        'Content-Type': 'application/json',
+                    },
+                    params: {
+                        part: 'snippet',
+                    },
+                }
+            );
+
+            console.log('Comment posted:', response.data);
+        } catch (error) {
+            console.error('Error posting comment:', error);
+        }
+    }
 }
