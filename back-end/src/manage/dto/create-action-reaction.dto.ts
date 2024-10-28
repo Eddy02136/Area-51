@@ -10,7 +10,17 @@ export class CreateActionReactionDto {
     @ApiProperty()
     @IsNotEmpty()
     @IsString()
+    action_api: string;
+
+    @ApiProperty()
+    @IsNotEmpty()
+    @IsString()
     reaction: string;
+
+    @ApiProperty()
+    @IsNotEmpty()
+    @IsString()
+    reaction_api: string;
 
     @ApiProperty()
     @IsNotEmpty()

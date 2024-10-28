@@ -11,7 +11,13 @@ export class ActionReaction extends Document {
   actionType: string;
 
   @Prop({ required: true, type: String })
+  action_api: string;
+
+  @Prop({ required: true, type: String })
   reactionType: string;
+
+  @Prop({ required: true, type: String })
+  reaction_api: string;
 
   @Prop({ required: true, type: Object })
   parameters: any;
