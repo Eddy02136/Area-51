@@ -61,6 +61,7 @@ export class TwitchController {
     try {
       const nasaTwitchId = "151920918"
       const response = await this.twitchService.checkTwitchNasaLive(nasaTwitchId, authorization)
+
       reply.status(200).send({message: response})
     } catch(error) {
       return reply.status(500).send({ error: error.message });
@@ -73,6 +74,18 @@ export class TwitchController {
       const nasaTwitchId = "151920918"
       const senderId = await this.twitchService.getMyTwitchid(authorization)
       const response = await this.twitchService.sendTwitchNasaMessage(nasaTwitchId, senderId, authorization)
+
+      reply.status(200).send({message: response})
+    } catch (error) {
+      return reply.status(500).send({ error: error.message });
+    }
+  }
+
+  @Get('check-viewer-count')
+  async checkViewerCount(@Headers('authorization') authorization: string, @Response() reply: FastifyReply) {
+    try {
+      const nasaTwitchId = "151920918"
+      const response = await this.twitchService.checkTwitchNasaViewerCount(nasaTwitchId, authorization)
 
       reply.status(200).send({message: response})
     } catch (error) {

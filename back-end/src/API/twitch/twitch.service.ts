@@ -72,6 +72,29 @@ export class TwitchService {
     }
   }
 
+  async checkTwitchNasaViewerCount(nasaTwitchId: string, twitchToken: string) {
+    const clientId : string = process.env.TWITCH_CLIENT_ID;
+    try {
+      const url = `https://api.twitch.tv/helix/streams?user_id=${nasaTwitchId}`;
+
+      const headers = {
+        'Client-ID': clientId,
+        'Authorization': twitchToken
+      };
+
+      const response = await axios.get(url, { headers });
+      const streamData = response.data.data;
+
+      if (streamData.length > 0) {
+        return streamData[0].viewer_count
+      } else {
+       return 0
+      }
+    } catch (err) {
+      throw new Error(`Failed to checkNasaLive: ${err}`);
+    }
+  }
+
   async getMyTwitchid(twitchToken: string){
     const clientId = process.env.TWITCH_CLIENT_ID;
 
