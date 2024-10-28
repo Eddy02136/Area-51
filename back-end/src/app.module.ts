@@ -17,8 +17,6 @@ import {GithubModule} from "./API/github/github.module";
 
 dotenv.config();
 
-console.log(process.env.MONGO_URI);
-
 @Module({
   imports: [
     ConfigModule.forRoot({
