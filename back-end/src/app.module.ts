@@ -14,6 +14,7 @@ import {ManageModule} from "./manage/manage.module";
 import {YoutubeModule} from "./API/youtube/youtube.module";
 import {TwitchModule} from "./API/twitch/twitch.module";
 import {GithubModule} from "./API/github/github.module";
+import {AboutModule} from "./about/about.module";
 
 dotenv.config();
 
@@ -34,6 +35,7 @@ dotenv.config();
     ManageModule,
     TwitchModule,
     GithubModule,
+    AboutModule,
   ],
   controllers: [],
   providers: [],
