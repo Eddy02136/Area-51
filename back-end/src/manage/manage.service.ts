@@ -8,6 +8,17 @@ import {Model} from "mongoose";
 export class ManageService {
     constructor(@InjectModel(ActionReaction.name) private readonly actionReactionModel: Model<ActionReaction>) {}
 
+    async findActionReaction( userId: string, action: string, action_api: string, reaction: string, reaction_api: string, parameters: Record<string, any>) {
+        return this.actionReactionModel.findOne({
+            userId,
+            actionType: action,
+            action_api,
+            reactionType: reaction,
+            reaction_api,
+            parameters
+        });
+    }
+
     async addActionReaction(userId : string, action: string, action_api: string, reaction: string, reaction_api: string, parameters: any, schedule?: string ) {
         const actionReaction = new this.actionReactionModel({
             userId,
