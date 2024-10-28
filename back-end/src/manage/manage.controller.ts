@@ -1,5 +1,5 @@
-import {Body, Controller, Get, Headers, Post, Response, UseGuards} from "@nestjs/common";
-import {ApiBearerAuth, ApiBody, ApiOperation, ApiResponse, ApiTags} from "@nestjs/swagger";
+import {Body, Controller, Delete, Get, Headers, Param, Post, Response, UseGuards} from "@nestjs/common";
+import {ApiBearerAuth, ApiBody, ApiHeader, ApiOperation, ApiResponse, ApiTags} from "@nestjs/swagger";
 import {ManageService} from "./manage.service";
 import * as jwt from 'jsonwebtoken';
 import * as process from "node:process";
@@ -14,8 +14,8 @@ export class ManageController {constructor( private readonly manageService: Mana
 
     @UseGuards(AuthGuard('jwt'))
     @Post('add-action-reaction')
-    @ApiBearerAuth()
     @ApiOperation({ summary: 'Add an action-reaction pair for a user' })
+    @ApiHeader({ name: 'authorization', required: true, description: 'Bearer token for Area51 API access' })
     @ApiBody({ type: CreateActionReactionDto })
     @ApiResponse({ status: 200, description: 'Action reaction added successfully.' })
     @ApiResponse({ status: 400, description: 'Bad Request. Invalid data.' })
@@ -40,8 +40,8 @@ export class ManageController {constructor( private readonly manageService: Mana
     }
 
     @UseGuards(AuthGuard('jwt'))
-    @ApiBearerAuth()
     @ApiOperation({ summary: 'Get all actions reactions for a user' })
+    @ApiHeader({ name: 'authorization', required: true, description: 'Bearer token for Area51 API access' })
     @ApiResponse({
         status: 200,
         description: 'Get all action-reaction configurations for a user',
@@ -49,7 +49,6 @@ export class ManageController {constructor( private readonly manageService: Mana
             example: [
                 {
                     "_id": "string",
-                    "userId": "string",
                     "actionType": "string",
                     "action_api": "string",
                     "reactionType": "string",
@@ -58,8 +57,7 @@ export class ManageController {constructor( private readonly manageService: Mana
                         "city": "string",
                         "music": "string"
                     },
-                    "schedule": null,
-                    "__v": 0
+                    "schedule": null
                 },
             ]
         }
@@ -72,5 +70,22 @@ export class ManageController {constructor( private readonly manageService: Mana
         const decoded = jwt.verify(jwtToken, process.env.JWT_SECRET);
         const userId = (decoded as { sub: string }).sub;
         return await this.manageService.getActionReaction(userId);
+    }
+
+    @UseGuards(AuthGuard('jwt'))
+    @ApiOperation({ summary: 'Delete an action reactions for a user' })
+    @ApiHeader({ name: 'authorization', required: true, description: 'Bearer token for Area51 API access' })
+    @ApiHeader({ name: 'id', required: true, description: 'action reaction id to delete it'})
+    @ApiResponse({ status: 200, description: 'Action reaction delete successfully' })
+    @ApiResponse({ status: 404, description: 'Action-reaction not found.' })
+    @ApiResponse({ status: 401, description: 'Unauthorized. Invalid token.'})
+    @ApiResponse({ status: 500, description: 'Internal server error.' })
+    @Delete('delete-action-reaction/:id')
+    async deleteActionReaction(@Param('id') id: string, @Response() reply: FastifyReply) {
+        const result = await this.manageService.deleteActionReaction(id);
+        if (!result) {
+            return reply.status(404).send('Action-reaction not found.');
+        }
+        return reply.status(200).send('Action reaction delete successfully');
     }
 }

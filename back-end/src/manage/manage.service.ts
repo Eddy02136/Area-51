@@ -33,6 +33,19 @@ export class ManageService {
     }
 
     async getActionReaction(userId: string) {
-        return this.actionReactionModel.find({userId});
+        const actionsReactions = await this.actionReactionModel.find({ userId });
+        return actionsReactions.map(actionReaction => ({
+            _id: actionReaction.id,
+            actionType: actionReaction.actionType,
+            action_api: actionReaction.action_api,
+            reactionType: actionReaction.reactionType,
+            reaction_api: actionReaction.reaction_api,
+            parameters: actionReaction.parameters,
+            schedule: actionReaction.schedule,
+        }));
+    }
+
+    async deleteActionReaction(id: string) {
+        return this.actionReactionModel.findByIdAndDelete(id);
     }
 }
