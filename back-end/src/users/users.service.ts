@@ -91,7 +91,12 @@ export class UsersService {
 
     const existingTokenIndex = user.apiTokens.findIndex(token => token.apiName === apiName);
 
-    const apiToken = new this.apiTokenModel({ apiName, accessToken, refreshToken, expiresAt });
+    let apiToken: ApiToken;
+    if (refreshToken != "") {
+      apiToken = new this.apiTokenModel({apiName, accessToken, refreshToken, expiresAt});
+    } else {
+      apiToken = new this.apiTokenModel({apiName, accessToken});
+    }
 
     if (existingTokenIndex > -1) {
       user.apiTokens[existingTokenIndex] = apiToken;
