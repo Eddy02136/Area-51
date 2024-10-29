@@ -43,13 +43,6 @@ const HomePage = () => {
           authUrl="http://localhost:3000/github/auth-url"
           disconnectUrl="http://localhost:3000/github/logout"
         />
-        <ServiceLogin
-          service="X"
-          logoUrl="https://img.freepik.com/vecteurs-libre/nouvelle-conception-icone-x-du-logo-twitter-2023_1017-45418.jpg"
-          checkConnectionUrl="http://localhost:3000/github/check-connection"
-          authUrl="http://localhost:3000/github/auth-url"
-          disconnectUrl="http://localhost:3000/github/logout"
-        />
       </div>
     </div>
   );
