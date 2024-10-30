@@ -16,7 +16,10 @@ async function main() {
   try {
     await mongoose.connect(process.env.MONGO_URI);
     console.log('MongoDB connected successfully');
-    app.enableCors();
+    app.enableCors({
+      origin: 'http://localhost:3001',
+      credentials: true,
+    });
   } catch (error) {
     console.error('MongoDB connection error:', error);
   }

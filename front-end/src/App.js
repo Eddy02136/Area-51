@@ -15,7 +15,7 @@ import PublicRoute from "./components/routes/PublicRoutes";
 import HomePage from "./pages/home/Home";
 import "./App.css";
 import NewAR from "./pages/new-ar/NewAR";
-
+import Profile from "./pages/profile/Profile";
 
 const queryClient = new QueryClient();
 
@@ -54,6 +54,7 @@ function App() {
               />
               <Route path="*" element={<Navigate to="/" />} />
               <Route path="/new-ar" element={<NewAR />} />
+              <Route path="/profile" element={<Profile />} />
             </Routes>
           </Router>
         </QueryClientProvider>

@@ -13,7 +13,6 @@ const LoginEmailDialog = ({ onCancel }) => {
 
   const mutation = useMutation({
     mutationFn: async (loginData) => {
-      console.log('Login data:', loginData);
       return axios.post('http://localhost:3000/users/login', loginData);
     },
     onSuccess: (response) => {
