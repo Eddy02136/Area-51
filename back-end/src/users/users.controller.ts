@@ -1,6 +1,6 @@
 import { UsersService } from './users.service';
 import { CreateUserDto } from './dto/CreateUser.dto';
-import { ApiBody, ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
+import {ApiBody, ApiHeader, ApiOperation, ApiResponse, ApiTags} from '@nestjs/swagger';
 import {Body, Controller, Get, Headers, Post, Put, UseGuards} from '@nestjs/common';
 import {User} from "../schema/User.schema";
 import {AuthGuard} from "@nestjs/passport";
@@ -15,6 +15,7 @@ export class UsersController {
 
   @Post('register')
   @ApiOperation({ summary: 'Create new user' })
+  @ApiHeader({ name: 'authorization', required: true, description: 'Bearer token for Area51 API access' })
   @ApiBody({
     type: CreateUserDto,
   })
@@ -30,6 +31,7 @@ export class UsersController {
 
   @Post('login')
   @ApiOperation({ summary: 'User login' })
+  @ApiHeader({ name: 'authorization', required: true, description: 'Bearer token for Area51 API access' })
   @ApiBody({
     schema: {
       example: {
@@ -49,6 +51,7 @@ export class UsersController {
   @UseGuards(AuthGuard('jwt'))
   @Get('checkToken')
   @ApiOperation({ summary: 'Check token' })
+  @ApiHeader({ name: 'authorization', required: true, description: 'Bearer token for Area51 API access' })
   @ApiResponse({status: 201, description: 'User successfully check token.' })
   @ApiResponse({ status: 401, description: 'Invalid token' })
   checkToken(@Headers('authorization') authorization: string) : Promise<{ token: string }> {
@@ -58,6 +61,7 @@ export class UsersController {
   @UseGuards(AuthGuard('jwt'))
   @Get('infos')
   @ApiOperation({ summary: 'Info user' })
+  @ApiHeader({ name: 'authorization', required: true, description: 'Bearer token for Area51 API access' })
   @ApiResponse({status: 201, description: 'Get info user successfully.',
     schema: {example: { email: 'string', firstname: 'string', lastname: 'string'}},})
   @ApiResponse({ status: 401, description: 'Invalid token' })
@@ -72,6 +76,13 @@ export class UsersController {
 
   @UseGuards(AuthGuard('jwt'))
   @Put('update')
+  @ApiOperation({ summary: 'Update user' })
+  @ApiHeader({ name: 'authorization', required: true, description: 'Bearer token for Area51 API access' })
+  @ApiBody({schema: {example: { email: 'string', firstname: 'string', lastname: 'string'}}})
+  @ApiResponse({ status: 200, description: 'User successfully updated.'})
+  @ApiResponse({ status: 401, description: 'Invalid token' })
+  @ApiResponse({ status: 401, description: 'Invalid user'})
+  @ApiResponse({ status: 500, description: 'Internal Server Error' })
   updateUserInfo(@Headers('authorization') authorization: string, @Body() updateUserDto: Partial<User>) {
     const jwtToken = authorization.replace('Bearer ', '');
     const decoded = jwt.verify(jwtToken, process.env.JWT_SECRET);
