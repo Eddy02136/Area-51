@@ -151,9 +151,10 @@ export class UsersService {
       return acc;
     }, {});
 
-    const updatedUser = await this.userModel.findByIdAndUpdate(userId, fieldsToUpdate);
+    const updatedUser = await this.userModel.findByIdAndUpdate(userId, fieldsToUpdate, { new: true });
 
     if (!updatedUser) {
+      console.error('User not found');
       throw new NotFoundException('User not found');
     }
     return 'User successfully updated';
