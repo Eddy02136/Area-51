@@ -15,7 +15,6 @@ export class UsersController {
 
   @Post('register')
   @ApiOperation({ summary: 'Create new user' })
-  @ApiHeader({ name: 'authorization', required: true, description: 'Bearer token for Area51 API access' })
   @ApiBody({
     type: CreateUserDto,
   })

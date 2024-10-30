@@ -8,24 +8,24 @@ import {Model} from "mongoose";
 export class ManageService {
     constructor(@InjectModel(ActionReaction.name) private readonly actionReactionModel: Model<ActionReaction>) {}
 
-    async findActionReaction( userId: string, action: string, action_api: string, reaction: string, reaction_api: string, parameters: Record<string, any>) {
+    async findActionReaction( userId: string, actionName: string, actionApi: string, reactionName: string, reactionApi: string, parameters: Record<string, any>) {
         return this.actionReactionModel.findOne({
             userId,
-            actionType: action,
-            action_api,
-            reactionType: reaction,
-            reaction_api,
+            actionName,
+            actionApi,
+            reactionName,
+            reactionApi,
             parameters
         });
     }
 
-    async addActionReaction(userId : string, action: string, action_api: string, reaction: string, reaction_api: string, parameters: any, schedule?: string ) {
+    async addActionReaction(userId : string, actionName: string, actionApi: string, reactionName: string, reactionApi: string, parameters: any, schedule?: string ) {
         const actionReaction = new this.actionReactionModel({
             userId,
-            actionType: action,
-            action_api: action_api,
-            reactionType: reaction,
-            reaction_api: reaction_api,
+            actionName,
+            actionApi,
+            reactionName,
+            reactionApi,
             parameters,
             schedule: schedule || null,
         });
@@ -36,10 +36,10 @@ export class ManageService {
         const actionsReactions = await this.actionReactionModel.find({ userId });
         return actionsReactions.map(actionReaction => ({
             _id: actionReaction.id,
-            actionType: actionReaction.actionType,
-            action_api: actionReaction.action_api,
-            reactionType: actionReaction.reactionType,
-            reaction_api: actionReaction.reaction_api,
+            actionName: actionReaction.actionName,
+            actionApi: actionReaction.actionApi,
+            reactionName: actionReaction.reactionName,
+            reactionApi: actionReaction.reactionApi,
             parameters: actionReaction.parameters,
             schedule: actionReaction.schedule,
         }));
