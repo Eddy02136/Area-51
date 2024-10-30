@@ -1,6 +1,6 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import {Document, Types} from 'mongoose';
-import {ApiToken, ApiTokenSchema} from "./ApiToken.schema";
+import {ApiToken} from "./ApiToken.interface";
 
 @Schema()
 export class User extends Document {
@@ -16,7 +16,14 @@ export class User extends Document {
   @Prop({ required: true, type: String })
   password: string;
 
-  @Prop({ type: [ApiTokenSchema], default: [] })
+  @Prop({
+    type: [{
+        apiName: {type: String, required: true},
+        accessToken: { type: String, required: true },
+        refreshToken: { type: String },
+        expiresAt: { type: Date }}],
+    default: [],
+  })
   apiTokens: Types.Array<ApiToken>;
 }
 

@@ -31,7 +31,6 @@ export class UsersController {
 
   @Post('login')
   @ApiOperation({ summary: 'User login' })
-  @ApiHeader({ name: 'authorization', required: true, description: 'Bearer token for Area51 API access' })
   @ApiBody({
     schema: {
       example: {
