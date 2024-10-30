@@ -52,4 +52,23 @@
     <string name="validate">Validate</string>
     <string name="save">Save</string>
     <string name="delete">Delete</string>
+    <string name="user_profile">User profile</string>
+    <string name="informations_updated">Informations updated</string>
+    <string name="success_logout">Logged out</string>
+    <string name="invalid_token">You are not logged, please login again</string>
+    <string name="get_user_info_failed">Unable to retrieve data from your profile information</string>
+    <string name="update_user_info_failed">Unable to update your profile information</string>
+    <string name="general_infos">General informations</string>
+    <string name="state">State :</string>
+    <string name="logout">Logout the service</string>
+    <string name="paired_on">Paired on :</string>
+    <string name="connected">Connected</string>
+    <string name="spotify_description">Listen to your favorite music, discover new artists, and enjoy playlists curated just for you. Connect your Spotify account for a personalized experience.</string>
+    <string name="discord_description">Join communities, chat with friends, and engage in voice or video calls. Connect your Discord account to stay in touch with your favorite servers and friends.</string>
+    <string name="github_description">Explore repositories, contribute to open-source projects, and manage your code. Connect your GitHub account to access your repositories and stay updated with your projects.</string>
+    <string name="youtube_description">Watch videos, discover new content, and subscribe to your favorite channels. Connect your YouTube account for a personalized video experience.</string>
+    <string name="twitch_description">Watch live streams, connect with streamers, and join communities that share your interests. Connect your Twitch account for a personalized streaming experience.</string>
+    <string name="unauthorized_logout">Unauthorized logout. Please check your credentials.</string>
+    <string name="logout_service_unreachable">Logout service is unreachable. Please try again later.</string>
+    <string name="logout_failed">Logout failed. Please try again.</string>
 </resources>
