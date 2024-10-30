@@ -6,13 +6,11 @@ import { UsersService } from './users.service';
 import { MongooseModule } from '@nestjs/mongoose';
 import { User, UserSchema } from '../schema/User.schema';
 import {AuthGuard} from "@nestjs/passport";
-import {ApiTokenSchema} from "../schema/ApiToken.schema";
 
 @Module({
   imports: [
     MongooseModule.forFeature([
         { name: 'User', schema: UserSchema },
-        { name: 'ApiToken', schema: ApiTokenSchema }
     ]),
     JwtModule.register({
       secret: 'unhommebleuquiaimelesbananes',

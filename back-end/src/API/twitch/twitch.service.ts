@@ -85,7 +85,7 @@ export class TwitchService {
       const response = await axios.get(url, { headers });
       const streamData = response.data.data;
 
-      if (streamData.length > 0) {
+      if (streamData.length > 5000) {
         return streamData[0].viewer_count
       } else {
        return 0

@@ -27,15 +27,15 @@ export class ManageController {constructor( private readonly manageService: Mana
         const decoded = jwt.verify(jwtToken, process.env.JWT_SECRET);
         const userId = (decoded as { sub: string }).sub;
 
-        const { action, action_api, reaction, reaction_api, parameters, schedule } = createActionReactionDto;
-        if (!action || !action_api || !reaction || !reaction_api || !parameters) {
+        const { actionName, actionApi, reactionName, reactionApi, parameters, schedule } = createActionReactionDto;
+        if (!actionName || !actionApi || !reactionName || !reactionApi || !parameters) {
             return reply.status(400).send('Bad Request. Invalid data format.');
         }
-        const existingActionReaction = await this.manageService.findActionReaction(userId, action, action_api, reaction, reaction_api, parameters);
+        const existingActionReaction = await this.manageService.findActionReaction(userId, actionName, actionApi, reactionName, reactionApi, parameters);
         if (existingActionReaction) {
             return reply.status(409).send('Conflict. This action-reaction configuration already exists.');
         }
-        await this.manageService.addActionReaction(userId, action, action_api, reaction, reaction_api, parameters, schedule);
+        await this.manageService.addActionReaction(userId, actionName, actionApi, reactionName, reactionApi, parameters, schedule);
         return reply.status(200).send('Action reaction added successfully.');
     }
 
@@ -49,10 +49,10 @@ export class ManageController {constructor( private readonly manageService: Mana
             example: [
                 {
                     "_id": "string",
-                    "actionType": "string",
-                    "action_api": "string",
-                    "reactionType": "string",
-                    "reaction_api": "string",
+                    "actionName": "string",
+                    "actionApi": "string",
+                    "reactionName": "string",
+                    "reactionApi": "string",
                     "parameters": {
                         "city": "string",
                         "music": "string"

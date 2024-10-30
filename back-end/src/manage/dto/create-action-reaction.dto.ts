@@ -5,22 +5,22 @@ export class CreateActionReactionDto {
     @ApiProperty()
     @IsNotEmpty()
     @IsString()
-    action: string;
+    actionName: string;
 
     @ApiProperty()
     @IsNotEmpty()
     @IsString()
-    action_api: string;
+    actionApi: string;
 
     @ApiProperty()
     @IsNotEmpty()
     @IsString()
-    reaction: string;
+    reactionName: string;
 
     @ApiProperty()
     @IsNotEmpty()
     @IsString()
-    reaction_api: string;
+    reactionApi: string;
 
     @ApiProperty()
     @IsNotEmpty()

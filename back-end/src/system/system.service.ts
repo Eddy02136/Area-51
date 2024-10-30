@@ -13,7 +13,8 @@ export class SystemService {
     'New-York': { latitude: 40.712784, longitude: -74.005941 },
     'Paris': { latitude: 48.856613, longitude: 2.352222 },
     'Londres': { latitude: 51.507351, longitude: -0.127758 },
-    'Tokyo': { latitude: 35.682839, longitude: 139.759455 }
+    'Tokyo': { latitude: 35.682839, longitude: 139.759455 },
+    'Toulouse': {latitude: 43.6045, longitude: 1.4442}
   };
 
   constructor(
@@ -27,7 +28,7 @@ export class SystemService {
     const actionsReactions = await this.actionReactionModel.find({userId});
 
     for (const ar of actionsReactions) {
-      if (ar.actionType === 'iss_get_pos') {
+      if (ar.actionName === 'iss_get_pos') {
         const { iss_position: issPosition } = await this.nasaService.getIssPosition();
         const { city, trackId } = ar.parameters;
 
@@ -35,7 +36,7 @@ export class SystemService {
           const { latitude, longitude } = this.CITY_COORDINATES[city];
           const distance = haversine(latitude, longitude, issPosition.latitude, issPosition.longitude);
 
-          if (ar.reactionType === "spotify_play_music" && distance <= 2000) {
+          if (ar.reactionName === "spotify_play_music" && distance <= 2000) {
             const token = await this.userService.getToken('Spotify', userId);
             await this.spotifyService.playMusic(token, trackId);
           }

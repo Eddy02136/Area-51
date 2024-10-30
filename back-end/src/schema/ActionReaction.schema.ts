@@ -8,16 +8,16 @@ export class ActionReaction extends Document {
   userId: string;
 
   @Prop({ required: true, type: String })
-  actionType: string;
+  actionName: string;
 
   @Prop({ required: true, type: String })
-  action_api: string;
+  actionApi: string;
 
   @Prop({ required: true, type: String })
-  reactionType: string;
+  reactionName: string;
 
   @Prop({ required: true, type: String })
-  reaction_api: string;
+  reactionApi: string;
 
   @Prop({ required: true, type: Object })
   parameters: any;

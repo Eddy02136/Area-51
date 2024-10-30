@@ -56,11 +56,10 @@ export class TwitchController {
     return reply.status(200).send('Connected');
   }
 
-  @Get("check-nasa-live")
-  async checkTwitchNasaLive(@Headers('authorization') authorization: string, @Response() reply: FastifyReply) {
+  async checkTwitchNasaLive(twitchToken: string, @Response() reply: FastifyReply) {
     try {
       const nasaTwitchId = "151920918"
-      const response = await this.twitchService.checkTwitchNasaLive(nasaTwitchId, authorization)
+      const response = await this.twitchService.checkTwitchNasaLive(nasaTwitchId, twitchToken)
 
       reply.status(200).send({message: response})
     } catch(error) {
@@ -68,12 +67,14 @@ export class TwitchController {
     }
   }
 
-  @Post('send-twitch-message')
-  async sendTwitchNasaMessage(@Headers('authorization') authorization: string, @Response() reply: FastifyReply) {
+  async sendTwitchNasaMessage(twitchToken: string, @Response() reply: FastifyReply) {
+    if (!twitchToken) {
+      return reply.status(400).send('Access token is required');
+    }
     try {
       const nasaTwitchId = "151920918"
-      const senderId = await this.twitchService.getMyTwitchid(authorization)
-      const response = await this.twitchService.sendTwitchNasaMessage(nasaTwitchId, senderId, authorization)
+      const senderId = await this.twitchService.getMyTwitchid(twitchToken)
+      const response = await this.twitchService.sendTwitchNasaMessage(nasaTwitchId, senderId, twitchToken)
 
       reply.status(200).send({message: response})
     } catch (error) {
@@ -81,11 +82,11 @@ export class TwitchController {
     }
   }
 
-  @Get('check-viewer-count')
-  async checkViewerCount(@Headers('authorization') authorization: string, @Response() reply: FastifyReply) {
+
+  async checkViewerCount(twitchToken: string, @Response() reply: FastifyReply) {
     try {
       const nasaTwitchId = "151920918"
-      const response = await this.twitchService.checkTwitchNasaViewerCount(nasaTwitchId, authorization)
+      const response = await this.twitchService.checkTwitchNasaViewerCount(nasaTwitchId, twitchToken)
 
       reply.status(200).send({message: response})
     } catch (error) {
