@@ -10,7 +10,7 @@ import com.usukae.area.Classes.Auth.Login.LoginRequest;
 import com.usukae.area.Classes.Auth.Login.LoginResponse;
 import com.usukae.area.Classes.Auth.Register.RegisterRequest;
 import com.usukae.area.Classes.Auth.Register.RegisterResponse;
-import com.usukae.area.Classes.User.User;
+import com.usukae.area.Classes.Auth.User.UserRequest;
 import com.usukae.area.Classes.Managers.SharedPreferencesManager;
 
 import retrofit2.Call;
@@ -21,18 +21,18 @@ public class AuthApiProtocol {
 
     private final ApiService apiService;
 
-    public AuthApiProtocol() {
-        apiService = ApiClient.getClient().create(ApiService.class);
+    public AuthApiProtocol(Context context) {
+        apiService = ApiClient.getClient(context).create(ApiService.class);
     }
 
-    public void register(Context context, User user, AuthCallback callback) {
+    public void register(Context context, UserRequest user, AuthCallback callback) {
         RegisterRequest registerRequest = new RegisterRequest(user);
         Call<RegisterResponse> call = apiService.registerUser(registerRequest);
         call.enqueue(new Callback<RegisterResponse>() {
             @Override
             public void onResponse(@NonNull Call<RegisterResponse> call, @NonNull Response<RegisterResponse> response) {
                 if (response.isSuccessful() && response.body() != null) {
-                    new SharedPreferencesManager(context).setString("auth_token", response.body().getToken());
+                    new SharedPreferencesManager(context).setToken(response.body().getToken());
                     callback.onResult(true, response.code());
                 } else {
                     callback.onResult(false, response.code());
@@ -53,7 +53,7 @@ public class AuthApiProtocol {
             @Override
             public void onResponse(@NonNull Call<LoginResponse> call, @NonNull Response<LoginResponse> response) {
                 if (response.isSuccessful() && response.body() != null) {
-                    new SharedPreferencesManager(context).setString("auth_token", response.body().getToken());
+                    new SharedPreferencesManager(context).setToken(response.body().getToken());
                     callback.onResult(true, response.code());
                 } else {
                     callback.onResult(false, response.code());
