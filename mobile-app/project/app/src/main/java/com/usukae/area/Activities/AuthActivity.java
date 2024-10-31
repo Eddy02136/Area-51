@@ -1,16 +1,21 @@
 package com.usukae.area.Activities;
 
+import android.annotation.SuppressLint;
 import android.app.Dialog;
 import android.content.Intent;
+import android.os.Build;
 import android.os.Bundle;
 import android.widget.EditText;
 import android.widget.TextView;
 
+import androidx.activity.OnBackPressedCallback;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.cardview.widget.CardView;
 
 import com.usukae.area.Classes.Auth.AuthApiProtocol;
-import com.usukae.area.Classes.User.User;
+import com.usukae.area.Classes.Auth.User.UserApiProtocol;
+import com.usukae.area.Classes.Auth.User.UserRequest;
+import com.usukae.area.Classes.Managers.SharedPreferencesManager;
 import com.usukae.area.Classes.Utils.DialogUtil;
 import com.usukae.area.Classes.Utils.ErrorUtil;
 import com.usukae.area.Classes.Utils.PrettyAlert;
@@ -42,10 +47,11 @@ public class AuthActivity extends AppCompatActivity {
         createClasses();
         createDialogs();
         bindViews();
+        onBackPressedCallback();
     }
 
     private void createClasses() {
-        authApiProtocol = new AuthApiProtocol();
+        authApiProtocol = new AuthApiProtocol(getApplicationContext());
         textUtil = new TextUtil();
         dialogUtil = new DialogUtil();
         prettyAlert = new PrettyAlert(this);
@@ -108,8 +114,7 @@ public class AuthActivity extends AppCompatActivity {
         }
         authApiProtocol.login(this, email, password, (success, code) -> {
             if (success) {
-                prettyAlert.success(getString(R.string.login_success), 3000);
-                startActivity(new Intent(getApplicationContext(), MainActivity.class));
+                loadUser(true);
             } else {
                 prettyAlert.error(getString(errorUtil.getAuthError(code)), 3000);
             }
@@ -138,11 +143,9 @@ public class AuthActivity extends AppCompatActivity {
         if (invalidateRegister(email, password, passwordConfirm)) {
             return;
         }
-        authApiProtocol.register(this, new User(firstName, lastName, email, password), (success, code) -> {
+        authApiProtocol.register(this, new UserRequest(firstName, lastName, email, password), (success, code) -> {
             if (success) {
-                prettyAlert.success(getString(R.string.registration_success), 3000);
-                startActivity(new Intent(getApplicationContext(), MainActivity.class));
-                finish();
+                loadUser(false);
             } else {
                 prettyAlert.error(getString(errorUtil.getRegisterError(code)), 3000);
             }
@@ -165,15 +168,36 @@ public class AuthActivity extends AppCompatActivity {
         return false;
     }
 
-    @Override
-    protected void onDestroy() {
-        super.onDestroy();
+    private void loadUser(boolean isLogin) {
+        SharedPreferencesManager sharedPreferencesManager = new SharedPreferencesManager(this);
+        UserApiProtocol userApiProtocol = new UserApiProtocol(getApplicationContext());
+        userApiProtocol.getInfos(sharedPreferencesManager.getToken(), (user, success, code) -> {
+            if (success && user != null) {
+                sharedPreferencesManager.saveUserInfo(
+                        user.getFirstname(),
+                        user.getLastname(),
+                        user.getEmail()
+                );
+                prettyAlert.success(getString(isLogin ? R.string.login_success : R.string.registration_success), 3000);
+                startActivity(new Intent(getApplicationContext(), MainActivity.class));
+            } else {
+                prettyAlert.error(getString(errorUtil.getUserInfoError(code)), 3000);
+            }
+        });
+    }
 
-        if (registerDialog != null && registerDialog.isShowing()) {
-            registerDialog.dismiss();
+    private void onBackPressedCallback() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+            getOnBackPressedDispatcher().addCallback(this, new OnBackPressedCallback(true) {
+                @Override
+                public void handleOnBackPressed() {
+                }
+            });
         }
-        if (loginDialog != null && loginDialog.isShowing()) {
-            loginDialog.dismiss();
-        }
+    }
+
+    @SuppressLint("MissingSuperCall")
+    @Override
+    public void onBackPressed() {
     }
 }
