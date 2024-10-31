@@ -18,7 +18,7 @@
         app:layout_constraintBottom_toBottomOf="@+id/welcomeBack"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="@+id/welcomeBack"
-        app:tint="@color/white" />
+        app:tint="@color/light_primary" />
 
     <TextView
         android:id="@+id/welcomeBack"
@@ -39,7 +39,7 @@
         android:layout_height="wrap_content"
         android:fontFamily="@font/gotham_rounded_bold"
         android:text="@string/benjamin"
-        android:textColor="@color/white"
+        android:textColor="@color/light_primary"
         android:textSize="30sp"
         app:layout_constraintEnd_toEndOf="@+id/welcomeBack"
         app:layout_constraintStart_toStartOf="@+id/welcomeBack"
