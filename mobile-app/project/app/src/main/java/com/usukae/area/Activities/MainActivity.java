@@ -1,29 +1,31 @@
 package com.usukae.area.Activities;
 
+import android.annotation.SuppressLint;
 import android.app.Dialog;
+import android.content.Intent;
+import android.os.Build;
 import android.os.Bundle;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.activity.OnBackPressedCallback;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.usukae.area.Classes.ActionReaction.ActionReactionAdapter;
+import com.usukae.area.Classes.ActionReaction.ActionReactionApiProtocol;
 import com.usukae.area.Classes.Actions.ActionUtil;
 import com.usukae.area.Classes.Actions.AddActionAdapter;
-import com.usukae.area.Classes.Areas.Area;
-import com.usukae.area.Classes.Areas.AreaAdapter;
-import com.usukae.area.Classes.Areas.AreaUtil;
 import com.usukae.area.Classes.Connections.AddConnectionAdapter;
 import com.usukae.area.Classes.Connections.ConnectionChecker;
 import com.usukae.area.Classes.Connections.ConnectionsUtil;
 import com.usukae.area.Classes.Connections.DashboardConnectionAdapter;
+import com.usukae.area.Classes.Managers.SharedPreferencesManager;
 import com.usukae.area.Classes.Utils.DialogUtil;
 import com.usukae.area.R;
-
-import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -31,10 +33,11 @@ public class MainActivity extends AppCompatActivity {
     private ConnectionsUtil connectionsUtil;
     private ActionUtil actionUtil;
     private ConnectionChecker connectionChecker;
+    private SharedPreferencesManager sharedPreferencesManager;
 
     private Dialog addAreaDialog, addConnectionDialog;
     private ImageView profilePicture;
-    private CardView activesAreas, totalExecutions, addArea, addConnection;
+    private CardView addArea, addConnection;
     private TextView userName, activesAreasValue, totalExecutionsValue;
     private RecyclerView dashboardConnectionsRecyclerView, connectionsRecyclerView, dashboardAreasRecyclerView, areasRecyclerView;
 
@@ -60,8 +63,10 @@ public class MainActivity extends AppCompatActivity {
         initActionsList();
         initConnectionsList();
 
-        //loadAreas();
+        loadAreas();
         checkConnections();
+
+        onBackPressedCallback();
     }
 
     private void createClasses() {
@@ -69,6 +74,7 @@ public class MainActivity extends AppCompatActivity {
         connectionsUtil = new ConnectionsUtil();
         actionUtil = new ActionUtil();
         connectionChecker = new ConnectionChecker(this);
+        sharedPreferencesManager = new SharedPreferencesManager(this);
     }
 
     private void createDialogs() {
@@ -77,9 +83,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void bindViews() {
-        activesAreas = findViewById(R.id.dashboardCardActive);
         activesAreasValue = findViewById(R.id.dashboardActiveValue);
-        totalExecutions = findViewById(R.id.dashboardCardExecutions);
         totalExecutionsValue = findViewById(R.id.dashboardExecutionsValue);
         addArea = findViewById(R.id.noAreasButton);
         addConnection = findViewById(R.id.addConnectionButton);
@@ -95,15 +99,13 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void assignButtons() {
-        activesAreas.setOnClickListener(v -> Toast.makeText(this, "Actives Areas clicked", Toast.LENGTH_SHORT).show());
-        totalExecutions.setOnClickListener(v -> Toast.makeText(this, "Total Executions clicked", Toast.LENGTH_SHORT).show());
         addArea.setOnClickListener(v -> addAreaDialog.show());
         addConnection.setOnClickListener(v -> addConnectionDialog.show());
-        profilePicture.setOnClickListener(v -> Toast.makeText(this, "Profile clicked", Toast.LENGTH_SHORT).show());
+        profilePicture.setOnClickListener(v -> startActivity(new Intent(getApplicationContext(), UserProfile.class)));
     }
 
     private void initDashboard() {
-        userName.setText(getString(R.string.benjamin));
+        userName.setText(sharedPreferencesManager.getFirstName());
         activesAreasValue.setText(String.valueOf(0));
         totalExecutionsValue.setText(String.valueOf(0));
     }
@@ -125,14 +127,33 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void loadAreas() {
-        List<Area> areas = AreaUtil.getAllAreas(getApplicationContext());
-        AreaAdapter areaAdapter = new AreaAdapter(this, areas);
-        dashboardAreasRecyclerView.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false));
-        dashboardAreasRecyclerView.setAdapter(areaAdapter);
-        activesAreasValue.setText(String.valueOf(areas.size()));
+        ActionReactionApiProtocol apiProtocol = new ActionReactionApiProtocol(getApplicationContext());
+        apiProtocol.getAllActionReactions(this, (success, code, data, actionReactions) -> {
+            if (success) {
+                ActionReactionAdapter actionReactionAdapter = new ActionReactionAdapter(this, actionReactions);
+                dashboardAreasRecyclerView.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false));
+                dashboardAreasRecyclerView.setAdapter(actionReactionAdapter);
+                activesAreasValue.setText(String.valueOf(actionReactions.size()));
+            }
+        });
     }
 
     private void checkConnections() {
         connectionChecker.checkConnections(getApplicationContext());
+    }
+
+    private void onBackPressedCallback() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+            getOnBackPressedDispatcher().addCallback(this, new OnBackPressedCallback(true) {
+                @Override
+                public void handleOnBackPressed() {
+                }
+            });
+        }
+    }
+
+    @SuppressLint("MissingSuperCall")
+    @Override
+    public void onBackPressed() {
     }
 }
