@@ -50,6 +50,18 @@ public interface ApiService {
     @DELETE("/spotify/logout")
     Call<Void> logoutSpotify(@Header("Authorization") String token);
 
+    @DELETE("/discord/logout")
+    Call<Void> logoutDiscord(@Header("Authorization") String token);
+
+    @DELETE("/twitch/logout")
+    Call<Void> logoutTwitch(@Header("Authorization") String token);
+
+    @DELETE("/youtube/logout")
+    Call<Void> logoutYoutube(@Header("Authorization") String token);
+
+    @DELETE("/github/logout")
+    Call<Void> logoutGithub(@Header("Authorization") String token);
+
     @POST("/manage/add-action-reaction")
     Call<Void> addActionReaction(@Header("Authorization") String token, @Body ActionReactionRequest actionReactionRequest);
 
