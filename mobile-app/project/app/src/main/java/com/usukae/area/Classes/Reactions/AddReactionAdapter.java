@@ -9,14 +9,14 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.google.gson.Gson;
+import com.usukae.area.Classes.ActionReaction.ActionReactionRequest;
+import com.usukae.area.Classes.ActionReaction.ActionReactionApiProtocol;
 import com.usukae.area.Classes.Actions.Action;
-import com.usukae.area.Classes.Areas.Area;
-import com.usukae.area.Classes.Managers.SharedPreferencesManager;
 import com.usukae.area.Classes.Utils.DialogUtil;
 import com.usukae.area.R;
 
@@ -31,6 +31,7 @@ public class AddReactionAdapter extends RecyclerView.Adapter<AddReactionAdapter.
     private final List<Reaction> reactions;
     private final Action selectedAction;
     private final Dialog reactionDialog;
+    private final ActionReactionApiProtocol apiProtocol;
 
     private ReactionUtil reactionUtil;
     private DialogUtil dialogUtil;
@@ -39,13 +40,12 @@ public class AddReactionAdapter extends RecyclerView.Adapter<AddReactionAdapter.
     private List<EditText> inputFields;
     private LinearLayout inputContainer;
 
-    private SharedPreferencesManager sharedPreferencesManager;
-
     public AddReactionAdapter(Context context, List<Reaction> reactions, Action selectedAction, Dialog reactionDialog) {
         this.context = context;
         this.reactions = reactions;
         this.selectedAction = selectedAction;
         this.reactionDialog = reactionDialog;
+        this.apiProtocol = new ActionReactionApiProtocol(context.getApplicationContext());
         createClasses();
     }
 
@@ -77,7 +77,6 @@ public class AddReactionAdapter extends RecyclerView.Adapter<AddReactionAdapter.
     private void createClasses() {
         reactionUtil = new ReactionUtil();
         dialogUtil = new DialogUtil();
-        sharedPreferencesManager = new SharedPreferencesManager(context);
     }
 
     private void createDialogs() {
@@ -131,11 +130,22 @@ public class AddReactionAdapter extends RecyclerView.Adapter<AddReactionAdapter.
     }
 
     private void saveArea(Action action, Reaction reaction) {
-        String areaId = action.getId() + "#" + reaction.getId() + "#" + System.currentTimeMillis();
-        Area newArea = new Area(areaId, action, reaction, "Custom Area", "Créé par l'utilisateur");
-        Gson gson = new Gson();
-        String areaJson = gson.toJson(newArea);
-        sharedPreferencesManager.setString(areaId, areaJson);
+        Map<String, String> parameters = reaction.getParameters();
+        ActionReactionRequest request = new ActionReactionRequest(
+                action.getName(),
+                action.getId(),
+                reaction.getName(),
+                reaction.getId(),
+                parameters,
+                ""
+        );
+        apiProtocol.addActionReaction(context, request, (success, code, data, list) -> {
+            if (success) {
+                Toast.makeText(context, "Action and reaction saved successfully", Toast.LENGTH_SHORT).show();
+            } else {
+                Toast.makeText(context, "Error: " + code, Toast.LENGTH_SHORT).show();
+            }
+        });
     }
 
     @Override

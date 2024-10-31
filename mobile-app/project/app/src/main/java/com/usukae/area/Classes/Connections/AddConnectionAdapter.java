@@ -61,12 +61,26 @@ public class AddConnectionAdapter extends RecyclerView.Adapter<AddConnectionAdap
 
     private void checkConnectionType(Connection connection) {
         String serviceName = connection.getName().toLowerCase();
-        ConnectionsApiProtocol connectionsApiProtocol = new ConnectionsApiProtocol();
+        ConnectionsApiProtocol connectionsApiProtocol = new ConnectionsApiProtocol(context);
 
-        if ("discord".equalsIgnoreCase(serviceName)) {
-            connectionsApiProtocol.discordUrl(context, this::checkSuccess);
-        } else if ("spotify".equalsIgnoreCase(serviceName)) {
-            connectionsApiProtocol.spotifyUrl(context, this::checkSuccess);
+        switch (serviceName.toLowerCase()) {
+            case "discord":
+                connectionsApiProtocol.discordUrl(context, this::checkSuccess);
+                break;
+            case "spotify":
+                connectionsApiProtocol.spotifyUrl(context, this::checkSuccess);
+                break;
+            case "twitch":
+                connectionsApiProtocol.twitchUrl(context, this::checkSuccess);
+                break;
+            case "github":
+                connectionsApiProtocol.githubUrl(context, this::checkSuccess);
+                break;
+            case "youtube":
+                connectionsApiProtocol.youtubeUrl(context, this::checkSuccess);
+                break;
+            default:
+                break;
         }
     }
 
