@@ -71,4 +71,8 @@
     <string name="unauthorized_logout">Déconnexion non autorisée. Veuillez vérifier vos identifiants.</string>
     <string name="logout_service_unreachable">Le service de déconnexion est inaccessible. Veuillez réessayer plus tard.</string>
     <string name="logout_failed">Échec de la déconnexion. Veuillez réessayer.</string>
+    <string name="you_can_change_the_api_base_url">You can change the API base URL</string>
+    <string name="logged_out">Déconnecté du service avec succès.</string>
+    <string name="api_base_url">API Base URL</string>
+    <string name="update">Update</string>
 </resources>

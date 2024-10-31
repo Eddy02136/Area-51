@@ -70,5 +70,9 @@
     <string name="twitch_description">Watch live streams, connect with streamers, and join communities that share your interests. Connect your Twitch account for a personalized streaming experience.</string>
     <string name="unauthorized_logout">Unauthorized logout. Please check your credentials.</string>
     <string name="logout_service_unreachable">Logout service is unreachable. Please try again later.</string>
+    <string name="logged_out">Service logged out.</string>
     <string name="logout_failed">Logout failed. Please try again.</string>
+    <string name="you_can_change_the_api_base_url">You can change the API base URL</string>
+    <string name="api_base_url">API Base URL</string>
+    <string name="update">Update</string>
 </resources>
