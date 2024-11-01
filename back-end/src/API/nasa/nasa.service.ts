@@ -27,12 +27,9 @@ export class NasaService {
 
   async getIssPosAction(ar: any) : Promise<boolean> {
     const issPos = await this.getIssPosition();
-    console.log(issPos);
     const {city} = ar.parameters;
     const {latitude, longitude} = this.CITY_COORDINATES[city];
-    console.log(latitude, longitude);
     const distance = haversine(latitude, longitude, issPos.iss_position.latitude,  issPos.iss_position.longitude);
-    console.log(distance);
     if (distance <= 100000) {
       return true;
     }
