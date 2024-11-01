@@ -1,6 +1,7 @@
 import {Injectable} from "@nestjs/common";
 import {ActionReaction} from "../schema/ActionReaction.schema";
 import {InjectModel} from "@nestjs/mongoose";
+import { ACTIONS_REACTIONS } from "./manage.constant";
 import {Model} from "mongoose";
 
 @Injectable()
@@ -47,5 +48,9 @@ export class ManageService {
 
     async deleteActionReaction(id: string) {
         return this.actionReactionModel.findByIdAndDelete(id);
+    }
+
+    async getInfoActionReaction() {
+        return ACTIONS_REACTIONS;
     }
 }
