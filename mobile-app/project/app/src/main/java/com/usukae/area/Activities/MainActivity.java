@@ -110,7 +110,7 @@ public class MainActivity extends AppCompatActivity {
     private void assignButtons() {
         addArea.setOnClickListener(v -> addAreaDialog.show());
         addConnection.setOnClickListener(v -> addConnectionDialog.show());
-        profilePicture.setOnClickListener(v -> startActivity(new Intent(getApplicationContext(), SplashActivity.class)));
+        profilePicture.setOnClickListener(v -> startActivity(new Intent(getApplicationContext(), UserProfile.class)));
         link.setOnClickListener(v -> urlDialog.show());
         reset.setOnClickListener(v -> {
             editTextLink.setText(ApiBaseUrlUtil.getDefault());
