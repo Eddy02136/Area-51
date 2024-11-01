@@ -55,7 +55,9 @@ export class TwitchService {
     }
   }
 
-  async checkTwitchNasaLive(nasaTwitchId: string, twitchToken: string): Promise<boolean> {
+  async checkTwitchNasaLive(twitchToken: string): Promise<boolean> {
+    console.log('Nasa In live');
+    const nasaTwitchId = "151920918"
     const clientId = process.env.TWITCH_CLIENT_ID;
     try {
       const url = `https://api.twitch.tv/helix/streams?user_id=${nasaTwitchId}`;
@@ -70,11 +72,13 @@ export class TwitchService {
 
       return streamData.length > 0 && streamData[0].type === 'live';
     } catch (err) {
-      throw new Error(`Failed to checkNasaLive: ${err}`);
+      return false;
     }
   }
 
-  async checkTwitchNasaViewerCount(nasaTwitchId: string, twitchToken: string) {
+  async checkTwitchNasaViewerCount(twitchToken: string): Promise<boolean> {
+    console.log('NasaViewerCount');
+    const nasaTwitchId = "151920918"
     const clientId : string = process.env.TWITCH_CLIENT_ID;
     try {
       const url = `https://api.twitch.tv/helix/streams?user_id=${nasaTwitchId}`;
@@ -88,12 +92,12 @@ export class TwitchService {
       const streamData = response.data.data;
 
       if (streamData.length > 5000) {
-        return streamData[0].viewer_count
+        return true;
       } else {
-       return 0
+       return false;
       }
-    } catch (err) {
-      throw new Error(`Failed to checkNasaLive: ${err}`);
+    } catch (error) {
+      return false;
     }
   }
 

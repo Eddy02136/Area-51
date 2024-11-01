@@ -58,8 +58,7 @@ export class TwitchController {
 
   async checkTwitchNasaLive(twitchToken: string, @Response() reply: FastifyReply) {
     try {
-      const nasaTwitchId = "151920918"
-      const response = await this.twitchService.checkTwitchNasaLive(nasaTwitchId, twitchToken)
+      const response = await this.twitchService.checkTwitchNasaLive(twitchToken)
 
       reply.status(200).send({message: response})
     } catch(error) {
@@ -84,8 +83,7 @@ export class TwitchController {
 
   async checkViewerCount(twitchToken: string, @Response() reply: FastifyReply) {
     try {
-      const nasaTwitchId = "151920918"
-      const response = await this.twitchService.checkTwitchNasaViewerCount(nasaTwitchId, twitchToken)
+      const response = await this.twitchService.checkTwitchNasaViewerCount(twitchToken)
 
       reply.status(200).send({message: response})
     } catch (error) {

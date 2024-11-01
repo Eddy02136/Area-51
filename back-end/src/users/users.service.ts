@@ -131,7 +131,7 @@ export class UsersService {
     const apiToken: ApiToken = user.apiTokens.find((token: ApiToken): boolean => token.apiName === apiName);
 
     if (!apiToken) {
-      return null;
+      throw new Error('User not connected')
     }
     return {refreshToken: apiToken.refreshToken, expiresAt: apiToken.expiresAt};
   }

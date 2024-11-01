@@ -29,7 +29,7 @@ export class ManageController {constructor( private readonly manageService: Mana
         const userId = (decoded as { sub: string }).sub;
 
         const { actionName, actionApi, reactionName, reactionApi, parameters, schedule } = createActionReactionDto;
-        if (!actionName || !actionApi || !reactionName || !reactionApi || !parameters) {
+        if (!actionName || !actionApi || !reactionName || !reactionApi) {
             return reply.status(400).send('Bad Request. Invalid data format.');
         }
         const actionApiName = ACTIONS_REACTIONS[actionApi];

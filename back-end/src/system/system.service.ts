@@ -10,12 +10,15 @@ import {use} from "passport";
 import {SpotifyController} from "../API/spotify/spotify.controller";
 import {YoutubeService} from "../API/youtube/youtube.service";
 import * as console from "node:console";
+import {TwitchService} from "../API/twitch/twitch.service";
 
 @Injectable()
 export class SystemService implements OnModuleInit, OnModuleDestroy {
   private readonly actionIntervals: { [key: string]: number } = {
     'getIssPos': 120000,
     'newVideoSpaceX': 3600000,
+    'getViewerNasa': 300000,
+    'nasaInLive': 300000,
   };
 
   private actionTimers: Map<string, NodeJS.Timeout> = new Map();
@@ -25,6 +28,7 @@ export class SystemService implements OnModuleInit, OnModuleDestroy {
     private readonly nasaService: NasaService,
     private readonly userService: UsersService,
     private readonly youtubeService: YoutubeService,
+    private readonly twitchService: TwitchService,
     @InjectModel(ActionReaction.name) private actionReactionModel: Model<ActionReaction>,
   ) {}
 
@@ -60,13 +64,22 @@ export class SystemService implements OnModuleInit, OnModuleDestroy {
 
   async checkActions(actionName: string, ar: any): Promise<boolean> {
     try {
+      let token: string = ""
       switch (actionName) {
         case 'getIssPos':
           return await this.nasaService.getIssPosAction(ar);
         case 'newVideoSpaceX':
           await this.youtubeService.refreshYoutubeToken(ar.userId);
-          const token = await this.userService.getToken('Youtube', ar.userId);
+          token = await this.userService.getToken('Youtube', ar.userId);
           return await this.youtubeService.startCheckingForNewVideos(token);
+        case 'getViewerNasa':
+          await this.twitchService.refreshTwitchToken(ar.userId);
+          token = await this.userService.getToken('Twitch', ar.userId);
+          return await this.twitchService.checkTwitchNasaViewerCount(token);
+        case 'nasaInLive':
+          await this.twitchService.refreshTwitchToken(ar.userId);
+          token = await this.userService.getToken('Twitch', ar.userId);
+          return await this.twitchService.checkTwitchNasaLive(token);
       }
     } catch (error) {
       console.error(`Error checking actions for ${actionName}:`, error);
@@ -76,12 +89,22 @@ export class SystemService implements OnModuleInit, OnModuleDestroy {
 
   async lunchReactions(ar: any): Promise<void> {
     const userId = ar.userId;
+    let token: string = ""
     switch (ar.reactionName) {
       case 'playMusic':
         await this.spotifyService.refreshToken(userId);
-        const token = await this.userService.getToken('Spotify', userId);
+        token = await this.userService.getToken('Spotify', userId);
         const { trackId } = ar.parameters;
         await this.spotifyService.playMusic(token, trackId);
+        break;
+      case 'postCommentary':
+        await this.youtubeService.refreshYoutubeToken(userId);
+        token = await this.userService.getToken('YouTube', userId);
+        const { videoUrl, message } = ar.parameters;
+        await this.youtubeService.postComment(token, videoUrl, message);
+        break;
+      default:
+        console.log(`Valeur inconnue pour reactionName: ${ar.reactionName}`);
     }
   }
 }

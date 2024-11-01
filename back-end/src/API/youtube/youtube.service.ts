@@ -67,8 +67,10 @@ export class YoutubeService {
         return urlObj.searchParams.get('v') || urlObj.searchParams.get('/')[1];
     }
 
-    async postComment(accessToken: any, url: string | URL, comment: any) : Promise<void> {
+    async postComment(accessToken: any, url: string | URL, comment: any) : Promise<boolean> {
+        console.log("postCommentary")
         try {
+            console.log(url);
             const videoId = this.getVideoId(url);
             console.log(videoId);
             const response = await axios.post(
@@ -95,8 +97,10 @@ export class YoutubeService {
             );
 
             console.log('Comment posted:', response.data);
+            return true;
         } catch (error) {
             console.error('Error posting comment:', error);
+            return false;
         }
     }
 
@@ -202,8 +206,8 @@ export class YoutubeService {
                 },
             });
 
-            const { access_token, expires_in, refresh_token } = response.data;
-            await this.usersService.saveToken('YouTube', access_token, refresh_token, expires_in, userId);
+            const { access_token, expires_in} = response.data;
+            await this.usersService.saveToken('YouTube', access_token, refreshToken, expires_in, userId);
         } catch (error) {
             console.error('Error refreshing YouTube token:', error);
             throw new Error('Failed to refresh YouTube token');
