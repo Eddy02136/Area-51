@@ -4,9 +4,11 @@ import android.content.Context;
 
 import androidx.annotation.NonNull;
 
+import com.usukae.area.Classes.Actions.Action;
 import com.usukae.area.Classes.Api.ApiClient;
 import com.usukae.area.Classes.Api.ApiService;
 import com.usukae.area.Classes.Managers.SharedPreferencesManager;
+import com.usukae.area.Classes.Reactions.Reaction;
 
 import java.util.List;
 
@@ -29,12 +31,12 @@ public class ActionReactionApiProtocol {
         call.enqueue(new Callback<Void>() {
             @Override
             public void onResponse(@NonNull Call<Void> call, @NonNull Response<Void> response) {
-                callback.onResult(response.isSuccessful(), response.code(), null, null);
+                callback.onResult(response.isSuccessful(), response.code(), null, null, null, null);
             }
 
             @Override
             public void onFailure(@NonNull Call<Void> call, @NonNull Throwable t) {
-                callback.onResult(false, 404, t.getMessage(), null);
+                callback.onResult(false, 404, t.getMessage(), null, null, null);
             }
         });
     }
@@ -47,15 +49,15 @@ public class ActionReactionApiProtocol {
             @Override
             public void onResponse(@NonNull Call<List<ActionReaction>> call, @NonNull Response<List<ActionReaction>> response) {
                 if (response.isSuccessful() && response.body() != null) {
-                    callback.onResult(true, response.code(), null, response.body());
+                    callback.onResult(true, response.code(), null, response.body(), null, null);
                 } else {
-                    callback.onResult(false, response.code(), null, null);
+                    callback.onResult(false, response.code(), null, null, null, null);
                 }
             }
 
             @Override
             public void onFailure(@NonNull Call<List<ActionReaction>> call, @NonNull Throwable t) {
-                callback.onResult(false, 404, t.getMessage(), null);
+                callback.onResult(false, 404, t.getMessage(), null, null, null);
             }
         });
     }
@@ -67,12 +69,54 @@ public class ActionReactionApiProtocol {
         call.enqueue(new Callback<Void>() {
             @Override
             public void onResponse(@NonNull Call<Void> call, @NonNull Response<Void> response) {
-                callback.onResult(response.isSuccessful(), response.code(), null, null);
+                callback.onResult(response.isSuccessful(), response.code(), null, null, null, null);
             }
 
             @Override
             public void onFailure(@NonNull Call<Void> call, @NonNull Throwable t) {
-                callback.onResult(false, 404, t.getMessage(), null);
+                callback.onResult(false, 404, t.getMessage(), null, null, null);
+            }
+        });
+    }
+
+    public void getAllActions(Context context, ActionReactionCallback callback) {
+        String token = "Bearer " + getAuthToken(context);
+        Call<List<Action>> call = apiService.getAllActions(token);
+
+        call.enqueue(new Callback<List<Action>>() {
+            @Override
+            public void onResponse(@NonNull Call<List<Action>> call, @NonNull Response<List<Action>> response) {
+                if (response.isSuccessful() && response.body() != null) {
+                    callback.onResult(true, response.code(), null, null, response.body(), null);
+                } else {
+                    callback.onResult(false, response.code(), null, null, null, null);
+                }
+            }
+
+            @Override
+            public void onFailure(@NonNull Call<List<Action>> call, @NonNull Throwable t) {
+                callback.onResult(false, 404, t.getMessage(), null, null, null);
+            }
+        });
+    }
+
+    public void getAllReactions(Context context, ActionReactionCallback callback) {
+        String token = "Bearer " + getAuthToken(context);
+        Call<List<Reaction>> call = apiService.getAllReactions(token);
+
+        call.enqueue(new Callback<List<Reaction>>() {
+            @Override
+            public void onResponse(@NonNull Call<List<Reaction>> call, @NonNull Response<List<Reaction>> response) {
+                if (response.isSuccessful() && response.body() != null) {
+                    callback.onResult(true, response.code(), null, null, null, response.body());
+                } else {
+                    callback.onResult(false, response.code(), null, null, null, null);
+                }
+            }
+
+            @Override
+            public void onFailure(@NonNull Call<List<Reaction>> call, @NonNull Throwable t) {
+                callback.onResult(false, 404, t.getMessage(), null, null, null);
             }
         });
     }
@@ -82,6 +126,6 @@ public class ActionReactionApiProtocol {
     }
 
     public interface ActionReactionCallback {
-        void onResult(boolean success, int code, String data, List<ActionReaction> list);
+        void onResult(boolean success, int code, String data, List<ActionReaction> list, List<Action> actions, List<Reaction> reactions);
     }
 }
