@@ -35,6 +35,12 @@ public class SharedPreferencesManager {
         return sharedPreferences.getAll();
     }
 
+    public void clearAllExceptApiBaseUrl() {
+        String apiBaseUrl = sharedPreferences.getString("api_base_url", null);
+        sharedPreferences.edit().clear().apply();
+        sharedPreferences.edit().putString("api_base_url", apiBaseUrl).apply();
+    }
+
     public void setStringList(String key, String... values) {
         List<String> stringList = new ArrayList<>();
         Collections.addAll(stringList, values);
