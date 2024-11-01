@@ -75,4 +75,8 @@
     <string name="logged_out">Déconnecté du service avec succès.</string>
     <string name="api_base_url">URL de base de l\'API</string>
     <string name="update">Mettre à jour</string>
+    <string name="unknown_service">Service inconnu.</string>
+    <string name="base_url_changing">Changement de l\'URL de base de l\'API en cours...</string>
+    <string name="base_url_changed">L\'URL de base de l\'API a été changée ! Redémarrage de l\'application en cours...</string>
+    <string name="reset">Réinitialiser</string>
 </resources>

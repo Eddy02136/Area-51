@@ -76,4 +76,7 @@
     <string name="you_can_change_the_api_base_url">You can change the API base URL.</string>
     <string name="api_base_url">API Base URL</string>
     <string name="update">Update</string>
+    <string name="base_url_changing">Changing base API URL...</string>
+    <string name="base_url_changed">Base API URL changed ! Restarting the application...</string>
+    <string name="reset">Reset</string>
 </resources>
