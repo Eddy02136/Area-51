@@ -1,5 +1,6 @@
 package com.usukae.area.Classes.Reactions;
 
+import android.app.Activity;
 import android.app.Dialog;
 import android.content.Context;
 import android.view.LayoutInflater;
@@ -18,6 +19,7 @@ import com.usukae.area.Classes.ActionReaction.ActionReactionRequest;
 import com.usukae.area.Classes.ActionReaction.ActionReactionApiProtocol;
 import com.usukae.area.Classes.Actions.Action;
 import com.usukae.area.Classes.Utils.DialogUtil;
+import com.usukae.area.Classes.Utils.PrettyAlert;
 import com.usukae.area.R;
 
 import java.util.ArrayList;
@@ -74,6 +76,16 @@ public class AddReactionAdapter extends RecyclerView.Adapter<AddReactionAdapter.
         setupValidateButton(params, reaction);
     }
 
+    public String formatCamelCase(String input) {
+        String result = input.replaceAll("(?<!^)([A-Z])", " $1");
+        String[] words = result.split(" ");
+        StringBuilder formattedString = new StringBuilder();
+        for (String word : words) {
+            formattedString.append(Character.toUpperCase(word.charAt(0))).append(word.substring(1)).append(" ");
+        }
+        return formattedString.toString().trim();
+    }
+
     private void createClasses() {
         reactionUtil = new ReactionUtil();
         dialogUtil = new DialogUtil();
@@ -88,10 +100,10 @@ public class AddReactionAdapter extends RecyclerView.Adapter<AddReactionAdapter.
         inputContainer.removeAllViews();
 
         TextView dialogTitle = newReactionDialog.findViewById(R.id.title);
-        dialogTitle.setText(reaction.getName());
+        dialogTitle.setText(formatCamelCase(reaction.getName()));
 
         TextView dialogSubtitle = newReactionDialog.findViewById(R.id.subtitle);
-        dialogSubtitle.setText(reaction.getDescription());
+        dialogSubtitle.setText("TODO");
 
         inputFields = new ArrayList<>();
     }
@@ -103,7 +115,7 @@ public class AddReactionAdapter extends RecyclerView.Adapter<AddReactionAdapter.
             String key = entry.getKey();
             String capitalizedKey = key.substring(0, 1).toUpperCase() + key.substring(1);
 
-            editText.setHint(capitalizedKey);
+            editText.setHint(formatCamelCase(capitalizedKey));
             inputContainer.addView(inputFieldView);
             inputFields.add(editText);
         }
@@ -132,18 +144,20 @@ public class AddReactionAdapter extends RecyclerView.Adapter<AddReactionAdapter.
     private void saveArea(Action action, Reaction reaction) {
         Map<String, String> parameters = reaction.getParameters();
         ActionReactionRequest request = new ActionReactionRequest(
+                action.getService(),
                 action.getName(),
-                action.getId(),
+                reaction.getService(),
                 reaction.getName(),
-                reaction.getId(),
                 parameters,
                 ""
         );
-        apiProtocol.addActionReaction(context, request, (success, code, data, list) -> {
+
+        apiProtocol.addActionReaction(context, request, (success, code, data, list, a, r) -> {
             if (success) {
-                Toast.makeText(context, "Action and reaction saved successfully", Toast.LENGTH_SHORT).show();
+                new PrettyAlert((Activity) context).success(context.getString(R.string.action_reaction_saved), 3000);
+                newReactionDialog.dismiss();
             } else {
-                Toast.makeText(context, "Error: " + code, Toast.LENGTH_SHORT).show();
+                new PrettyAlert((Activity) context).error(context.getString(R.string.error_saving_action_reaction) + code, 3000);
             }
         });
     }
@@ -166,9 +180,19 @@ public class AddReactionAdapter extends RecyclerView.Adapter<AddReactionAdapter.
         }
 
         public void bind(Reaction reaction, ReactionUtil reactionUtil) {
-            titleTextView.setText(reaction.getName());
-            descriptionTextView.setText(reaction.getDescription());
-            pictureImageView.setImageResource(reactionUtil.getReactionIcon(reaction.getId()));
+            titleTextView.setText(formatCamelCase(reaction.getName()));
+            descriptionTextView.setText("TODO");
+            pictureImageView.setImageResource(reactionUtil.getReactionIcon(reaction.getName()));
+        }
+
+        public String formatCamelCase(String input) {
+            String result = input.replaceAll("(?<!^)([A-Z])", " $1");
+            String[] words = result.split(" ");
+            StringBuilder formattedString = new StringBuilder();
+            for (String word : words) {
+                formattedString.append(Character.toUpperCase(word.charAt(0))).append(word.substring(1)).append(" ");
+            }
+            return formattedString.toString().trim();
         }
     }
 }

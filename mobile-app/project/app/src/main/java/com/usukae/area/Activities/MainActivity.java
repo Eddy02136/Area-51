@@ -138,9 +138,14 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void initActionsList() {
-        AddActionAdapter addActionAdapter = new AddActionAdapter(this, actionUtil.getActions());
-        areasRecyclerView.setLayoutManager(new LinearLayoutManager(this));
-        areasRecyclerView.setAdapter(addActionAdapter);
+        ActionReactionApiProtocol apiProtocol = new ActionReactionApiProtocol(getApplicationContext());
+        apiProtocol.getAllActions(getApplicationContext(), (success, code, data, list, actionsList, reactionsList) -> {
+            if (success && actionsList != null) {
+                AddActionAdapter addActionAdapter = new AddActionAdapter(this, actionsList);
+                areasRecyclerView.setLayoutManager(new LinearLayoutManager(this));
+                areasRecyclerView.setAdapter(addActionAdapter);
+            }
+        });
     }
 
     private void initConnectionsList() {
@@ -155,7 +160,7 @@ public class MainActivity extends AppCompatActivity {
 
     private void loadAreas() {
         ActionReactionApiProtocol apiProtocol = new ActionReactionApiProtocol(getApplicationContext());
-        apiProtocol.getAllActionReactions(this, (success, code, data, actionReactions) -> {
+        apiProtocol.getAllActionReactions(this, (success, code, data, actionReactions, a, r) -> {
             if (success) {
                 ActionReactionAdapter actionReactionAdapter = new ActionReactionAdapter(this, actionReactions);
                 dashboardAreasRecyclerView.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false));

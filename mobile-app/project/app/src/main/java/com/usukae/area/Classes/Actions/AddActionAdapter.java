@@ -14,6 +14,7 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.usukae.area.Classes.ActionReaction.ActionReactionApiProtocol;
 import com.usukae.area.Classes.Reactions.AddReactionAdapter;
 import com.usukae.area.Classes.Reactions.ReactionUtil;
 import com.usukae.area.Classes.Utils.DialogUtil;
@@ -78,14 +79,24 @@ public class AddActionAdapter extends RecyclerView.Adapter<AddActionAdapter.Acti
         newActionDialog = dialogUtil.createBottomDialog(context, R.layout.modal_new_area);
     }
 
+    public String formatCamelCase(String input) {
+        String result = input.replaceAll("(?<!^)([A-Z])", " $1");
+        String[] words = result.split(" ");
+        StringBuilder formattedString = new StringBuilder();
+        for (String word : words) {
+            formattedString.append(Character.toUpperCase(word.charAt(0))).append(word.substring(1)).append(" ");
+        }
+        return formattedString.toString().trim();
+    }
+
     private void initializeInputContainer(Action action) {
         TextView dialogTitle = newActionDialog.findViewById(R.id.title);
         TextView dialogSubtitle = newActionDialog.findViewById(R.id.subtitle);
         inputContainer = newActionDialog.findViewById(R.id.inputContainer);
         inputFields = new ArrayList<>();
         inputContainer.removeAllViews();
-        dialogTitle.setText(action.getName());
-        dialogSubtitle.setText(action.getDescription());
+        dialogTitle.setText(formatCamelCase(action.getName()));
+        dialogSubtitle.setText("TODO");
     }
 
     private void createInputFields(Map<String, String> params) {
@@ -95,7 +106,7 @@ public class AddActionAdapter extends RecyclerView.Adapter<AddActionAdapter.Acti
             String key = entry.getKey();
             String capitalizedKey = key.substring(0, 1).toUpperCase() + key.substring(1);
 
-            editText.setHint(capitalizedKey);
+            editText.setHint(formatCamelCase(capitalizedKey));
             inputContainer.addView(inputFieldView);
             inputFields.add(editText);
         }
@@ -120,12 +131,17 @@ public class AddActionAdapter extends RecyclerView.Adapter<AddActionAdapter.Acti
     }
 
     private void proceedToReactionSelection(Action action) {
-        Dialog reactionDialog = dialogUtil.createBottomDialog(context, R.layout.modal_add_connection);
-        RecyclerView reactionsRecyclerView = reactionDialog.findViewById(R.id.connectionsRecyclerView);
-        AddReactionAdapter addReactionAdapter = new AddReactionAdapter(context, reactionUtil.getReactions(), action, reactionDialog);
-        reactionsRecyclerView.setLayoutManager(new LinearLayoutManager(context));
-        reactionsRecyclerView.setAdapter(addReactionAdapter);
-        reactionDialog.show();
+        Dialog reactionDialog = dialogUtil.createBottomDialog(context, R.layout.modal_add_reaction);
+        RecyclerView reactionsRecyclerView = reactionDialog.findViewById(R.id.areasRecyclerView);
+
+        new ActionReactionApiProtocol(context).getAllReactions(context, (success, code, data, list, a, r) -> {
+            if (success && r != null) {
+                AddReactionAdapter addReactionAdapter = new AddReactionAdapter(context, r, action, reactionDialog);
+                reactionsRecyclerView.setLayoutManager(new LinearLayoutManager(context));
+                reactionsRecyclerView.setAdapter(addReactionAdapter);
+                reactionDialog.show();
+            }
+        });
     }
 
     @Override
@@ -146,9 +162,19 @@ public class AddActionAdapter extends RecyclerView.Adapter<AddActionAdapter.Acti
         }
 
         public void bind(Action action, ActionUtil actionUtil) {
-            titleTextView.setText(action.getName());
-            descriptionTextView.setText(action.getDescription());
-            pictureImageView.setImageResource(actionUtil.getActionIcon(action.getId()));
+            titleTextView.setText(formatCamelCase(action.getName()));
+            descriptionTextView.setText("TODO");
+            pictureImageView.setImageResource(actionUtil.getActionIcon(action.getName()));
+        }
+
+        public String formatCamelCase(String input) {
+            String result = input.replaceAll("(?<!^)([A-Z])", " $1");
+            String[] words = result.split(" ");
+            StringBuilder formattedString = new StringBuilder();
+            for (String word : words) {
+                formattedString.append(Character.toUpperCase(word.charAt(0))).append(word.substring(1)).append(" ");
+            }
+            return formattedString.toString().trim();
         }
     }
 }
