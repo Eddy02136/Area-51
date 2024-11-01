@@ -113,7 +113,7 @@ export class TwitchService {
     }
   }
 
-  async sendTwitchNasaMessage(nasaTwitchId: string, senderId: any, twitchToken: string): Promise<any> {
+  async sendTwitchNasaMessage(nasaTwitchId: string, senderId: any, twitchToken: string, message: string): Promise<any> {
     const clientId = process.env.TWITCH_CLIENT_ID;
 
     try {
@@ -128,7 +128,7 @@ export class TwitchService {
       const body = {
         'broadcaster_id': nasaTwitchId,
         'sender_id': senderId,
-        'message': "🚀🚀🚀"
+        'message': message
       };
 
       const response = await axios.post(url, body, { headers });
