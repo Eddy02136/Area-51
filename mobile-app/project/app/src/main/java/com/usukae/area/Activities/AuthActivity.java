@@ -117,18 +117,18 @@ public class AuthActivity extends AppCompatActivity {
             editTextLink.setText(ApiBaseUrlUtil.getDefault());
         });
         updateUrlButton.setOnClickListener(v -> {
-            new PrettyAlert(this).success(getString(R.string.base_url_changing), 1400);
+            new PrettyAlert(this).success(getString(R.string.base_url_changing), 1000);
             ApiBaseUrlUtil.setBaseUrl(getApplicationContext(), editTextLink.getText().toString().trim());
             new SharedPreferencesManager(getApplicationContext()).clearAllExceptApiBaseUrl();
             urlDialog.dismiss();
             new Handler().postDelayed(() -> {
                 new PrettyAlert(this).success(getString(R.string.base_url_changed), 500);
-            }, 500);
+            }, 1500);
             new Handler().postDelayed(() -> {
                 Intent intent = getIntent();
                 finish();
                 startActivity(intent);
-            }, 2000);
+            }, 2500);
         });
     }
 
