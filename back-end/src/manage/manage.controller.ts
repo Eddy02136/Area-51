@@ -6,6 +6,7 @@ import * as process from "node:process";
 import {CreateActionReactionDto} from "./dto/create-action-reaction.dto";
 import {AuthGuard} from "@nestjs/passport";
 import {FastifyReply} from "fastify";
+import {ACTIONS_REACTIONS} from "./manage.constant";
 
 
 @Controller('manage')
@@ -29,6 +30,20 @@ export class ManageController {constructor( private readonly manageService: Mana
 
         const { actionName, actionApi, reactionName, reactionApi, parameters, schedule } = createActionReactionDto;
         if (!actionName || !actionApi || !reactionName || !reactionApi || !parameters) {
+            return reply.status(400).send('Bad Request. Invalid data format.');
+        }
+        const actionApiName = ACTIONS_REACTIONS[actionApi];
+        const reactionApiName = ACTIONS_REACTIONS[reactionApi];
+        console.log(actionApiName);
+        console.log(reactionApiName);
+        if (!actionApiName || !reactionApiName) {
+            return reply.status(400).send('Bad Request. Invalid data format.');
+        }
+        const action = ACTIONS_REACTIONS[actionApi]?.actions[actionName];
+        const reaction = ACTIONS_REACTIONS[reactionApi]?.reactions[reactionName];
+        console.log(action)
+        console.log(reaction)
+        if (!action || !reaction) {
             return reply.status(400).send('Bad Request. Invalid data format.');
         }
         const existingActionReaction = await this.manageService.findActionReaction(userId, actionName, actionApi, reactionName, reactionApi, parameters);
@@ -87,5 +102,73 @@ export class ManageController {constructor( private readonly manageService: Mana
             return reply.status(404).send('Action-reaction not found.');
         }
         return reply.status(200).send('Action reaction delete successfully');
+    }
+
+    @UseGuards(AuthGuard('jwt'))
+    @Get('getAllAction')
+    @ApiOperation({ summary: 'Get info about every actions' })
+    @ApiHeader({ name: 'authorization', required: true, description: 'Bearer token for Area51 API access' })
+    @ApiResponse({ status: 200, description: 'Get actions successfully.',
+        schema: {
+        example:
+            [
+                {
+                    "service": "string",
+                    "name": "string",
+                    "parameters": {
+                        "parameterName": "string"
+                    }
+                }
+            ]
+        }})
+    @ApiResponse({ status: 401, description: 'Unauthorized. Invalid token.'})
+    @ApiResponse({ status: 500, description: 'Internal server error.' })
+    async getAllActions() {
+        const actions = [];
+        Object.keys(ACTIONS_REACTIONS).forEach(serviceName => {
+            const service = ACTIONS_REACTIONS[serviceName];
+            Object.keys(service.actions).forEach(actionName => {
+                actions.push({
+                    service: serviceName,
+                    name: actionName,
+                    parameters: service.actions[actionName].parameters
+                });
+            });
+        });
+        return actions;
+    }
+
+    @UseGuards(AuthGuard('jwt'))
+    @Get('getAllReaction')
+    @ApiOperation({ summary: 'Get info about every reactions' })
+    @ApiHeader({ name: 'authorization', required: true, description: 'Bearer token for Area51 API access' })
+    @ApiResponse({ status: 200, description: 'Get reactions successfully.',
+        schema: {
+            example:
+                [
+                    {
+                        "service": "string",
+                        "name": "string",
+                        "parameters": {
+                            "parameterName": "string"
+                        }
+                    }
+                ]
+        }})
+    @ApiResponse({ status: 401, description: 'Unauthorized. Invalid token.'})
+    @ApiResponse({ status: 500, description: 'Internal server error.' })
+    async getAllReactions() {
+        const reactions = [];
+        Object.keys(ACTIONS_REACTIONS).forEach(serviceName => {
+            const service = ACTIONS_REACTIONS[serviceName];
+            Object.keys(service.reactions).forEach(reactionName => {
+                reactions.push({
+                    service: serviceName,
+                    name: reactionName,
+                    parameters: service.reactions[reactionName].parameters
+                });
+            });
+        });
+        return reactions;
     }
 }

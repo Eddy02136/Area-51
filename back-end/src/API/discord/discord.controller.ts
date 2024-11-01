@@ -1,4 +1,4 @@
-import {Controller, Delete, Get, Headers, Query, Res, Response, UseGuards} from '@nestjs/common';
+import {Controller, Delete, Get, Headers, Patch, Query, Res, Response, UseGuards} from '@nestjs/common';
 import {FastifyReply} from 'fastify';
 import {DiscordService} from './discord.service';
 import * as process from "node:process";
@@ -89,4 +89,5 @@ export class DiscordController {
     }
     return reply.status(401).send(result);
   }
+
 }

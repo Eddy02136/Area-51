@@ -121,6 +121,21 @@ export class UsersService {
     return apiToken.accessToken;
   }
 
+  async getElemApiToken(userId : string, apiName: string) : Promise<{refreshToken: string, expiresAt: Date}> {
+    const user = await this.userModel.findOne({ _id: userId });
+
+    if (!user) {
+      throw new Error('User not found');
+    }
+
+    const apiToken: ApiToken = user.apiTokens.find((token: ApiToken): boolean => token.apiName === apiName);
+
+    if (!apiToken) {
+      return null;
+    }
+    return {refreshToken: apiToken.refreshToken, expiresAt: apiToken.expiresAt};
+  }
+
   async removeToken(apiName: string, userId: unknown): Promise<string> {
     const user = await this.userModel.findOne({ _id: userId });
 

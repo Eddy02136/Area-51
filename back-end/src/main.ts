@@ -30,6 +30,6 @@ async function main() {
     .build();
   const document = SwaggerModule.createDocument(app, config);
   SwaggerModule.setup('doc', app, document);
-  await app.listen(3000);
+  await app.listen(3000, '0.0.0.0');
 }
 main().then();

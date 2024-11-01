@@ -5,6 +5,7 @@ import axios from "axios";
 
 @Injectable()
 export class YoutubeService {
+    private lastVideoId: string | null = null;
     constructor(private readonly configService: ConfigService) {}
 
     private readonly scopes = [
@@ -51,6 +52,7 @@ export class YoutubeService {
             });
 
             const { access_token, refresh_token, expires_in } = response.data;
+            console.log(access_token)
             return { accessToken: access_token, refreshToken: refresh_token, expiresIn: expires_in };
 
         } catch (error) {
@@ -96,5 +98,73 @@ export class YoutubeService {
         }
     }
 
+    async likeVideo(accessToken: string, url: string | URL): Promise<void> {
+        try {
+            const videoId: string = this.getVideoId(url);
+            console.log(videoId);
+
+            const data = {
+                id: videoId,
+                rating: "like"
+            };
+
+            const config = {
+                method: 'post',
+                maxBodyLength: Infinity,
+                url: 'https://www.googleapis.com/youtube/v3/videos/rate',
+                headers: {
+                    Authorization: `Bearer ${accessToken}`,
+                    'Content-Type': 'application/json'
+                },
+                data: data
+            };
+
+            const response = await axios.request(config);
+            console.log('Video liked successfully:', response.data);
+        } catch (error) {
+            console.error('Error liking video:', error.message);
+        }
+    }
+
+
+    async checkForNewVideo(accessToken : string, channelId: string): Promise<void> {
+        try {
+            const params = {
+                part: 'snippet',
+                channelId: channelId,
+                maxResults: 1,
+                order: 'date',
+                type: 'video',
+            };
+
+            const headers = {
+                Authorization: `Bearer ${accessToken}`
+            };
+
+            const response = await axios.get('https://www.googleapis.com/youtube/v3/search', { params, headers });
+            const videos = response.data.items;
+
+            if (videos.length > 0) {
+                const latestVideo = videos[0];
+                const latestVideoId = latestVideo.id.videoId;
+
+                if (this.lastVideoId && this.lastVideoId !== latestVideoId) {
+                    console.log(`Nouvelle vidéo publiée : "${latestVideo.snippet.title}" (ID: ${latestVideoId})`);
+                }
+
+                this.lastVideoId = latestVideoId;
+            } else {
+                console.log("Aucune vidéo trouvée pour cette chaîne.");
+            }
+        } catch (error) {
+            console.error('Erreur lors de la vérification de nouvelles vidéos :', error.message);
+        }
+    }
+
+    startCheckingForNewVideos(accessToken : string) : void {
+        const channelId: string = "UCtI0Hodo5o5dUb67FeUjDeA"; //Spacex channel id
+        this.checkForNewVideo(accessToken, channelId).then();
+        setInterval(() : Promise<void> => this.checkForNewVideo(accessToken, channelId), 3600000);
+    }
 
 }
