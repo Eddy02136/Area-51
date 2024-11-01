@@ -1,5 +1,4 @@
 export function haversine(myLatitude : number, myLongitude : number, issLatitude : number, issLongitude: number) {
-  console.log(myLatitude, myLongitude, issLatitude, issLongitude);
   const R = 6371;
   const dLat = (issLatitude - myLatitude) * Math.PI / 180;
   const dLon = (issLongitude - myLongitude) * Math.PI / 180;
