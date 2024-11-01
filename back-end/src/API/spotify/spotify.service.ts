@@ -2,11 +2,13 @@ import { Injectable } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import axios from 'axios';
 import { stringify } from 'querystring';
+import {UsersService} from "../../users/users.service";
 
 @Injectable()
 export class SpotifyService {
   constructor(
     private readonly configService: ConfigService,
+    private readonly usersService: UsersService
   ) {}
 
   getSpotifyAuthUrl(userId: string): string {
@@ -71,6 +73,39 @@ export class SpotifyService {
       return 'Track started playing successfully!';
     } catch (error) {
       throw new Error(`Failed to play track: ${error.response?.data?.error?.message || error.message}`);
+    }
+  }
+
+  async refreshToken(userId: string) : Promise<void> {
+    const {refreshToken, expiresAt} = await this.usersService.getElemApiToken(userId, 'Spotify');
+    const isTokenExpired = new Date() >= new Date(expiresAt);
+    if (!isTokenExpired) {
+      return;
+    }
+    const clientId = this.configService.get<string>('SPOTIFY_CLIENT_ID');
+    const clientSecret = this.configService.get<string>('SPOTIFY_CLIENT_SECRET');
+    const refreshTokenUrl = 'https://accounts.spotify.com/api/token';
+
+    const body = new URLSearchParams({
+      grant_type: 'refresh_token',
+      refresh_token: refreshToken,
+    });
+
+    const authHeader = Buffer.from(`${clientId}:${clientSecret}`).toString('base64');
+
+    try {
+      const response = await axios.post(refreshTokenUrl, body.toString(), {
+        headers: {
+          'Content-Type': 'application/x-www-form-urlencoded',
+          'Authorization': `Basic ${authHeader}`,
+        },
+      });
+
+      const { access_token, expires_in } = response.data;
+      await this.usersService.saveToken('Spotify', access_token, refreshToken, expires_in, userId);
+    } catch (error) {
+      console.error('Error refreshing Spotify token:', error);
+      throw new Error('Failed to refresh Spotify token');
     }
   }
 }

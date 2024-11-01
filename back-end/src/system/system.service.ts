@@ -7,6 +7,7 @@ import { ActionReaction } from "../schema/ActionReaction.schema";
 import { haversine } from "../utils/haversine";
 import {UsersService} from "../users/users.service";
 import {use} from "passport";
+import {SpotifyController} from "../API/spotify/spotify.controller";
 
 @Injectable()
 export class SystemService {
@@ -35,6 +36,7 @@ export class SystemService {
   async lunchReaction(ar: any, userId: any) {
     switch (ar.reactionName) {
       case 'playMusic':
+        await this.spotifyService.refreshToken(userId);
         const token = await this.userService.getToken('Spotify', userId)
         const { trackId } = ar.parameters;
         return await this.spotifyService.playMusic(token, trackId);
@@ -45,7 +47,6 @@ export class SystemService {
     const actionsReactions = await this.actionReactionModel.find({userId});
     for (const ar of actionsReactions) {
       const check = await this.checkActions(ar);
-      console.log(check);
       if (check) {
         await this.lunchReaction(ar, userId);
       }
