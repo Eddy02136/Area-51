@@ -29,23 +29,39 @@ export const ACTIONS_REACTIONS = {
     },
     Youtube: {
         actions: {
-
+            newVideoSpaceX: {
+                parameters: {}
+            }
         },
         reactions: {
             postCommentary: {
                 parameters: {
                     videoUrl: 'string',
-                    commentMessage: 'string'
+                    message: 'string'
+                }
+            },
+            likeVideo: {
+                parameters: {
+                    videoUrl: 'string'
                 }
             }
         }
     },
     Twitch: {
         actions: {
-
+            getViewerNasa: {
+                parameters: {}
+            },
+            nasaInLive: {
+                parameters: {}
+            }
         },
         reactions: {
-
+            sendNasaMessage: {
+                parameters: {
+                    message: 'string'
+                }
+            }
         }
     },
     Github: {

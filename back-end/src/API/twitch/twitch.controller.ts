@@ -74,14 +74,13 @@ export class TwitchController {
     try {
       const nasaTwitchId = "151920918"
       const senderId = await this.twitchService.getMyTwitchid(twitchToken)
-      const response = await this.twitchService.sendTwitchNasaMessage(nasaTwitchId, senderId, twitchToken)
+      const response = await this.twitchService.sendTwitchNasaMessage(nasaTwitchId, senderId, twitchToken, "")
 
       reply.status(200).send({message: response})
     } catch (error) {
       return reply.status(500).send({ error: error.message });
     }
   }
-
 
   async checkViewerCount(twitchToken: string, @Response() reply: FastifyReply) {
     try {

@@ -26,6 +26,7 @@ export class NasaService {
   }
 
   async getIssPosAction(ar: any) : Promise<boolean> {
+    console.log("getIss verif");
     const issPos = await this.getIssPosition();
     const {city} = ar.parameters;
     const {latitude, longitude} = this.CITY_COORDINATES[city];

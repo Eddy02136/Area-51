@@ -2,11 +2,13 @@ import {Injectable} from "@nestjs/common";
 import {stringify} from "querystring";
 import {ConfigService} from "@nestjs/config";
 import axios from "axios";
+import {UsersService} from "../../users/users.service";
 
 @Injectable()
 export class YoutubeService {
     private lastVideoId: string | null = null;
-    constructor(private readonly configService: ConfigService) {}
+    constructor(private readonly configService: ConfigService,
+                private readonly usersService: UsersService) {}
 
     private readonly scopes = [
         'https://www.googleapis.com/auth/youtube.force-ssl',
@@ -127,7 +129,7 @@ export class YoutubeService {
     }
 
 
-    async checkForNewVideo(accessToken : string, channelId: string): Promise<void> {
+    async checkForNewVideo(accessToken : string, channelId: string): Promise<boolean> {
         try {
             const params = {
                 part: 'snippet',
@@ -150,21 +152,61 @@ export class YoutubeService {
 
                 if (this.lastVideoId && this.lastVideoId !== latestVideoId) {
                     console.log(`Nouvelle vidéo publiée : "${latestVideo.snippet.title}" (ID: ${latestVideoId})`);
+                    return true;
                 }
 
                 this.lastVideoId = latestVideoId;
             } else {
                 console.log("Aucune vidéo trouvée pour cette chaîne.");
             }
+            return false;
         } catch (error) {
             console.error('Erreur lors de la vérification de nouvelles vidéos :', error.message);
+            return false;
         }
     }
 
-    startCheckingForNewVideos(accessToken : string) : void {
+    async startCheckingForNewVideos(accessToken : string) : Promise<boolean> {
+        console.log('check Video')
         const channelId: string = "UCtI0Hodo5o5dUb67FeUjDeA"; //Spacex channel id
-        this.checkForNewVideo(accessToken, channelId).then();
-        setInterval(() : Promise<void> => this.checkForNewVideo(accessToken, channelId), 3600000);
+        const newVideoFound = await this.checkForNewVideo(accessToken, channelId);
+        if (newVideoFound) {
+            return true;
+        }
+        return false;
     }
 
+    async refreshYoutubeToken(userId: string): Promise<void> {
+        const { refreshToken, expiresAt } = await this.usersService.getElemApiToken(userId, 'YouTube');
+        const isTokenExpired = new Date() >= new Date(expiresAt);
+
+        if (!isTokenExpired) {
+            return;
+        }
+
+        const clientId = this.configService.get<string>('YOUTUBE_CLIENT_ID');
+        const clientSecret = this.configService.get<string>('YOUTUBE_CLIENT_SECRET');
+        const refreshTokenUrl = 'https://oauth2.googleapis.com/token';
+
+        const body = new URLSearchParams({
+            grant_type: 'refresh_token',
+            refresh_token: refreshToken,
+            client_id: clientId,
+            client_secret: clientSecret,
+        });
+
+        try {
+            const response = await axios.post(refreshTokenUrl, body.toString(), {
+                headers: {
+                    'Content-Type': 'application/x-www-form-urlencoded',
+                },
+            });
+
+            const { access_token, expires_in, refresh_token } = response.data;
+            await this.usersService.saveToken('YouTube', access_token, refresh_token, expires_in, userId);
+        } catch (error) {
+            console.error('Error refreshing YouTube token:', error);
+            throw new Error('Failed to refresh YouTube token');
+        }
+    }
 }

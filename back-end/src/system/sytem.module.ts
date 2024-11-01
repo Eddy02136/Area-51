@@ -6,12 +6,14 @@ import { NasaModule } from "../API/nasa/nasa.module";
 import { MongooseModule } from "@nestjs/mongoose";
 import { ActionReaction, ActionReactionSchema } from "../schema/ActionReaction.schema";
 import {UsersModule} from "../users/users.module";
+import {YoutubeModule} from "../API/youtube/youtube.module";
 
 @Module({
   imports: [
     SpotifyModule,
     NasaModule,
     UsersModule,
+    YoutubeModule,
     MongooseModule.forFeature([{ name: ActionReaction.name, schema: ActionReactionSchema }]),
   ],
   controllers: [SystemController],
