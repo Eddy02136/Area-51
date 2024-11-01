@@ -1,4 +1,4 @@
-import {Controller, Delete, Get, Headers, Query, Res, Response, UseGuards} from '@nestjs/common';
+import {Controller, Delete, Get, Headers, Patch, Query, Res, Response, UseGuards} from '@nestjs/common';
 import {FastifyReply} from 'fastify';
 import {DiscordService} from './discord.service';
 import * as process from "node:process";
@@ -88,5 +88,11 @@ export class DiscordController {
       return reply.status(200).send('Discord logout successfully.');
     }
     return reply.status(401).send(result);
+  }
+
+  @Patch("discord-bio")
+  async changeBioDiscord(@Headers('authorization') authorization: string, @Response() reply: FastifyReply) {
+    await this.discordService.updateUserBio(authorization, "EDDY LE TOUCAN")
+    reply.status(200).send("BIO CHANGED §§§ YEAH BOOOOOOYYY")
   }
 }

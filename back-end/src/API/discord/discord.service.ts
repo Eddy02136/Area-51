@@ -60,4 +60,23 @@ export class DiscordService {
 
     return response.data;
   }
+
+  async updateUserBio(accessToken: string, bio: string): Promise<any> {
+    try {
+      const response = await axios.patch(
+          'https://discord.com/api/v10/users/@me',
+          { bio },
+          {
+            headers: {
+              Authorization: `Bearer ${accessToken}`,
+              'Content-Type': 'application/json',
+            },
+          },
+      );
+
+      return response.data;
+    } catch (error) {
+      throw new Error(`Failed to update bio: ${error.response?.data?.message || error.message}`);
+    }
+  }
 }
