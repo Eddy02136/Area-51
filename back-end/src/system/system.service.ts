@@ -6,6 +6,7 @@ import { NasaService } from "../API/nasa/nasa.service";
 import { ActionReaction } from "../schema/ActionReaction.schema";
 import { haversine } from "../utils/haversine";
 import {UsersService} from "../users/users.service";
+import {use} from "passport";
 
 @Injectable()
 export class SystemService {
@@ -24,23 +25,29 @@ export class SystemService {
     @InjectModel(ActionReaction.name) private actionReactionModel: Model<ActionReaction>,
   ) {}
 
+  async checkActions(ar: any) : Promise<boolean> {
+    switch (ar.actionName) {
+      case 'getIssPos':
+        return await this.nasaService.getIssPosAction(ar);
+    }
+  }
+
+  async lunchReaction(ar: any, userId: any) {
+    switch (ar.reactionName) {
+      case 'playMusic':
+        const token = await this.userService.getToken('Spotify', userId)
+        const { trackId } = ar.parameters;
+        return await this.spotifyService.playMusic(token, trackId);
+    }
+  }
+
   async handleActionReaction(userId : any): Promise<void> {
     const actionsReactions = await this.actionReactionModel.find({userId});
-
     for (const ar of actionsReactions) {
-      if (ar.actionName === 'iss_get_pos') {
-        const { iss_position: issPosition } = await this.nasaService.getIssPosition();
-        const { city, trackId } = ar.parameters;
-
-        if (this.CITY_COORDINATES[city]) {
-          const { latitude, longitude } = this.CITY_COORDINATES[city];
-          const distance = haversine(latitude, longitude, issPosition.latitude, issPosition.longitude);
-
-          if (ar.reactionName === "spotify_play_music" && distance <= 2000) {
-            const token = await this.userService.getToken('Spotify', userId);
-            await this.spotifyService.playMusic(token, trackId);
-          }
-        }
+      const check = await this.checkActions(ar);
+      console.log(check);
+      if (check) {
+        await this.lunchReaction(ar, userId);
       }
     }
   }
