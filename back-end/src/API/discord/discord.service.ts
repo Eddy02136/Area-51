@@ -2,11 +2,13 @@ import { Injectable } from '@nestjs/common';
 import axios from 'axios';
 import {stringify} from "querystring";
 import { ConfigService } from '@nestjs/config';
+import {UsersService} from "../../users/users.service";
 
 @Injectable()
 export class DiscordService {
   constructor(
       private readonly configService: ConfigService,
+      private readonly usersService: UsersService
   ) {}
 
   private readonly scopes: string[] = ['identify', 'email', 'dm_channels.messages.write', 'dm_channels.messages.read', 'guilds'];
@@ -26,7 +28,7 @@ export class DiscordService {
     };
 
     const queryString = stringify(queryParams);
-    return `https://discord.com/api/oauth2/authorize?${queryString}`;
+    return `https://discord.com/api/v10/oauth2/authorize?${queryString}`;
   }
 
   async getDiscordAccessToken(code: string) {
@@ -34,7 +36,7 @@ export class DiscordService {
     const clientSecret = this.configService.get<string>('DISCORD_CLIENT_SECRET');
     const redirectUri = this.configService.get<string>('DISCORD_REDIRECT_URI');
     try {
-      const response = await axios.post('https://discord.com/api/oauth2/token', new URLSearchParams({
+      const response = await axios.post('https://discord.com/api/v10/oauth2/token', new URLSearchParams({
         client_id: clientId,
         client_secret: clientSecret,
         grant_type: 'authorization_code',
@@ -54,7 +56,7 @@ export class DiscordService {
   }
 
   async getUser(accessToken: string): Promise<any> {
-    const response = await axios.get('https://discord.com/api/users/@me', {
+    const response = await axios.get('https://discord.com/api/v10/users/@me', {
       headers: { Authorization: `Bearer ${accessToken}` },
     });
 
@@ -65,7 +67,7 @@ export class DiscordService {
     try {
       const response = await axios.patch(
           'https://discord.com/api/v10/users/@me',
-          { bio },
+          {bio},
           {
             headers: {
               Authorization: `Bearer ${accessToken}`,
@@ -77,6 +79,39 @@ export class DiscordService {
       return response.data;
     } catch (error) {
       throw new Error(`Failed to update bio: ${error.response?.data?.message || error.message}`);
+    }
+  }
+  async refreshDiscordToken(userId: string): Promise<void> {
+    const { refreshToken, expiresAt } = await this.usersService.getElemApiToken(userId, 'Discord');
+    const isTokenExpired = new Date() >= new Date(expiresAt);
+
+    if (!isTokenExpired) {
+      return;
+    }
+
+    const clientId = this.configService.get<string>('DISCORD_CLIENT_ID');
+    const clientSecret = this.configService.get<string>('DISCORD_CLIENT_SECRET');
+    const refreshTokenUrl = 'https://discord.com/api/v10/oauth2/token';
+
+    const body = new URLSearchParams({
+      grant_type: 'refresh_token',
+      refresh_token: refreshToken,
+      client_id: clientId,
+      client_secret: clientSecret,
+    });
+
+    try {
+      const response = await axios.post(refreshTokenUrl, body.toString(), {
+        headers: {
+          'Content-Type': 'application/x-www-form-urlencoded',
+        },
+      });
+
+      const { access_token, expires_in, refresh_token } = response.data;
+      await this.usersService.saveToken('Discord', access_token, refresh_token, expires_in, userId);
+    } catch (error) {
+      console.error('Error refreshing Discord token:', error);
+      throw new Error('Failed to refresh Discord token');
     }
   }
 }

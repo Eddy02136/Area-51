@@ -3,11 +3,13 @@ import {ConfigService} from "@nestjs/config";
 import {stringify} from "querystring";
 import axios from "axios";
 import * as process from "node:process";
+import {UsersService} from "../../users/users.service";
 
 @Injectable()
 export class TwitchService {
   constructor(
     private readonly configService: ConfigService,
+    private readonly usersService: UsersService
   ) {}
   generateAuthUrl(userId: string): string {
     const state = Buffer.from(JSON.stringify({ userId })).toString('base64');
@@ -134,6 +136,41 @@ export class TwitchService {
       return response.data;
     } catch (error) {
       throw new Error(`Failed to sendMessageTwitch: ${error.message}`);
+    }
+  }
+
+  async refreshTwitchToken(userId: string): Promise<void> {
+    const { refreshToken, expiresAt } = await this.usersService.getElemApiToken(userId, 'Twitch');
+    const isTokenExpired = new Date() >= new Date(expiresAt);
+
+    if (!isTokenExpired) {
+      return;
+    }
+
+    const clientId = this.configService.get<string>('TWITCH_CLIENT_ID');
+    const clientSecret = this.configService.get<string>('TWITCH_CLIENT_SECRET');
+    const refreshTokenUrl = 'https://id.twitch.tv/oauth2/token';
+
+    const body = new URLSearchParams({
+      grant_type: 'refresh_token',
+      refresh_token: refreshToken,
+      client_id: clientId,
+      client_secret: clientSecret,
+    });
+
+    try {
+      const response = await axios.post(refreshTokenUrl, body.toString(), {
+        headers: {
+          'Content-Type': 'application/x-www-form-urlencoded',
+        },
+      });
+
+      const { access_token, expires_in, refresh_token } = response.data;
+
+      await this.usersService.saveToken('Twitch', access_token, refresh_token, expires_in, userId);
+    } catch (error) {
+      console.error('Error refreshing Twitch token:', error);
+      throw new Error('Failed to refresh Twitch token');
     }
   }
 }

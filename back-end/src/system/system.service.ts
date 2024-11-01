@@ -36,6 +36,7 @@ export class SystemService {
   async lunchReaction(ar: any, userId: any) {
     switch (ar.reactionName) {
       case 'playMusic':
+        console.log('play music');
         await this.spotifyService.refreshToken(userId);
         const token = await this.userService.getToken('Spotify', userId)
         const { trackId } = ar.parameters;
