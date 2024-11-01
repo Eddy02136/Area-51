@@ -17,4 +17,8 @@ public class ApiBaseUrlUtil {
         SharedPreferences prefs = context.getSharedPreferences(SHARED_PREFS_NAME, Context.MODE_PRIVATE);
         prefs.edit().putString(BASE_URL_KEY, newBaseUrl).apply();
     }
+
+    public static String getDefault() {
+        return DEFAULT_BASE_URL;
+    }
 }

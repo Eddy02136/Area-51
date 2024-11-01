@@ -19,9 +19,4 @@ public class ApiClient {
         }
         return retrofit;
     }
-
-    public static void updateBaseUrl(Context context, String newBaseUrl) {
-        ApiBaseUrlUtil.setBaseUrl(context, newBaseUrl);
-        retrofit = null;
-    }
 }

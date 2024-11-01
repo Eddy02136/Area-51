@@ -5,9 +5,10 @@ import android.app.Dialog;
 import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.Handler;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.activity.OnBackPressedCallback;
 import androidx.appcompat.app.AppCompatActivity;
@@ -19,12 +20,14 @@ import com.usukae.area.Classes.ActionReaction.ActionReactionAdapter;
 import com.usukae.area.Classes.ActionReaction.ActionReactionApiProtocol;
 import com.usukae.area.Classes.Actions.ActionUtil;
 import com.usukae.area.Classes.Actions.AddActionAdapter;
+import com.usukae.area.Classes.Api.ApiBaseUrlUtil;
 import com.usukae.area.Classes.Connections.AddConnectionAdapter;
 import com.usukae.area.Classes.Connections.ConnectionChecker;
 import com.usukae.area.Classes.Connections.ConnectionsUtil;
 import com.usukae.area.Classes.Connections.DashboardConnectionAdapter;
 import com.usukae.area.Classes.Managers.SharedPreferencesManager;
 import com.usukae.area.Classes.Utils.DialogUtil;
+import com.usukae.area.Classes.Utils.PrettyAlert;
 import com.usukae.area.R;
 
 public class MainActivity extends AppCompatActivity {
@@ -35,12 +38,12 @@ public class MainActivity extends AppCompatActivity {
     private ConnectionChecker connectionChecker;
     private SharedPreferencesManager sharedPreferencesManager;
 
-    private Dialog addAreaDialog, addConnectionDialog;
-    private ImageView profilePicture;
-    private CardView addArea, addConnection;
-    private TextView userName, activesAreasValue, totalExecutionsValue;
+    private Dialog addAreaDialog, addConnectionDialog, urlDialog;
+    private ImageView profilePicture, link;
+    private CardView addArea, addConnection, updateUrlButton;
+    private EditText editTextLink;
+    private TextView reset, userName, activesAreasValue, totalExecutionsValue;
     private RecyclerView dashboardConnectionsRecyclerView, connectionsRecyclerView, dashboardAreasRecyclerView, areasRecyclerView;
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -80,6 +83,7 @@ public class MainActivity extends AppCompatActivity {
     private void createDialogs() {
         addAreaDialog = dialogUtil.createBottomDialog(this, R.layout.modal_add_area);
         addConnectionDialog = dialogUtil.createBottomDialog(this, R.layout.modal_add_connection);
+        urlDialog = dialogUtil.createBottomDialog(this, R.layout.modal_base_api_url);
     }
 
     private void bindViews() {
@@ -88,6 +92,7 @@ public class MainActivity extends AppCompatActivity {
         addArea = findViewById(R.id.noAreasButton);
         addConnection = findViewById(R.id.addConnectionButton);
         userName = findViewById(R.id.userName);
+        link = findViewById(R.id.urlButton);
         profilePicture = findViewById(R.id.profileButton);
         dashboardConnectionsRecyclerView = findViewById(R.id.connectionsList);
         dashboardAreasRecyclerView = findViewById(R.id.areasList);
@@ -96,12 +101,34 @@ public class MainActivity extends AppCompatActivity {
     private void bindDialogViews() {
         areasRecyclerView = addAreaDialog.findViewById(R.id.areasRecyclerView);
         connectionsRecyclerView = addConnectionDialog.findViewById(R.id.connectionsRecyclerView);
+        editTextLink = urlDialog.findViewById(R.id.password);
+        editTextLink.setText(ApiBaseUrlUtil.getBaseUrl(getApplicationContext()));
+        updateUrlButton = urlDialog.findViewById(R.id.update);
+        reset = urlDialog.findViewById(R.id.reset);
     }
 
     private void assignButtons() {
         addArea.setOnClickListener(v -> addAreaDialog.show());
         addConnection.setOnClickListener(v -> addConnectionDialog.show());
-        profilePicture.setOnClickListener(v -> startActivity(new Intent(getApplicationContext(), UserProfile.class)));
+        profilePicture.setOnClickListener(v -> startActivity(new Intent(getApplicationContext(), SplashActivity.class)));
+        link.setOnClickListener(v -> urlDialog.show());
+        reset.setOnClickListener(v -> {
+            editTextLink.setText(ApiBaseUrlUtil.getDefault());
+        });
+        updateUrlButton.setOnClickListener(v -> {
+            new PrettyAlert(this).success(getString(R.string.base_url_changing), 1400);
+            ApiBaseUrlUtil.setBaseUrl(getApplicationContext(), editTextLink.getText().toString().trim());
+            new SharedPreferencesManager(getApplicationContext()).clearAllExceptApiBaseUrl();
+            urlDialog.dismiss();
+            new Handler().postDelayed(() -> {
+                new PrettyAlert(this).success(getString(R.string.base_url_changed), 500);
+            }, 500);
+            new Handler().postDelayed(() -> {
+                Intent intent = getIntent();
+                finish();
+                startActivity(intent);
+            }, 2000);
+        });
     }
 
     private void initDashboard() {

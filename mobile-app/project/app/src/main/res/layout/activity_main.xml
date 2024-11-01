@@ -20,16 +20,30 @@
         app:layout_constraintTop_toTopOf="@+id/welcomeBack"
         app:tint="@color/light_primary" />
 
+    <ImageView
+        android:id="@+id/urlButton"
+        android:layout_width="25dp"
+        android:layout_height="25dp"
+        android:padding="2dp"
+        android:layout_marginEnd="15dp"
+        android:src="@drawable/ic_link"
+        app:layout_constraintBottom_toBottomOf="@+id/welcomeBack"
+        app:layout_constraintEnd_toStartOf="@+id/profileButton"
+        app:layout_constraintTop_toTopOf="@+id/welcomeBack"
+        app:tint="@color/light_primary" />
+
     <TextView
         android:id="@+id/welcomeBack"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="30dp"
         android:layout_marginTop="30dp"
+        android:layout_marginEnd="20dp"
         android:fontFamily="@font/gotham_rounded_light"
         android:text="@string/welcome_back"
         android:textColor="@color/light_primary"
         android:textSize="30sp"
+        app:layout_constraintEnd_toStartOf="@+id/urlButton"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 

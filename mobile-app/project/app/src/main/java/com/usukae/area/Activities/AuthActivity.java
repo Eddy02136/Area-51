@@ -5,13 +5,16 @@ import android.app.Dialog;
 import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.Handler;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.activity.OnBackPressedCallback;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.cardview.widget.CardView;
 
+import com.usukae.area.Classes.Api.ApiBaseUrlUtil;
 import com.usukae.area.Classes.Auth.AuthApiProtocol;
 import com.usukae.area.Classes.Auth.User.UserApiProtocol;
 import com.usukae.area.Classes.Auth.User.UserRequest;
@@ -30,10 +33,11 @@ public class AuthActivity extends AppCompatActivity {
     private DialogUtil dialogUtil;
     private TextUtil textUtil;
 
-    private Dialog registerDialog, loginDialog;
-    private CardView loginEmailButton, loginGoogleButton, loginDialogButton, registerDialogButton;
-    private TextView registerButton;
-
+    private ImageView link;
+    private EditText editTextLink;
+    private Dialog registerDialog, loginDialog, urlDialog;
+    private CardView updateUrlButton, loginEmailButton, loginGoogleButton, loginDialogButton, registerDialogButton;
+    private TextView reset, registerButton;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -61,6 +65,7 @@ public class AuthActivity extends AppCompatActivity {
     private void createDialogs() {
         registerDialog = dialogUtil.createBottomDialog(this, R.layout.modal_email_register);
         loginDialog = dialogUtil.createBottomDialog(this, R.layout.modal_email_login);
+        urlDialog = dialogUtil.createBottomDialog(this, R.layout.modal_base_api_url);
         manageDismiss();
     }
 
@@ -92,7 +97,11 @@ public class AuthActivity extends AppCompatActivity {
         registerButton = findViewById(R.id.register);
         loginDialogButton = loginDialog.findViewById(R.id.login);
         registerDialogButton = registerDialog.findViewById(R.id.register);
-
+        link = findViewById(R.id.urlButton);
+        editTextLink = urlDialog.findViewById(R.id.password);
+        editTextLink.setText(ApiBaseUrlUtil.getBaseUrl(getApplicationContext()));
+        reset = urlDialog.findViewById(R.id.reset);
+        updateUrlButton = urlDialog.findViewById(R.id.update);
         assignButtons();
     }
 
@@ -103,6 +112,24 @@ public class AuthActivity extends AppCompatActivity {
         registerButton.setOnClickListener(v -> registerDialog.show());
         loginDialogButton.setOnClickListener(v -> validateLogin());
         registerDialogButton.setOnClickListener(v -> validateRegister());
+        link.setOnClickListener(v -> urlDialog.show());
+        reset.setOnClickListener(v -> {
+            editTextLink.setText(ApiBaseUrlUtil.getDefault());
+        });
+        updateUrlButton.setOnClickListener(v -> {
+            new PrettyAlert(this).success(getString(R.string.base_url_changing), 1400);
+            ApiBaseUrlUtil.setBaseUrl(getApplicationContext(), editTextLink.getText().toString().trim());
+            new SharedPreferencesManager(getApplicationContext()).clearAllExceptApiBaseUrl();
+            urlDialog.dismiss();
+            new Handler().postDelayed(() -> {
+                new PrettyAlert(this).success(getString(R.string.base_url_changed), 500);
+            }, 500);
+            new Handler().postDelayed(() -> {
+                Intent intent = getIntent();
+                finish();
+                startActivity(intent);
+            }, 2000);
+        });
     }
 
     private void validateLogin() {
