@@ -90,9 +90,4 @@ export class DiscordController {
     return reply.status(401).send(result);
   }
 
-  @Patch("discord-bio")
-  async changeBioDiscord(@Headers('authorization') authorization: string, @Response() reply: FastifyReply) {
-    await this.discordService.updateUserBio(authorization, "EDDY LE TOUCAN")
-    reply.status(200).send("BIO CHANGED §§§ YEAH BOOOOOOYYY")
-  }
 }
