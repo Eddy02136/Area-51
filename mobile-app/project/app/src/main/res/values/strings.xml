@@ -26,8 +26,12 @@
     <string name="active">Active Areas</string>
     <string name="total_executions">Total executions</string>
     <string name="nothing_to_show">Nothing to show...</string>
-    <string name="all_our_functional_areas">All our functional Areas.</string>
-    <string name="areas_catalog">Areas catalog</string>
+    <string name="all_our_functional_areas">Choose an action from the provided list</string>
+    <string name="areas_catalog">Actions catalog</string>
+    <string name="all_our_functional_areas2">Choose an reaction from the provided list</string>
+    <string name="areas_catalog2">Reactions catalog</string>
+    <string name="action_reaction_saved">Action and reaction saved successfully</string>
+    <string name="error_saving_action_reaction">Error while saving action and reaction: </string>
     <string name="login_success">Login successful</string>
     <string name="login_failed">Login failed</string>
     <string name="registration_success">Registration successful</string>
