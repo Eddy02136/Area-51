@@ -106,6 +106,23 @@ export class ManageController {constructor( private readonly manageService: Mana
 
     @UseGuards(AuthGuard('jwt'))
     @Get('getAllAction')
+    @ApiOperation({ summary: 'Get info about every actions' })
+    @ApiHeader({ name: 'authorization', required: true, description: 'Bearer token for Area51 API access' })
+    @ApiResponse({ status: 200, description: 'Get actions successfully.',
+        schema: {
+        example:
+            [
+                {
+                    "service": "string",
+                    "name": "string",
+                    "parameters": {
+                        "parameterName": "string"
+                    }
+                }
+            ]
+        }})
+    @ApiResponse({ status: 401, description: 'Unauthorized. Invalid token.'})
+    @ApiResponse({ status: 500, description: 'Internal server error.' })
     async getAllActions() {
         const actions = [];
         Object.keys(ACTIONS_REACTIONS).forEach(serviceName => {
@@ -123,6 +140,23 @@ export class ManageController {constructor( private readonly manageService: Mana
 
     @UseGuards(AuthGuard('jwt'))
     @Get('getAllReaction')
+    @ApiOperation({ summary: 'Get info about every reactions' })
+    @ApiHeader({ name: 'authorization', required: true, description: 'Bearer token for Area51 API access' })
+    @ApiResponse({ status: 200, description: 'Get reactions successfully.',
+        schema: {
+            example:
+                [
+                    {
+                        "service": "string",
+                        "name": "string",
+                        "parameters": {
+                            "parameterName": "string"
+                        }
+                    }
+                ]
+        }})
+    @ApiResponse({ status: 401, description: 'Unauthorized. Invalid token.'})
+    @ApiResponse({ status: 500, description: 'Internal server error.' })
     async getAllReactions() {
         const reactions = [];
         Object.keys(ACTIONS_REACTIONS).forEach(serviceName => {
