@@ -6,6 +6,9 @@ import {UsersService} from "../../users/users.service";
 
 @Injectable()
 export class DiscordService {
+  private lastGlobalName: string | null = null;
+  private isCurrentNameInit: boolean = false
+
   constructor(
       private readonly configService: ConfigService,
       private readonly usersService: UsersService
@@ -49,6 +52,7 @@ export class DiscordService {
         },
       });
       const { access_token, refresh_token, expires_in } = response.data;
+      console.log(access_token)
       return { accessToken: access_token, refreshToken: refresh_token, expiresIn: expires_in };
     } catch (error) {
       throw new Error(`Failed to get Discord access token: ${error.response?.data?.error?.message || error.message}`);
@@ -63,24 +67,29 @@ export class DiscordService {
     return response.data;
   }
 
-  async updateUserBio(accessToken: string, bio: string): Promise<any> {
+  async checkUsernameDiscord(accessToken: string): Promise<boolean>
+  {
     try {
-      const response = await axios.patch(
-          'https://discord.com/api/v10/users/@me',
-          {bio},
-          {
-            headers: {
-              Authorization: `Bearer ${accessToken}`,
-              'Content-Type': 'application/json',
-            },
-          },
-      );
-
-      return response.data;
+      const response = await axios.get('https://discord.com/api/v10/users/@me', {
+        headers: { Authorization: `Bearer ${accessToken}` },
+      });
+      const currentGlobalName =  response.data.global_name;
+      if (!this.isCurrentNameInit) {
+        this.lastGlobalName = currentGlobalName
+        this.isCurrentNameInit = true
+      }
+      if (!currentGlobalName) return false;
+      if (currentGlobalName !== this.lastGlobalName) {
+        this.lastGlobalName = currentGlobalName;
+        return true;
+      } else {
+        return false;
+      }
     } catch (error) {
-      throw new Error(`Failed to update bio: ${error.response?.data?.message || error.message}`);
+      throw new Error(`Failed to getUsername: ${error.message}`);
     }
   }
+
   async refreshDiscordToken(userId: string): Promise<void> {
     const { refreshToken, expiresAt } = await this.usersService.getElemApiToken(userId, 'Discord');
     const isTokenExpired = new Date() >= new Date(expiresAt);
