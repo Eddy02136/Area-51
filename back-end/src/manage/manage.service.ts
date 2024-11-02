@@ -50,6 +50,15 @@ export class ManageService {
         return this.actionReactionModel.findByIdAndDelete(id);
     }
 
+    async updateActionReaction(id: string, updateData: any): Promise<boolean> {
+        const check = this.checkActionReaction(updateData.actionName, updateData.actionApi, updateData.reactionName, updateData.reactionApi, updateData.parameters);
+        if (!check) {
+            return false;
+        }
+        await this.actionReactionModel.findByIdAndUpdate(id, updateData);
+        return true;
+    }
+
     checkParams(expectedParams: Record<string, string>, actualParams: Record<string, any>): boolean {
         for (const [key, type] of Object.entries(expectedParams)) {
             if (!(key in actualParams) || typeof actualParams[key] !== type) {

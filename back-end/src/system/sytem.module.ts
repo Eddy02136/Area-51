@@ -8,6 +8,7 @@ import { ActionReaction, ActionReactionSchema } from "../schema/ActionReaction.s
 import {UsersModule} from "../users/users.module";
 import {YoutubeModule} from "../API/youtube/youtube.module";
 import {TwitchModule} from "../API/twitch/twitch.module";
+import {GithubModule} from "../API/github/github.module";
 
 @Module({
   imports: [
@@ -16,6 +17,7 @@ import {TwitchModule} from "../API/twitch/twitch.module";
     UsersModule,
     YoutubeModule,
     TwitchModule,
+    GithubModule,
     MongooseModule.forFeature([{ name: ActionReaction.name, schema: ActionReactionSchema }]),
   ],
   controllers: [SystemController],
