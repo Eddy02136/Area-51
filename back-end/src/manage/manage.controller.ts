@@ -8,7 +8,6 @@ import {AuthGuard} from "@nestjs/passport";
 import {FastifyReply} from "fastify";
 import {ACTIONS_REACTIONS} from "./manage.constant";
 
-
 @Controller('manage')
 @ApiTags('Manage')
 export class ManageController {constructor( private readonly manageService: ManageService ) {}
@@ -32,18 +31,8 @@ export class ManageController {constructor( private readonly manageService: Mana
         if (!actionName || !actionApi || !reactionName || !reactionApi) {
             return reply.status(400).send('Bad Request. Invalid data format.');
         }
-        const actionApiName = ACTIONS_REACTIONS[actionApi];
-        const reactionApiName = ACTIONS_REACTIONS[reactionApi];
-        console.log(actionApiName);
-        console.log(reactionApiName);
-        if (!actionApiName || !reactionApiName) {
-            return reply.status(400).send('Bad Request. Invalid data format.');
-        }
-        const action = ACTIONS_REACTIONS[actionApi]?.actions[actionName];
-        const reaction = ACTIONS_REACTIONS[reactionApi]?.reactions[reactionName];
-        console.log(action)
-        console.log(reaction)
-        if (!action || !reaction) {
+        const ar = this.manageService.checkActionReaction(actionName, actionApi, reactionName, reactionApi, parameters);
+        if (!ar) {
             return reply.status(400).send('Bad Request. Invalid data format.');
         }
         const existingActionReaction = await this.manageService.findActionReaction(userId, actionName, actionApi, reactionName, reactionApi, parameters);

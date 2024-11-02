@@ -12,7 +12,7 @@ export const ACTIONS_REACTIONS = {
 
         },
         reactions: {
-            playMusic: { parameters: { trackId: 'string'} },
+            playMusic: { parameters: { musicName: 'string'} },
         },
     },
     Nasa: {
