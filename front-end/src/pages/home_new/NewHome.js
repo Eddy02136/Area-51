@@ -37,7 +37,7 @@ const NewHomePage = () => {
                     setBackgroundColor("linear-gradient(-45deg, #410a0a, #732201, #29170f, #5c1800)"); // orange pour Mars
                     break;
                 case "earth":
-                    setBackgroundColor("linear-gradient(-45deg, #3d4f7a, #030e20, #071036, #00106a, #010521)"); // bleu pour Terre
+                    setBackgroundColor("linear-gradient(-45deg, #3d4f7a, #030e20, #071036, #00106a, #010500)"); // bleu pour Terre
                     break;
                 case "neptune":
                     setBackgroundColor("linear-gradient(-45deg, #253f4d, #000d22, #001b2b, #004567, #002021)"); // bleu pour Neptune
@@ -63,15 +63,22 @@ const NewHomePage = () => {
         setIsClicked(!isClicked);
         setPlanetAnimationStates((prevStates) => ({
             ...prevStates,
-            [planet]: false, // Réinitialise l'animation pour la planète cliquée
+            [planet]: false,
         }));
     };
 
     const handleAnimationEnd = (planet) => {
         setPlanetAnimationStates((prevStates) => ({
             ...prevStates,
-            [planet]: true, // Marque l'animation comme terminée pour la planète
+            [planet]: true,
         }));
+    };
+
+    const handlePlanetContainerClick = (planet, event) => {
+        // Condition pour vérifier que le clic vient bien du conteneur, et non d’un élément interne
+        if (event.target === event.currentTarget) {
+            handleClick(planet);
+        }
     };
 
     const togglePopup = () => {
@@ -93,39 +100,39 @@ const NewHomePage = () => {
 
                     >
                         <Neptune />
-                        <NeptuneCircle type="apis" className={planetAnimationStates.neptune ? "visible" : ""} />
                     </div>
+                        <NeptuneCircle type="apis" className={planetAnimationStates.neptune ? "visible" : ""} />
                     <div
                         className={`mars ${selectedPlanet === "mars" ? "centered" : "animated"} ${selectedPlanet && selectedPlanet !== "mars" ? "disabled" : ""}`}
                         onClick={() => (!selectedPlanet || selectedPlanet === "mars") && handleClick("mars")}
                         onAnimationEnd={() => handleAnimationEnd("mars")}
                     >
                         <Mars />
-                        <MarsCircle type="apis" className={planetAnimationStates.mars ? "visible" : ""} />
                     </div>
+                        <MarsCircle type="apis" className={planetAnimationStates.mars ? "visible" : ""} />
                     <div
                         className={`earth ${selectedPlanet === "earth" ? "centered" : "animated"} ${selectedPlanet && selectedPlanet !== "earth" ? "disabled" : ""}`}
                         onClick={() => (!selectedPlanet || selectedPlanet === "earth") && handleClick("earth")}
                         onAnimationEnd={() => handleAnimationEnd("earth")}
                     >
                         <Earth />
-                        <EarthCircle type="apis" className={planetAnimationStates.earth ? "visible" : ""} />
                     </div>
+                        <EarthCircle type="apis" className={planetAnimationStates.earth ? "visible" : ""} />
                     <div
                         className={`earth-moon ${selectedPlanet === "earthMoon" ? "centered" : "animated"} ${selectedPlanet && selectedPlanet !== "earthMoon" ? "disabled" : ""}`}
                         onClick={() => (!selectedPlanet || selectedPlanet === "earthMoon") && handleClick("earthMoon")}
                         onAnimationEnd={() => handleAnimationEnd("earthMoon")}
                     >
                         <EarthMoon />
-                        <MoonCircle type="apis" className={planetAnimationStates.earthMoon ? "visible" : ""} />
                     </div>
+                        <MoonCircle type="apis" className={planetAnimationStates.earthMoon ? "visible" : ""} />
                     <div className="help">
                         <button 
                             onClick={togglePopup} 
                             className={`help-button ${selectedPlanet ? "disabled" : ""}`}
                             disabled={!!selectedPlanet}
                         > 
-                            Aide 
+                            Help 
                         </button>
                         <HelpPopUp isOpen={isOpen} togglePopup={togglePopup} />
                     </div>

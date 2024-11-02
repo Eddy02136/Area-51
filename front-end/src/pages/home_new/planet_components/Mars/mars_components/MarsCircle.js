@@ -11,7 +11,7 @@ const MarsCircle = ({ type, className }) => {
         apis: [
             { top: "10%", left: "80.6%" }, // Up right
             { top: "50%", left: "96.5%" }, // Middle right
-            { top: "85%", left: "78%" }, // Down right
+            { top: "85%", left: "78%" },   // Down right
             { top: "83%", left: "12.4%" }, // Down left
             { top: "50%", left: "-3.5%" }, // Middle left
             { top: "10%", left: "12.5%" }, // Up left

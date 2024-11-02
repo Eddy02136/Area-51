@@ -305,7 +305,7 @@
 .centered {
     animation:
         moveToCenter 1.5s forwards,
-        continueAnimation 1s 0.5s forwards;
+        continueAnimation 0.5s 0.5s forwards;
     transform-origin: center center;
     z-index: 10;
 }
