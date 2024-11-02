@@ -16,6 +16,12 @@ export const ACTIONS_REACTIONS = {
                 description: 'Play music of your choice (precise the name of the artist) on Spotify',
                 parameters: { musicName: 'string'}
             },
+            playPlaylist: {
+                description: 'Lunch playlist of your choice',
+                parameters: {
+                    playlistName: 'string'
+                }
+            }
         },
     },
     Nasa: {

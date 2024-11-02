@@ -77,6 +77,34 @@ export class SpotifyService {
     return tracks.length > 0 ? tracks[0].id : null;
   }
 
+  async getUserPlaylists(accessToken: string) {
+    try {
+      const response = await axios.get('https://api.spotify.com/v1/me/playlists', {
+        headers: {
+          Authorization: `Bearer ${accessToken}`,
+          'Content-Type': 'application/json'
+        },
+        params: { limit: 100 }
+      });
+
+      return response.data.items;
+    } catch (error) {
+      console.error('Failed to retrieve user playlists:', error.response ? error.response.data : error.message);
+      return [];
+    }
+  }
+
+  async getPlaylistUriByName(accessToken: string, playlistName: string) {
+    const playlists = await this.getUserPlaylists(accessToken);
+    const foundPlaylist = playlists.find(playlist => playlist.name.toLowerCase() === playlistName.toLowerCase());
+
+    if (foundPlaylist) {
+      return foundPlaylist.uri;
+    } else {
+      return null;
+    }
+  }
+
   async playMusic(accessToken: string, musicName: string): Promise<string> {
     const trackId = await this.searchTrack(musicName, accessToken);
     const playUrl = 'https://api.spotify.com/v1/me/player/play';
@@ -94,6 +122,23 @@ export class SpotifyService {
       return 'Track started playing successfully!';
     } catch (error) {
       console.error('Failed to play music:', error);
+    }
+  }
+
+  async playSpotifyPlaylist(accessToken, playlistName: string) {
+    try {
+      const playlistUri = await this.getPlaylistUriByName(accessToken, playlistName);
+      const playUrl = 'https://api.spotify.com/v1/me/player/play';
+      const headers = {
+        Authorization: `Bearer ${accessToken}`,
+        'Content-Type': 'application/json',
+      };
+      const body = {
+        context_uri: playlistUri
+      };
+      const response = await axios.put(playUrl, body, { headers });
+    } catch (error) {
+      console.error('Failed to lunch playlist :', error.response ? error.response.data : error.message);
     }
   }
 
