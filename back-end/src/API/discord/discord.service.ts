@@ -8,6 +8,8 @@ import {UsersService} from "../../users/users.service";
 export class DiscordService {
   private lastGlobalName: string | null = null;
   private isCurrentNameInit: boolean = false
+  private lastNumberServer: string | null = null;
+  private isCurrentNumberServerInit: boolean = false;
 
   constructor(
       private readonly configService: ConfigService,
@@ -87,6 +89,28 @@ export class DiscordService {
       }
     } catch (error) {
       throw new Error(`Failed to getUsername: ${error.message}`);
+    }
+  }
+
+  async checkJoinOtherServerDiscord(accessToken: string): Promise<boolean> {
+    try {
+      const response = await axios.get('https://discord.com/api/users/@me/guilds', {
+        headers: {Authorization: `Bearer ${accessToken}`},
+      });
+      const currentNumberServer =  response.data.length;
+      if (!this.isCurrentNumberServerInit) {
+        this.lastNumberServer = currentNumberServer
+        this.isCurrentNumberServerInit = true
+      }
+      if (!currentNumberServer) return false;
+      if (currentNumberServer !== this.lastNumberServer) {
+        this.lastNumberServer = currentNumberServer;
+        return true;
+      } else {
+        return false;
+      }
+    }  catch (error) {
+      throw new Error(`Failed to all serverDiscord: ${error.message}`);
     }
   }
 
