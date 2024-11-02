@@ -55,7 +55,7 @@ export class SpotifyService {
       const { access_token, refresh_token, expires_in } = response.data;
       return { accessToken: access_token, refreshToken: refresh_token, expiresIn: expires_in };
     } catch (error) {
-      throw new Error(`Failed to get Spotify access token: ${error.response?.data?.error?.message || error.message}`);
+      throw new Error(`Failed to get Spotify access token: ${error}`);
     }
   }
 
@@ -89,7 +89,7 @@ export class SpotifyService {
 
       return response.data.items;
     } catch (error) {
-      console.error('Failed to retrieve user playlists:', error.response ? error.response.data : error.message);
+      console.error('Failed to retrieve user playlists:', error);
       return [];
     }
   }
@@ -138,7 +138,7 @@ export class SpotifyService {
       };
       const response = await axios.put(playUrl, body, { headers });
     } catch (error) {
-      console.error('Failed to lunch playlist :', error.response ? error.response.data : error.message);
+      console.error('Failed to lunch playlist :', error);
     }
   }
 
