@@ -1,7 +1,8 @@
-import { Controller, Get, UseGuards } from '@nestjs/common';
+import {Controller, Get, Response, UseGuards} from '@nestjs/common';
 import { NasaService } from './nasa.service';
 import {ApiHeader, ApiOperation, ApiResponse, ApiTags} from '@nestjs/swagger';
 import { AuthGuard } from '@nestjs/passport';
+import {FastifyReply} from "fastify";
 
 @Controller('nasa')
 @ApiTags('Nasa')
