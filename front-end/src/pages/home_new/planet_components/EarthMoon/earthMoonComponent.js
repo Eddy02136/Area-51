@@ -10,7 +10,7 @@ const EarthMoon = () => {
       <Canvas className="canvas">
         <CameraControls />
         <directionalLight intensity={1} />
-        <ambientLight intensity={20} />
+        <ambientLight intensity={12} />
         <Suspense fallback="loading">
           <EMSphere />
         </Suspense>

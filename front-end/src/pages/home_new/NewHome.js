@@ -3,16 +3,16 @@ import { useNavigate } from "react-router-dom";
 import "./NewHome.css";
 import "./stars.css";
 import Mars from "./planet_components/Mars/marsComponent.js";
-import Earth from "./planet_components/src/components/Earth/earthComponent.js";
+import Earth from "./planet_components/Earth/earthComponent.js";
 import Neptune from "./planet_components/Neptune/neptuneComponent.js";
 import EarthMoon from "./planet_components/EarthMoon/earthMoonComponent";
-import OpeningMenu from "./planet_components/OpeningMenu/OpeningMenu.js";
+import HelpPopUp from "../../components/helpButton/HelpPopUp.js";
 
 import createStars from "./stars";
 
 const NewHomePage = () => {
     const starsContainerRef = useRef(null);
-    const [isRadialMenuOpen, setIsRadialMenuOpen] = useState(false);
+    const [isOpen, setIsOpen] = useState(false);
 
     useEffect(() => {
         createStars(starsContainerRef.current);
@@ -33,10 +33,16 @@ const NewHomePage = () => {
     const handleEarthMoonClick = () => {
         alert("Bienvenue sur la Lune de la Terre !");
     };
+
+    const togglePopup = () => {
+        setIsOpen(!isOpen);
+    };
+
     return (
         <div className="new-home-page">
             <header className="nh-header">
                 <h1 className="nh-title"> AREA-51</h1>
+  
                 <div ref={starsContainerRef} className="stars-container"></div>
                 <div className="planet-container">
                     <div className="neptune" onClick={handleNeptuneClick}>
@@ -44,7 +50,6 @@ const NewHomePage = () => {
                     </div>
                     <div className="mars" onClick={handleMarsClick}>
                         <Mars />
-                        {isRadialMenuOpen && <OpeningMenu />}
                     </div>
                     <div className="earth" onClick={handleEarthClick}>
                         <Earth />
@@ -52,6 +57,10 @@ const NewHomePage = () => {
                     <div className="earth-moon" onClick={handleEarthMoonClick}>
                         <EarthMoon />
                     </div>
+                    <div className="help">
+                    <button onClick={togglePopup} className="help-button"> Aide </button>
+                    <HelpPopUp isOpen={isOpen} togglePopup={togglePopup} />
+                </div>
                 </div>
             </header>
         </div>
