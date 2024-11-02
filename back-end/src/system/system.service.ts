@@ -20,7 +20,7 @@ export class SystemService implements OnModuleInit, OnModuleDestroy {
     'getIssPos': 120000,
     'newVideoSpaceX': 3600000,
     'getViewerNasa': 300000,
-    'streamerInLive': 30000,
+    'streamerInLive': 300000,
     'followingUserGithub': 300000,
     'changeUserGithub': 300000,
     'followersUserGithub': 300000,
