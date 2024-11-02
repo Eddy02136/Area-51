@@ -18,7 +18,7 @@ export class SystemService implements OnModuleInit, OnModuleDestroy {
     'getIssPos': 120000,
     'newVideoSpaceX': 3600000,
     'getViewerNasa': 300000,
-    'streamerInLive': 30000,
+    'streamerInLive': 300000,
   };
 
   private actionTimers: Map<string, NodeJS.Timeout> = new Map();

@@ -167,7 +167,7 @@ export class TwitchService {
 
       return response.data;
     } catch (error) {
-      throw new Error(`Failed to sendMessageTwitch: ${error.message}`);
+      console.error(`Failed to sendTwitchMessage: ${error.message}`);
     }
   }
 

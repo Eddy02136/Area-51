@@ -93,7 +93,7 @@ export class SpotifyService {
       await axios.put(playUrl, body, { headers });
       return 'Track started playing successfully!';
     } catch (error) {
-      throw new Error(`Failed to play track: ${error.response?.data?.error?.message || error.message}`);
+      console.error('Failed to play music:', error);
     }
   }
 
@@ -126,7 +126,6 @@ export class SpotifyService {
       await this.usersService.saveToken('Spotify', access_token, refreshToken, expires_in, userId);
     } catch (error) {
       console.error('Error refreshing Spotify token:', error);
-      throw new Error('Failed to refresh Spotify token');
     }
   }
 }
