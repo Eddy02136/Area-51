@@ -50,7 +50,42 @@ export class ManageService {
         return this.actionReactionModel.findByIdAndDelete(id);
     }
 
-    async getInfoActionReaction() {
-        return ACTIONS_REACTIONS;
+    async updateActionReaction(id: string, updateData: any): Promise<boolean> {
+        const check = this.checkActionReaction(updateData.actionName, updateData.actionApi, updateData.reactionName, updateData.reactionApi, updateData.parameters);
+        if (!check) {
+            return false;
+        }
+        await this.actionReactionModel.findByIdAndUpdate(id, updateData);
+        return true;
+    }
+
+    checkParams(expectedParams: Record<string, string>, actualParams: Record<string, any>): boolean {
+        for (const [key, type] of Object.entries(expectedParams)) {
+            if (!(key in actualParams) || typeof actualParams[key] !== type) {
+                return false;
+            }
+        }
+        return true;
+    }
+
+    checkActionReaction(actionName: string, actionApi: string, reactionName: string, reactionApi: string, parameters: any): boolean {
+        const actionApiName = ACTIONS_REACTIONS[actionApi];
+        const reactionApiName = ACTIONS_REACTIONS[reactionApi];
+        if (!actionApiName || !reactionApiName) {
+            return false
+        }
+        const action = ACTIONS_REACTIONS[actionApi]?.actions[actionName];
+        const reaction = ACTIONS_REACTIONS[reactionApi]?.reactions[reactionName];
+        if (!action || !reaction) {
+            return false
+        }
+        const expectedActionParams = action.parameters || {};
+        const expectedReactionParams = reaction.parameters || {};
+        const isValidActionParams = this.checkParams(expectedActionParams, parameters);
+        const isValidReactionParams = this.checkParams(expectedReactionParams, parameters);
+        if (!isValidActionParams || !isValidReactionParams) {
+            return false;
+        }
+        return true;
     }
 }

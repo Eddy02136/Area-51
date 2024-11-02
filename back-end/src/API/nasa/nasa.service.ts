@@ -1,11 +1,16 @@
-import { Injectable } from '@nestjs/common';
-import { HttpService } from '@nestjs/axios';
-import { lastValueFrom } from 'rxjs';
+import {Injectable} from '@nestjs/common';
+import {HttpService} from '@nestjs/axios';
+import {lastValueFrom} from 'rxjs';
 import {haversine} from "../../utils/haversine";
+import axios from "axios";
+import {ConfigService} from "@nestjs/config";
 
 @Injectable()
 export class NasaService {
-  constructor(private readonly httpService: HttpService) {}
+  constructor(
+      private readonly httpService: HttpService,
+      private readonly configService: ConfigService
+  ) {}
 
   private readonly CITY_COORDINATES: { [key: string]: { latitude: number; longitude: number } } = {
     'New-York': { latitude: 40.712784, longitude: -74.005941 },
@@ -35,5 +40,14 @@ export class NasaService {
       return true;
     }
     return false;
+  }
+
+  async getImageOfTheDay()
+  {
+    const nasaUrl = "https://api.nasa.gov/planetary/apod?api_key=" + this.configService.get<string>('API_KEY_NASA');;
+
+    const response = await axios.get(nasaUrl)
+
+    return response.data.url;
   }
 }

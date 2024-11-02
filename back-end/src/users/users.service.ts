@@ -82,7 +82,6 @@ export class UsersService {
   }
 
   async saveToken(apiName: string, accessToken: string, refreshToken: string | null, expiresIn: number, userId: string): Promise<void> {
-    const expiresAt = new Date(Date.now() + expiresIn * 1000);
     const user = await this.userModel.findOne({ _id: userId });
 
     if (!user) {
@@ -95,7 +94,7 @@ export class UsersService {
       apiName,
       accessToken,
       ...(refreshToken && { refreshToken }),
-      ...(expiresAt && { expiresAt})
+      ...(expiresIn > 0 && { expiresAt: new Date(Date.now() + expiresIn * 1000) })
     };
     if (existingTokenIndex > -1) {
       user.apiTokens[existingTokenIndex] = apiToken;
@@ -131,7 +130,7 @@ export class UsersService {
     const apiToken: ApiToken = user.apiTokens.find((token: ApiToken): boolean => token.apiName === apiName);
 
     if (!apiToken) {
-      return null;
+      throw new Error('User not connected')
     }
     return {refreshToken: apiToken.refreshToken, expiresAt: apiToken.expiresAt};
   }

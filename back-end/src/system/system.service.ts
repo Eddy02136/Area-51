@@ -2,6 +2,7 @@ import {Injectable, OnModuleDestroy, OnModuleInit} from "@nestjs/common";
 import { InjectModel } from "@nestjs/mongoose";
 import {Model, Types} from "mongoose";
 import { SpotifyService } from "../API/spotify/spotify.service";
+import { GithubService } from "../API/github/github.service";
 import { NasaService } from "../API/nasa/nasa.service";
 import { ActionReaction } from "../schema/ActionReaction.schema";
 import { haversine } from "../utils/haversine";
@@ -10,12 +11,16 @@ import {use} from "passport";
 import {SpotifyController} from "../API/spotify/spotify.controller";
 import {YoutubeService} from "../API/youtube/youtube.service";
 import * as console from "node:console";
+import {TwitchService} from "../API/twitch/twitch.service";
 
 @Injectable()
 export class SystemService implements OnModuleInit, OnModuleDestroy {
   private readonly actionIntervals: { [key: string]: number } = {
     'getIssPos': 120000,
     'newVideoSpaceX': 3600000,
+    'getViewerNasa': 300000,
+    'streamerInLive': 300000,
+    'followingUserGithub': 30000,
   };
 
   private actionTimers: Map<string, NodeJS.Timeout> = new Map();
@@ -25,6 +30,8 @@ export class SystemService implements OnModuleInit, OnModuleDestroy {
     private readonly nasaService: NasaService,
     private readonly userService: UsersService,
     private readonly youtubeService: YoutubeService,
+    private readonly twitchService: TwitchService,
+    private readonly githubService: GithubService,
     @InjectModel(ActionReaction.name) private actionReactionModel: Model<ActionReaction>,
   ) {}
 
@@ -60,13 +67,26 @@ export class SystemService implements OnModuleInit, OnModuleDestroy {
 
   async checkActions(actionName: string, ar: any): Promise<boolean> {
     try {
+      let token: string = ""
       switch (actionName) {
         case 'getIssPos':
           return await this.nasaService.getIssPosAction(ar);
         case 'newVideoSpaceX':
           await this.youtubeService.refreshYoutubeToken(ar.userId);
-          const token = await this.userService.getToken('Youtube', ar.userId);
+          token = await this.userService.getToken('Youtube', ar.userId);
           return await this.youtubeService.startCheckingForNewVideos(token);
+        case 'getViewerNasa':
+          await this.twitchService.refreshTwitchToken(ar.userId);
+          token = await this.userService.getToken('Twitch', ar.userId);
+          return await this.twitchService.checkTwitchNasaViewerCount(token);
+        case 'streamerInLive':
+          await this.twitchService.refreshTwitchToken(ar.userId);
+          token = await this.userService.getToken('Twitch', ar.userId);
+          const { streamerName } = ar.parameters;
+          return await this.twitchService.checkTwitchStreamerLive(token, streamerName);
+        case 'followingUserGithub':
+          token = await this.userService.getToken('Github', ar.userId);
+          return await this.githubService.checkNewFollowing(token)
       }
     } catch (error) {
       console.error(`Error checking actions for ${actionName}:`, error);
@@ -76,12 +96,34 @@ export class SystemService implements OnModuleInit, OnModuleDestroy {
 
   async lunchReactions(ar: any): Promise<void> {
     const userId = ar.userId;
+    let token: string = ""
     switch (ar.reactionName) {
       case 'playMusic':
         await this.spotifyService.refreshToken(userId);
-        const token = await this.userService.getToken('Spotify', userId);
-        const { trackId } = ar.parameters;
-        await this.spotifyService.playMusic(token, trackId);
+        token = await this.userService.getToken('Spotify', userId);
+        const { musicName } = ar.parameters;
+        await this.spotifyService.playMusic(token, musicName);
+        break;
+      case 'postCommentary':
+        await this.youtubeService.refreshYoutubeToken(userId);
+        token = await this.userService.getToken('YouTube', userId);
+        const { videoUrl: cVideoUrl, message: ytMessage } = ar.parameters;
+        await this.youtubeService.postComment(token, cVideoUrl, ytMessage);
+        break;
+      case 'likeVideo':
+        await  this.youtubeService.refreshYoutubeToken(userId);
+        token = await this.userService.getToken('YouTube', userId);
+        const { videoUrl: lVideoUrl } = ar.parameters;
+        await this.youtubeService.likeVideo(token, lVideoUrl);
+        break;
+      case 'sendMessage':
+        await this.twitchService.refreshTwitchToken(userId);
+        token = await this.userService.getToken('Twitch', userId);
+        const { streamerName, message: tMessage } = ar.parameters;
+        await this.twitchService.sendTwitchMessage(streamerName, token, tMessage);
+        break;
+      default:
+        console.error(`Valeur inconnue pour reactionName: ${ar.reactionName}`);
     }
   }
 }

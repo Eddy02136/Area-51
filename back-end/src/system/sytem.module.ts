@@ -7,6 +7,8 @@ import { MongooseModule } from "@nestjs/mongoose";
 import { ActionReaction, ActionReactionSchema } from "../schema/ActionReaction.schema";
 import {UsersModule} from "../users/users.module";
 import {YoutubeModule} from "../API/youtube/youtube.module";
+import {TwitchModule} from "../API/twitch/twitch.module";
+import {GithubModule} from "../API/github/github.module";
 
 @Module({
   imports: [
@@ -14,6 +16,8 @@ import {YoutubeModule} from "../API/youtube/youtube.module";
     NasaModule,
     UsersModule,
     YoutubeModule,
+    TwitchModule,
+    GithubModule,
     MongooseModule.forFeature([{ name: ActionReaction.name, schema: ActionReactionSchema }]),
   ],
   controllers: [SystemController],

@@ -1,4 +1,4 @@
-import {Body, Controller, Delete, Get, Headers, Param, Post, Response, UseGuards} from "@nestjs/common";
+import {Body, Controller, Delete, Get, Headers, Param, Post, Put, Response, UseGuards} from "@nestjs/common";
 import {ApiBearerAuth, ApiBody, ApiHeader, ApiOperation, ApiResponse, ApiTags} from "@nestjs/swagger";
 import {ManageService} from "./manage.service";
 import * as jwt from 'jsonwebtoken';
@@ -7,7 +7,6 @@ import {CreateActionReactionDto} from "./dto/create-action-reaction.dto";
 import {AuthGuard} from "@nestjs/passport";
 import {FastifyReply} from "fastify";
 import {ACTIONS_REACTIONS} from "./manage.constant";
-
 
 @Controller('manage')
 @ApiTags('Manage')
@@ -29,21 +28,11 @@ export class ManageController {constructor( private readonly manageService: Mana
         const userId = (decoded as { sub: string }).sub;
 
         const { actionName, actionApi, reactionName, reactionApi, parameters, schedule } = createActionReactionDto;
-        if (!actionName || !actionApi || !reactionName || !reactionApi || !parameters) {
+        if (!actionName || !actionApi || !reactionName || !reactionApi) {
             return reply.status(400).send('Bad Request. Invalid data format.');
         }
-        const actionApiName = ACTIONS_REACTIONS[actionApi];
-        const reactionApiName = ACTIONS_REACTIONS[reactionApi];
-        console.log(actionApiName);
-        console.log(reactionApiName);
-        if (!actionApiName || !reactionApiName) {
-            return reply.status(400).send('Bad Request. Invalid data format.');
-        }
-        const action = ACTIONS_REACTIONS[actionApi]?.actions[actionName];
-        const reaction = ACTIONS_REACTIONS[reactionApi]?.reactions[reactionName];
-        console.log(action)
-        console.log(reaction)
-        if (!action || !reaction) {
+        const ar = this.manageService.checkActionReaction(actionName, actionApi, reactionName, reactionApi, parameters);
+        if (!ar) {
             return reply.status(400).send('Bad Request. Invalid data format.');
         }
         const existingActionReaction = await this.manageService.findActionReaction(userId, actionName, actionApi, reactionName, reactionApi, parameters);
@@ -88,6 +77,29 @@ export class ManageController {constructor( private readonly manageService: Mana
     }
 
     @UseGuards(AuthGuard('jwt'))
+    @ApiOperation({ summary: 'Update an action reactions for a user' })
+    @ApiHeader({ name: 'authorization', required: true, description: 'Bearer token for Area51 API access' })
+    @ApiHeader({ name: 'id', required: true, description: 'action reaction id to update it'})
+    @ApiBody({ type: CreateActionReactionDto })
+    @ApiResponse({ status: 200, description: 'Action reaction update successfully' })
+    @ApiResponse({ status: 400, description: 'Bad Request. Invalid data.' })
+    @ApiResponse({ status: 404, description: 'Action-reaction not found.' })
+    @ApiResponse({ status: 401, description: 'Unauthorized. Invalid token.'})
+    @ApiResponse({ status: 500, description: 'Internal server error.' })
+    @Put('update-action-reaction/:id')
+    async updateActionReaction(@Param('id') id: string, @Body() updateData: CreateActionReactionDto, @Response() reply: FastifyReply) {
+        try {
+            const check = await this.manageService.updateActionReaction(id, updateData);
+            if (!check) {
+                return reply.status(400).send('Bad Request. Invalid data format.');
+            }
+            return reply.status(200).send({ message: 'Action reaction updated successfully.' });
+        } catch (error) {
+            return reply.status(500).send({ message: 'Internal server error.' });
+        }
+    }
+
+    @UseGuards(AuthGuard('jwt'))
     @ApiOperation({ summary: 'Delete an action reactions for a user' })
     @ApiHeader({ name: 'authorization', required: true, description: 'Bearer token for Area51 API access' })
     @ApiHeader({ name: 'id', required: true, description: 'action reaction id to delete it'})
@@ -115,6 +127,7 @@ export class ManageController {constructor( private readonly manageService: Mana
                 {
                     "service": "string",
                     "name": "string",
+                    "description": "string",
                     "parameters": {
                         "parameterName": "string"
                     }
@@ -131,6 +144,7 @@ export class ManageController {constructor( private readonly manageService: Mana
                 actions.push({
                     service: serviceName,
                     name: actionName,
+                    description: service.actions[actionName].description,
                     parameters: service.actions[actionName].parameters
                 });
             });
@@ -148,6 +162,7 @@ export class ManageController {constructor( private readonly manageService: Mana
                 [
                     {
                         "service": "string",
+                        "description": "string",
                         "name": "string",
                         "parameters": {
                             "parameterName": "string"
@@ -165,6 +180,7 @@ export class ManageController {constructor( private readonly manageService: Mana
                 reactions.push({
                     service: serviceName,
                     name: reactionName,
+                    description: service.reactions[reactionName].description,
                     parameters: service.reactions[reactionName].parameters
                 });
             });
