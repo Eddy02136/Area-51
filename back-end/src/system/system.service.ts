@@ -2,6 +2,7 @@ import {Injectable, OnModuleDestroy, OnModuleInit} from "@nestjs/common";
 import { InjectModel } from "@nestjs/mongoose";
 import {Model, Types} from "mongoose";
 import { SpotifyService } from "../API/spotify/spotify.service";
+import { GithubService } from "../API/github/github.service";
 import { NasaService } from "../API/nasa/nasa.service";
 import { ActionReaction } from "../schema/ActionReaction.schema";
 import { haversine } from "../utils/haversine";
@@ -19,6 +20,7 @@ export class SystemService implements OnModuleInit, OnModuleDestroy {
     'newVideoSpaceX': 3600000,
     'getViewerNasa': 300000,
     'streamerInLive': 300000,
+    'followingUserGithub': 30000,
   };
 
   private actionTimers: Map<string, NodeJS.Timeout> = new Map();
@@ -29,6 +31,7 @@ export class SystemService implements OnModuleInit, OnModuleDestroy {
     private readonly userService: UsersService,
     private readonly youtubeService: YoutubeService,
     private readonly twitchService: TwitchService,
+    private readonly githubService: GithubService,
     @InjectModel(ActionReaction.name) private actionReactionModel: Model<ActionReaction>,
   ) {}
 
@@ -81,6 +84,9 @@ export class SystemService implements OnModuleInit, OnModuleDestroy {
           token = await this.userService.getToken('Twitch', ar.userId);
           const { streamerName } = ar.parameters;
           return await this.twitchService.checkTwitchStreamerLive(token, streamerName);
+        case 'followingUserGithub':
+          token = await this.userService.getToken('Github', ar.userId);
+          return await this.githubService.checkNewFollowing(token)
       }
     } catch (error) {
       console.error(`Error checking actions for ${actionName}:`, error);
