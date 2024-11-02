@@ -76,24 +76,42 @@ export class SystemService implements OnModuleInit, OnModuleDestroy {
         case 'newVideoSpaceX':
           await this.youtubeService.refreshYoutubeToken(ar.userId);
           token = await this.userService.getToken('Youtube', ar.userId);
+          if (token) {
+            return false;
+          }
           return await this.youtubeService.startCheckingForNewVideos(token);
         case 'getViewerNasa':
           await this.twitchService.refreshTwitchToken(ar.userId);
           token = await this.userService.getToken('Twitch', ar.userId);
+          if (token) {
+            return false;
+          }
           return await this.twitchService.checkTwitchNasaViewerCount(token);
         case 'streamerInLive':
           await this.twitchService.refreshTwitchToken(ar.userId);
           token = await this.userService.getToken('Twitch', ar.userId);
+          if (token) {
+            return false;
+          }
           const { streamerName } = ar.parameters;
           return await this.twitchService.checkTwitchStreamerLive(token, streamerName);
         case 'followingUserGithub':
           token = await this.userService.getToken('Github', ar.userId);
+          if (token) {
+            return false;
+          }
           return await this.githubService.checkNewFollowing(token)
         case 'changeUserGithub':
           token = await this.userService.getToken('Github', ar.userId);
+          if (token) {
+            return false;
+          }
           return await this.githubService.checkChangeGithubName(token);
         case 'followersUserGithub':
           token = await this.userService.getToken('Github', ar.userId);
+          if (token) {
+            return false;
+          }
           return await this.githubService.checkNewFollowers(token);
       }
     } catch (error) {
@@ -109,30 +127,45 @@ export class SystemService implements OnModuleInit, OnModuleDestroy {
       case 'playMusic':
         await this.spotifyService.refreshToken(userId);
         token = await this.userService.getToken('Spotify', userId);
+        if (token) {
+          return;
+        }
         const { musicName } = ar.parameters;
         await this.spotifyService.playMusic(token, musicName);
         break;
       case 'postCommentary':
         await this.youtubeService.refreshYoutubeToken(userId);
         token = await this.userService.getToken('YouTube', userId);
+        if (token) {
+          return;
+        }
         const { videoUrl: cVideoUrl, message: ytMessage } = ar.parameters;
         await this.youtubeService.postComment(token, cVideoUrl, ytMessage);
         break;
       case 'likeVideo':
         await  this.youtubeService.refreshYoutubeToken(userId);
         token = await this.userService.getToken('YouTube', userId);
+        if (token) {
+          return;
+        }
         const { videoUrl: lVideoUrl } = ar.parameters;
         await this.youtubeService.likeVideo(token, lVideoUrl);
         break;
       case 'sendMessage':
         await this.twitchService.refreshTwitchToken(userId);
         token = await this.userService.getToken('Twitch', userId);
+        if (token) {
+          return;
+        }
         const { streamerName, message: tMessage } = ar.parameters;
         await this.twitchService.sendTwitchMessage(streamerName, token, tMessage);
         break;
       case 'playPlaylist':
         await this.spotifyService.refreshToken(userId);
         token = await this.userService.getToken('Spotify', userId);
+        if (token) {
+          return;
+        }
         const { playlistName } = ar.parameters;
         await this.spotifyService.playSpotifyPlaylist(token, playlistName);
         break;

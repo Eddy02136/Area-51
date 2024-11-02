@@ -121,7 +121,7 @@ export class SpotifyService {
       await axios.put(playUrl, body, { headers });
       return 'Track started playing successfully!';
     } catch (error) {
-      console.error('Failed to play music:', error);
+      console.error('Failed to play music:', error.message);
     }
   }
 
@@ -138,12 +138,16 @@ export class SpotifyService {
       };
       const response = await axios.put(playUrl, body, { headers });
     } catch (error) {
-      console.error('Failed to lunch playlist :', error);
+      console.error('Failed to lunch playlist :', error.message);
     }
   }
 
   async refreshToken(userId: string) : Promise<void> {
-    const {refreshToken, expiresAt} = await this.usersService.getElemApiToken(userId, 'Spotify');
+    const data = await this.usersService.getElemApiToken(userId, 'Spotify');
+    if (!data) {
+      return;
+    }
+    const { refreshToken, expiresAt } = data
     const isTokenExpired = new Date() >= new Date(expiresAt);
     if (!isTokenExpired) {
       return;
@@ -170,7 +174,7 @@ export class SpotifyService {
       const { access_token, expires_in } = response.data;
       await this.usersService.saveToken('Spotify', access_token, refreshToken, expires_in, userId);
     } catch (error) {
-      console.error('Error refreshing Spotify token:', error);
+      console.error('Error refreshing Spotify token:', error.message);
     }
   }
 }
