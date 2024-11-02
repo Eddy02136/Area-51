@@ -104,6 +104,7 @@ export class ManageController {constructor( private readonly manageService: Mana
                 {
                     "service": "string",
                     "name": "string",
+                    "description": "string",
                     "parameters": {
                         "parameterName": "string"
                     }
@@ -120,6 +121,7 @@ export class ManageController {constructor( private readonly manageService: Mana
                 actions.push({
                     service: serviceName,
                     name: actionName,
+                    description: service.actions[actionName].description,
                     parameters: service.actions[actionName].parameters
                 });
             });
@@ -137,6 +139,7 @@ export class ManageController {constructor( private readonly manageService: Mana
                 [
                     {
                         "service": "string",
+                        "description": "string",
                         "name": "string",
                         "parameters": {
                             "parameterName": "string"
@@ -154,6 +157,7 @@ export class ManageController {constructor( private readonly manageService: Mana
                 reactions.push({
                     service: serviceName,
                     name: reactionName,
+                    description: service.reactions[reactionName].description,
                     parameters: service.reactions[reactionName].parameters
                 });
             });

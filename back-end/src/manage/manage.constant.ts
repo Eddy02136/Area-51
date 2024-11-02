@@ -12,12 +12,16 @@ export const ACTIONS_REACTIONS = {
 
         },
         reactions: {
-            playMusic: { parameters: { musicName: 'string'} },
+            playMusic: {
+                description: 'Play music of your choice (precise the name of the artist) on Spotify',
+                parameters: { musicName: 'string'}
+            },
         },
     },
     Nasa: {
         actions: {
             getIssPos: {
+                description: 'Gets the position of the iss',
                 parameters: {
                     city: 'string'
                 }
@@ -30,17 +34,20 @@ export const ACTIONS_REACTIONS = {
     Youtube: {
         actions: {
             newVideoSpaceX: {
+                description: 'Get when a new spacex video comes out',
                 parameters: {}
             }
         },
         reactions: {
             postCommentary: {
+                description: 'Post a comment on the video of your choice',
                 parameters: {
                     videoUrl: 'string',
                     message: 'string'
                 }
             },
             likeVideo: {
+                description: 'Like video from your choice',
                 parameters: {
                     videoUrl: 'string'
                 }
@@ -50,9 +57,11 @@ export const ACTIONS_REACTIONS = {
     Twitch: {
         actions: {
             getViewerNasa: {
+                description: 'Check if Nasa have more than 5000 viewers',
                 parameters: {}
             },
             streamerInLive: {
+                description: 'Get if a streamer is in live',
                 parameters: {
                     streamerName: 'string'
                 }
@@ -60,6 +69,7 @@ export const ACTIONS_REACTIONS = {
         },
         reactions: {
             sendMessage: {
+                description: 'Send a message in the stream chat',
                 parameters: {
                     streamerName: 'string',
                     message: 'string'

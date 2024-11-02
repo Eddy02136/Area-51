@@ -117,7 +117,7 @@ export class SystemService implements OnModuleInit, OnModuleDestroy {
         await this.twitchService.sendTwitchMessage(streamerName, token, tMessage);
         break;
       default:
-        console.log(`Valeur inconnue pour reactionName: ${ar.reactionName}`);
+        console.error(`Valeur inconnue pour reactionName: ${ar.reactionName}`);
     }
   }
 }

@@ -88,7 +88,7 @@ export class TwitchService {
 
       const headers = {
         'Client-ID': clientId,
-        'Authorization': twitchToken
+        'Authorization': `Bearer ${twitchToken}`
       };
 
       const response = await axios.get(url, { headers });
