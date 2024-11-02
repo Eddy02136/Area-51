@@ -80,52 +80,52 @@ export class SystemService implements OnModuleInit, OnModuleDestroy {
         case 'newVideoSpaceX':
           await this.youtubeService.refreshYoutubeToken(ar.userId);
           token = await this.userService.getToken('Youtube', ar.userId);
-          if (token) {
+          if (token === "") {
             return false;
           }
           return await this.youtubeService.startCheckingForNewVideos(token);
         case 'getViewerNasa':
           await this.twitchService.refreshTwitchToken(ar.userId);
           token = await this.userService.getToken('Twitch', ar.userId);
-          if (token) {
+          if (token === "") {
             return false;
           }
           return await this.twitchService.checkTwitchNasaViewerCount(token);
         case 'streamerInLive':
           await this.twitchService.refreshTwitchToken(ar.userId);
           token = await this.userService.getToken('Twitch', ar.userId);
-          if (token) {
+          if (token === "") {
             return false;
           }
           const { streamerName } = ar.parameters;
           return await this.twitchService.checkTwitchStreamerLive(token, streamerName);
         case 'followingUserGithub':
           token = await this.userService.getToken('Github', ar.userId);
-          if (token) {
+          if (token === "") {
             return false;
           }
           return await this.githubService.checkNewFollowing(token)
         case 'changeUserGithub':
           token = await this.userService.getToken('Github', ar.userId);
-          if (token) {
+          if (token === "") {
             return false;
           }
           return await this.githubService.checkChangeGithubName(token);
         case 'followersUserGithub':
           token = await this.userService.getToken('Github', ar.userId);
-          if (token) {
+          if (token === "") {
             return false;
           }
           return await this.githubService.checkNewFollowers(token);
         case 'checkChangeUserNameDiscord':
           token = await this.userService.getToken('Discord', ar.userId);
-          if (token) {
+          if (token === "") {
             return false;
           }
           return await this.discordService.checkUsernameDiscord(token)
         case 'checkJoinOtherServerDiscord':
           token = await this.userService.getToken('Discord', ar.userId);
-          if (token) {
+          if (token === "") {
             return false;
           }
           return this.discordService.checkJoinOtherServerDiscord(token)
@@ -143,7 +143,7 @@ export class SystemService implements OnModuleInit, OnModuleDestroy {
       case 'playMusic':
         await this.spotifyService.refreshToken(userId);
         token = await this.userService.getToken('Spotify', userId);
-        if (token) {
+        if (token === "") {
           return;
         }
         const { musicName } = ar.parameters;
@@ -152,7 +152,7 @@ export class SystemService implements OnModuleInit, OnModuleDestroy {
       case 'postCommentary':
         await this.youtubeService.refreshYoutubeToken(userId);
         token = await this.userService.getToken('YouTube', userId);
-        if (token) {
+        if (token === "") {
           return;
         }
         const { videoUrl: cVideoUrl, message: ytMessage } = ar.parameters;
@@ -161,7 +161,7 @@ export class SystemService implements OnModuleInit, OnModuleDestroy {
       case 'likeVideo':
         await  this.youtubeService.refreshYoutubeToken(userId);
         token = await this.userService.getToken('YouTube', userId);
-        if (token) {
+        if (token === "") {
           return;
         }
         const { videoUrl: lVideoUrl } = ar.parameters;
@@ -170,7 +170,7 @@ export class SystemService implements OnModuleInit, OnModuleDestroy {
       case 'sendMessage':
         await this.twitchService.refreshTwitchToken(userId);
         token = await this.userService.getToken('Twitch', userId);
-        if (token) {
+        if (token === "") {
           return;
         }
         const { streamerName, message: tMessage } = ar.parameters;
@@ -179,7 +179,7 @@ export class SystemService implements OnModuleInit, OnModuleDestroy {
       case 'playPlaylist':
         await this.spotifyService.refreshToken(userId);
         token = await this.userService.getToken('Spotify', userId);
-        if (token) {
+        if (token === "") {
           return;
         }
         const { playlistName } = ar.parameters;
