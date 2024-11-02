@@ -4,6 +4,8 @@ import {stringify} from "querystring";
 import axios from "axios";
 import * as process from "node:process";
 import {UsersService} from "../../users/users.service";
+import {ExtractJwt} from "passport-jwt";
+import fromAuthHeaderWithScheme = ExtractJwt.fromAuthHeaderWithScheme;
 
 @Injectable()
 export class TwitchService {
@@ -55,23 +57,24 @@ export class TwitchService {
     }
   }
 
-  async checkTwitchNasaLive(twitchToken: string): Promise<boolean> {
-    console.log('Nasa In live');
-    const nasaTwitchId = "151920918"
+  async checkTwitchStreamerLive(twitchToken: string, streamName: string): Promise<boolean> {
+    console.log(`Checking if ${streamName} is live on Twitch`);
     const clientId = process.env.TWITCH_CLIENT_ID;
     try {
-      const url = `https://api.twitch.tv/helix/streams?user_id=${nasaTwitchId}`;
+      const url = `https://api.twitch.tv/helix/search/channels?query=${encodeURIComponent(streamName)}`;
 
       const headers = {
         'Client-ID': clientId,
-        'Authorization': twitchToken
+        'Authorization': `Bearer ${twitchToken}`
       };
 
       const response = await axios.get(url, { headers });
       const streamData = response.data.data;
 
-      return streamData.length > 0 && streamData[0].type === 'live';
+      const streamer = streamData.find((channel: any) => channel.display_name.toLowerCase() === streamName.toLowerCase());
+      return streamer ? streamer.is_live : false;
     } catch (err) {
+      console.error(`Error checking Twitch live status for ${streamName}:`, err);
       return false;
     }
   }
@@ -108,7 +111,7 @@ export class TwitchService {
       const url = "https://api.twitch.tv/helix/users"
       const headers = {
         'Client-ID': clientId,
-        'Authorization': twitchToken
+        'Authorization': `Bearer ${twitchToken}`
       };
       const response = await axios.get(url, { headers })
       return response.data.data[0].id
@@ -117,20 +120,45 @@ export class TwitchService {
     }
   }
 
-  async sendTwitchNasaMessage(nasaTwitchId: string, senderId: any, twitchToken: string, message: string): Promise<any> {
+  async isStreamerLive(streamName: string, twitchToken: string): Promise<string | null> {
+    const clientId = process.env.TWITCH_CLIENT_ID;
+    const url = `https://api.twitch.tv/helix/search/channels?query=${encodeURIComponent(streamName)}`;
+
+    const headers = {
+      'Client-ID': clientId,
+      'Authorization': `Bearer ${twitchToken}`
+    };
+
+    const response = await axios.get(url, { headers });
+    const streamData = response.data.data;
+
+    const streamer = streamData.find((channel: any) =>
+        channel.display_name.toLowerCase() === streamName.toLowerCase() && channel.is_live
+    );
+
+    return streamer ? streamer.id : null;
+  }
+
+
+  async sendTwitchMessage(streamerName: string, twitchToken: string, message: string): Promise<any> {
     const clientId = process.env.TWITCH_CLIENT_ID;
 
     try {
       const url = "https://api.twitch.tv/helix/chat/messages";
+      const streamerId = await this.isStreamerLive(streamerName, twitchToken);
+      if (!streamerId) {
+        return;
+      }
+      const senderId = await this.getMyTwitchid(twitchToken);
 
       const headers = {
         'Client-ID': clientId,
-        'Authorization': twitchToken,
+        'Authorization': `Bearer ${twitchToken}`,
         'Content-Type': 'application/json'
       };
 
       const body = {
-        'broadcaster_id': nasaTwitchId,
+        'broadcaster_id': streamerId,
         'sender_id': senderId,
         'message': message
       };
@@ -169,9 +197,9 @@ export class TwitchService {
         },
       });
 
-      const { access_token, expires_in, refresh_token } = response.data;
+      const { access_token, expires_in} = response.data;
 
-      await this.usersService.saveToken('Twitch', access_token, refresh_token, expires_in, userId);
+      await this.usersService.saveToken('Twitch', access_token, refreshToken, expires_in, userId);
     } catch (error) {
       console.error('Error refreshing Twitch token:', error);
       throw new Error('Failed to refresh Twitch token');

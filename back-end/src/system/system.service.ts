@@ -18,7 +18,7 @@ export class SystemService implements OnModuleInit, OnModuleDestroy {
     'getIssPos': 120000,
     'newVideoSpaceX': 3600000,
     'getViewerNasa': 300000,
-    'nasaInLive': 300000,
+    'streamerInLive': 30000,
   };
 
   private actionTimers: Map<string, NodeJS.Timeout> = new Map();
@@ -76,10 +76,11 @@ export class SystemService implements OnModuleInit, OnModuleDestroy {
           await this.twitchService.refreshTwitchToken(ar.userId);
           token = await this.userService.getToken('Twitch', ar.userId);
           return await this.twitchService.checkTwitchNasaViewerCount(token);
-        case 'nasaInLive':
+        case 'streamerInLive':
           await this.twitchService.refreshTwitchToken(ar.userId);
           token = await this.userService.getToken('Twitch', ar.userId);
-          return await this.twitchService.checkTwitchNasaLive(token);
+          const { streamerName } = ar.parameters;
+          return await this.twitchService.checkTwitchStreamerLive(token, streamerName);
       }
     } catch (error) {
       console.error(`Error checking actions for ${actionName}:`, error);
@@ -100,8 +101,20 @@ export class SystemService implements OnModuleInit, OnModuleDestroy {
       case 'postCommentary':
         await this.youtubeService.refreshYoutubeToken(userId);
         token = await this.userService.getToken('YouTube', userId);
-        const { videoUrl, message } = ar.parameters;
-        await this.youtubeService.postComment(token, videoUrl, message);
+        const { videoUrl: cVideoUrl, message: ytMessage } = ar.parameters;
+        await this.youtubeService.postComment(token, cVideoUrl, ytMessage);
+        break;
+      case 'likeVideo':
+        await  this.youtubeService.refreshYoutubeToken(userId);
+        token = await this.userService.getToken('YouTube', userId);
+        const { videoUrl: lVideoUrl } = ar.parameters;
+        await this.youtubeService.likeVideo(token, lVideoUrl);
+        break;
+      case 'sendMessage':
+        await this.twitchService.refreshTwitchToken(userId);
+        token = await this.userService.getToken('Twitch', userId);
+        const { streamerName, message: tMessage } = ar.parameters;
+        await this.twitchService.sendTwitchMessage(streamerName, token, tMessage);
         break;
       default:
         console.log(`Valeur inconnue pour reactionName: ${ar.reactionName}`);

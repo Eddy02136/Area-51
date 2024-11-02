@@ -58,7 +58,7 @@ export class TwitchController {
 
   async checkTwitchNasaLive(twitchToken: string, @Response() reply: FastifyReply) {
     try {
-      const response = await this.twitchService.checkTwitchNasaLive(twitchToken)
+      const response = await this.twitchService.checkTwitchStreamerLive(twitchToken, "Nasa");
 
       reply.status(200).send({message: response})
     } catch(error) {
@@ -71,9 +71,7 @@ export class TwitchController {
       return reply.status(400).send('Access token is required');
     }
     try {
-      const nasaTwitchId = "151920918"
-      const senderId = await this.twitchService.getMyTwitchid(twitchToken)
-      const response = await this.twitchService.sendTwitchNasaMessage(nasaTwitchId, senderId, twitchToken, "")
+      const response = await this.twitchService.sendTwitchMessage("Nasa", twitchToken, "")
 
       reply.status(200).send({message: response})
     } catch (error) {

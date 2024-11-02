@@ -52,13 +52,16 @@ export const ACTIONS_REACTIONS = {
             getViewerNasa: {
                 parameters: {}
             },
-            nasaInLive: {
-                parameters: {}
+            streamerInLive: {
+                parameters: {
+                    streamerName: 'string'
+                }
             }
         },
         reactions: {
-            sendNasaMessage: {
+            sendMessage: {
                 parameters: {
+                    streamerName: 'string',
                     message: 'string'
                 }
             }
