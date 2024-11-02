@@ -51,14 +51,27 @@ const NewHomePage = () => {
         }
     };
 
+    const [planetAnimationStates, setPlanetAnimationStates] = useState({
+        mars: false,
+        earth: false,
+        neptune: false,
+        earthMoon: false,
+    });
+
     const handleClick = (planet) => {
         togglePlanetCentering(planet);
         setIsClicked(!isClicked);
-        setIsAnimationComplete(false);
+        setPlanetAnimationStates((prevStates) => ({
+            ...prevStates,
+            [planet]: false, // Réinitialise l'animation pour la planète cliquée
+        }));
     };
 
-    const handleAnimationEnd = () => {
-        setIsAnimationComplete(true);
+    const handleAnimationEnd = (planet) => {
+        setPlanetAnimationStates((prevStates) => ({
+            ...prevStates,
+            [planet]: true, // Marque l'animation comme terminée pour la planète
+        }));
     };
 
     const togglePopup = () => {
@@ -76,40 +89,36 @@ const NewHomePage = () => {
                     <div
                         className={`neptune ${selectedPlanet === "neptune" ? "centered" : "animated"} ${selectedPlanet && selectedPlanet !== "neptune" ? "disabled" : ""}`}
                         onClick={() => (!selectedPlanet || selectedPlanet === "neptune") && handleClick("neptune")}
-                        onAnimationEnd={handleAnimationEnd}
+                        onAnimationEnd={() => handleAnimationEnd("neptune")}
 
                     >
                         <Neptune />
-                        <NeptuneCircle type="apis" className={isAnimationComplete ? "visible" : ""} />
+                        <NeptuneCircle type="apis" className={planetAnimationStates.neptune ? "visible" : ""} />
                     </div>
                     <div
                         className={`mars ${selectedPlanet === "mars" ? "centered" : "animated"} ${selectedPlanet && selectedPlanet !== "mars" ? "disabled" : ""}`}
                         onClick={() => (!selectedPlanet || selectedPlanet === "mars") && handleClick("mars")}
-                        onAnimationEnd={handleAnimationEnd}
+                        onAnimationEnd={() => handleAnimationEnd("mars")}
                     >
                         <Mars />
-                        <MarsCircle type="apis" className={isAnimationComplete ? "visible" : ""} />
+                        <MarsCircle type="apis" className={planetAnimationStates.mars ? "visible" : ""} />
                     </div>
                     <div
                         className={`earth ${selectedPlanet === "earth" ? "centered" : "animated"} ${selectedPlanet && selectedPlanet !== "earth" ? "disabled" : ""}`}
                         onClick={() => (!selectedPlanet || selectedPlanet === "earth") && handleClick("earth")}
-                        onAnimationEnd={handleAnimationEnd}
+                        onAnimationEnd={() => handleAnimationEnd("earth")}
                     >
                         <Earth />
-                        <EarthCircle type="apis" className={isAnimationComplete ? "visible" : ""} />
+                        <EarthCircle type="apis" className={planetAnimationStates.earth ? "visible" : ""} />
                     </div>
                     <div
                         className={`earth-moon ${selectedPlanet === "earthMoon" ? "centered" : "animated"} ${selectedPlanet && selectedPlanet !== "earthMoon" ? "disabled" : ""}`}
                         onClick={() => (!selectedPlanet || selectedPlanet === "earthMoon") && handleClick("earthMoon")}
-                        onAnimationEnd={handleAnimationEnd}
+                        onAnimationEnd={() => handleAnimationEnd("earthMoon")}
                     >
                         <EarthMoon />
-                        <MoonCircle type="apis" className={isAnimationComplete ? "visible" : ""} />
+                        <MoonCircle type="apis" className={planetAnimationStates.earthMoon ? "visible" : ""} />
                     </div>
-
-
-
-
                     <div className="help">
                         <button 
                             onClick={togglePopup} 

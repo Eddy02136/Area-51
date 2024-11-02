@@ -1,14 +1,24 @@
+@font-face {
+    font-family: 'Nasa';
+    src: url('../../../../../fonts/nasalization-rg.otf') format('truetype');
+}
+  
+
 .ma-circle {
     position: absolute;
     top: 50%;
     left: 50%;
-    width: 15vw; 
-    height: 15vw; 
+    width: 15vw;
+    height: 15vw;
     border: 1px solid yellow;
-    border-radius: 50%; 
+    border-radius: 50%;
     transform: translate(-50%, -50%) scale(0);
-    transition: opacity 0.3s, transform 0.3s; 
-    box-shadow: 0 0 20px yellow, inset 0 0 20px yellow;
+    transition:
+        opacity 0.3s,
+        transform 0.3s;
+    box-shadow:
+        0 0 20px yellow,
+        inset 0 0 20px yellow;
 }
 
 .ma-circle.visible {
@@ -17,7 +27,59 @@
 }
 
 .ma-glowing-point {
-    border-radius: 700%; 
-    background-color: rgb(255, 255, 255); 
-    box-shadow: 0 0 20px rgb(255, 255, 255); 
+    border-radius: 700%;
+    background-color: rgb(255, 255, 255);
+    box-shadow: 0 0 20px rgb(255, 255, 255);
+}
+
+.spotify-card {
+    position: absolute;
+    left: 85%;
+    top: 100%;
+}
+
+.discord-card {
+    position: absolute;
+    right: 87%;
+    top: 100%;
+}
+
+.youtube-card {
+    position: absolute;
+    right: 87%;
+    bottom: 95%;
+}
+
+.twitch-card {
+    position: absolute;
+    left: 87%;
+    bottom: 95%;
+}
+
+.github-card {
+    position: absolute;
+    left: 110%;
+    bottom: 17%;
+}
+
+.nasa-card {
+    position: absolute;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 20vh;
+    width: 35vh;
+    background-color: white;
+    border-radius: 1vh;
+    flex-direction: column;
+    bottom: 17%;
+    right: 110%;
+}
+
+.nasa-title {
+    color: black;
+    font-size: 2.5vh;
+    font-weight: bold;
+    margin-bottom: 1vh;
+    font-family: Nasa;
 }
