@@ -9,9 +9,6 @@ const Sphere = () => {
 
   useFrame(() => (planet.current.rotation.y += 0.002));
 
-  const handleClick = () => {
-    alert("Planet MARS clicked!");
-  };
 
   return (
     <mesh

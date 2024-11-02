@@ -20,7 +20,7 @@ const EMSphere = () => {
       position={[0, 0, 0]}
       geometry={nodes.Cube008.geometry}
       material={nodes.Cube008.material}
-      onClick={handleClick}
+      // onClick={handleClick}
     />
   );
 };

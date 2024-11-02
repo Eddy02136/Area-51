@@ -20,7 +20,7 @@ const NSphere = () => {
       position={[0, 0, 0]}
       geometry={nodes.Neptune.geometry}
       material={nodes.Neptune.material}
-      onClick={handleClick}
+      // onClick={handleClick}
     />
   );
 };

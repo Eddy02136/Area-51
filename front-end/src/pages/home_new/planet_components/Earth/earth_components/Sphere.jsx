@@ -20,7 +20,7 @@ const ESphere = () => {
       position={[0, 0, 0]}
       geometry={nodes.Cube001.geometry}
       material={nodes.Cube001.material}
-      onClick={handleClick}
+      // onClick={handleClick}
     />
   );
 };

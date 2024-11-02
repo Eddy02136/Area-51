@@ -19,6 +19,7 @@
 }
 
 .nh-header {
+    transition: background 1.5s ease;
     background: linear-gradient(
         -45deg,
         #010930,
@@ -91,15 +92,20 @@
 }
 
 .help-button:hover {
-   box-shadow: rgba(45, 35, 66, .4) 0 4px 8px, rgba(45, 35, 66, .3) 0 7px 13px -3px, #3c4fe0 0 -3px 0 inset;
-   transform: translateY(2px);
- }
-
-.help-button:active {
-    box-shadow: rgba(45, 35, 66, .4) 0 1px 2px, rgba(45, 35, 66, .3) 0 2px 4px, #3c4fe0 0 -1px 0 inset;
-    transform: translateY(5px);
+    box-shadow:
+        rgba(45, 35, 66, 0.4) 0 4px 8px,
+        rgba(45, 35, 66, 0.3) 0 7px 13px -3px,
+        #3c4fe0 0 -3px 0 inset;
+    transform: translateY(2px);
 }
 
+.help-button:active {
+    box-shadow:
+        rgba(45, 35, 66, 0.4) 0 1px 2px,
+        rgba(45, 35, 66, 0.3) 0 2px 4px,
+        #3c4fe0 0 -1px 0 inset;
+    transform: translateY(5px);
+}
 
 @keyframes gradient {
     0% {
@@ -123,6 +129,17 @@
     width: 100vw;
     height: 100vh;
     overflow: hidden;
+}
+
+.planet-container > div {
+    cursor: pointer;
+}
+
+.disabled {
+    pointer-events: none;
+    opacity: 0.3;
+    transition: opacity 0.5s ease-in-out;
+    cursor: default;
 }
 
 .planet {
@@ -211,9 +228,9 @@
     border-radius: 50%;
     animation: moveMars 10s infinite;
     position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
+    top: 36%;
+    left: 48%;
+    /* transform: translate(-50%, -50%); */
 }
 
 .earth {
@@ -224,9 +241,9 @@
     border-radius: 50%;
     animation: moveEarth 12s infinite;
     position: absolute;
-    top: 40%;
-    left: 60%;
-    transform: translate(-50%, -50%);
+    top: 35%;
+    left: 50%;
+    /* transform: translate(-50%, -50%); */
 }
 
 .earth-moon {
@@ -239,7 +256,7 @@
     position: absolute;
     top: 30%;
     left: 50%;
-    transform: translate(-50%, -50%);
+    /* transform: translate(-50%, -50%); */
 }
 
 .neptune {
@@ -250,9 +267,9 @@
     border-radius: 50%;
     animation: moveNeptune 16s infinite;
     position: absolute;
-    top: 40%;
-    left: 50%;
-    transform: translate(-50%, -50%);
+    top: 20%;
+    left: 43%;
+    /* transform: translate(-50%, -50%); */
 }
 
 .mars:hover,
@@ -266,4 +283,29 @@
 
 .earth-moon:hover {
     box-shadow: 0 0 20px rgba(255, 255, 255, 0.8);
+}
+
+@keyframes moveToCenter {
+    from {
+        transform: translate(var(--x), var(--y));
+    }
+    to {
+        transform: translate(0, 0) scale(1.2);
+    }
+}
+
+@keyframes continueAnimation {
+    0% {
+    }
+    100% {
+        transform: translate3d(0px, 0px, 300px);
+    }
+}
+
+.centered {
+    animation:
+        moveToCenter 1.5s forwards,
+        continueAnimation 1s 0.5s forwards;
+    transform-origin: center center;
+    z-index: 10;
 }

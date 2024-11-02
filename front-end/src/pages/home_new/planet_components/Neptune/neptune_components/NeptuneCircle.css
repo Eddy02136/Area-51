@@ -1,0 +1,23 @@
+.ne-circle {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 22vw; 
+    height: 22vw; 
+    border: 1px solid rgb(42, 241, 248);
+    border-radius: 50%; 
+    transform: translate(-50%, -50%) scale(0);
+    transition: opacity 0.3s, transform 0.3s; 
+    box-shadow: 0 0 20px rgb(0, 255, 242), inset 0 0 20px rgb(0, 255, 242);
+}
+
+.ne-circle.visible {
+    transform: translate(-50%, -50%) scale(1);
+    opacity: 1;
+}
+
+.ne-glowing-point {
+    border-radius: 700%; 
+    background-color: rgb(255, 255, 255); 
+    box-shadow: 0 0 20px rgb(255, 255, 255); 
+}
