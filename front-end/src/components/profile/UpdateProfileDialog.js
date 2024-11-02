@@ -1,18 +1,19 @@
-import React, { useState } from "react";
-import { Modal, Select, Input, Button, message } from "antd";
+import React, { useState, useEffect } from "react";
+import { Modal, Input, Button, message } from "antd";
 import axios from "axios";
 import "./UpdateProfileDialog.css";
 
-const { Option } = Select;
-
-const UpdateProfileDialog = ({ visible, onClose }) => {
-  const [selectedField, setSelectedField] = useState("email");
+const UpdateProfileDialog = ({ visible, onClose, fieldToUpdate }) => {
   const [inputValue, setInputValue] = useState("");
   const [loading, setLoading] = useState(false);
 
+  useEffect(() => {
+    setInputValue("");
+  }, [fieldToUpdate, visible]);
+
   const handleUpdate = async () => {
     if (!inputValue) {
-      message.error("Please enter a value to update.");
+      message.error(`Please enter a new ${fieldToUpdate}.`);
       return;
     }
 
@@ -21,17 +22,17 @@ const UpdateProfileDialog = ({ visible, onClose }) => {
       const authToken = localStorage.getItem("authToken");
       await axios.put(
         "http://localhost:3000/users/update",
-        { [selectedField]: inputValue },
+        { [fieldToUpdate]: inputValue },
         {
           headers: {
             Authorization: `Bearer ${authToken}`,
           },
         }
       );
-      message.success("Profile updated successfully!");
+      message.success(`${fieldToUpdate} updated successfully!`);
       handleClose();
     } catch (error) {
-      message.error("Failed to update profile.");
+      message.error(`Failed to update ${fieldToUpdate}.`);
     } finally {
       setLoading(false);
     }
@@ -44,24 +45,15 @@ const UpdateProfileDialog = ({ visible, onClose }) => {
 
   return (
     <Modal
-      title="Update Profile"
+      title={`Update ${fieldToUpdate}`}
       visible={visible}
       onCancel={handleClose}
       footer={null}
       centered
     >
       <div style={{ display: "flex", flexDirection: "column", gap: "1rem" }}>
-        <Select
-          defaultValue="email"
-          style={{ width: "100%" }}
-          onChange={(value) => setSelectedField(value)}
-        >
-          <Option value="email">Email</Option>
-          <Option value="firstname">Firstname</Option>
-          <Option value="lastname">Lastname</Option>
-        </Select>
         <Input
-          placeholder={`Enter new ${selectedField}`}
+          placeholder={`Enter new ${fieldToUpdate}`}
           value={inputValue}
           onChange={(e) => setInputValue(e.target.value)}
         />

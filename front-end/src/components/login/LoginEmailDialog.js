@@ -72,9 +72,6 @@ const LoginEmailDialog = ({ onCancel }) => {
             >
               {mutation.isLoading ? 'Logging in...' : 'Login'}
             </button>
-            <button className='login-email-dialog-button'>
-              Forgot password
-            </button>
             <button
               className='login-email-dialog-button'
               onClick={onCancel}

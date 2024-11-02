@@ -1,36 +1,47 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
+import axios from "axios";
+import UpdateProfileDialog from "./UpdateProfileDialog";
 import "./FNameProfile.css";
 
-const FirstName = () => {
-    const [firstName, setFirstName] = useState("First Name");
-    const [isEditing, setIsEditing] = useState(false);
+const FirstNameProfile = () => {
+    const [firstName, setFirstName] = useState("");
+    const [isDialogVisible, setIsDialogVisible] = useState(false);
 
-    const handleFirstNameChange = (e) => {
-        setFirstName(e.target.value);
-    };
+    useEffect(() => {
+        const fetchUserInfo = async () => {
+            try {
+                const authToken = localStorage.getItem("authToken");
+                if (!authToken) return;
 
-    const handleSave = () => {
-        setIsEditing(false);
-        console.log("Prénom sauvegardé :", firstName);
-    };
+                const response = await axios.get("http://localhost:3000/users/infos", {
+                    headers: {
+                        Authorization: `Bearer ${authToken}`,
+                    },
+                    withCredentials: true,
+                });
+                setFirstName(response.data.firstname);
+            } catch (error) {
+                console.error("Error fetching user info:", error);
+            }
+        };
+
+        fetchUserInfo();
+    }, []);
 
     return (
         <div className="first-name-container">
-            <label>First name :</label>
-            {isEditing ? (
-                <input
-                    type="text"
-                    value={firstName}
-                    onChange={handleFirstNameChange}
-                />
-            ) : (
-                <span>{firstName}</span>
-            )}
-            <button onClick={() => setIsEditing(!isEditing)}>
-                {isEditing ? "Save" : "Edit"}
+            <h1>First Name:</h1>
+            <h2>{firstName}</h2>
+            <button className="first-edit-button" onClick={() => setIsDialogVisible(true)}>
+                Edit
             </button>
+            <UpdateProfileDialog
+                visible={isDialogVisible}
+                onClose={() => setIsDialogVisible(false)}
+                fieldToUpdate="firstname"
+            />
         </div>
     );
 };
 
-export default FirstName;
+export default FirstNameProfile;

@@ -1,4 +1,3 @@
-// src/HelpPopUp.js
 import React from "react";
 import "./HelpPopUp.css";
 
@@ -30,7 +29,7 @@ function HelpPopUp({ isOpen, togglePopup }) {
         </div>
 
         <button onClick={togglePopup} className="close-popup-button">
-          Fermer
+          Close
         </button>
       </div>
     </div>

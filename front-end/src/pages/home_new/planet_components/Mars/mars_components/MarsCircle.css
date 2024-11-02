@@ -70,7 +70,7 @@
     height: 20vh;
     width: 35vh;
     background-color: white;
-    border-radius: 1vh;
+    border-radius: 20px;
     flex-direction: column;
     bottom: 17%;
     right: 110%;

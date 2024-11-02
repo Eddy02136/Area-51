@@ -1,8 +1,7 @@
 import React from "react";
 import "./EarthCircle.css";
-
-import FirstName from "../../../../../components/profile/FNameProfile";
-import LastName from "../../../../../components/profile/LNameProfile";
+import FirstNameProfile from "../../../../../components/profile/FNameProfile";
+import LastNameProfile from "../../../../../components/profile/LNameProfile";
 import EmailProfile from "../../../../../components/profile/EmailProfile";
 
 const EarthCircle = ({ type, className }) => {
@@ -43,10 +42,10 @@ const EarthCircle = ({ type, className }) => {
                 />
             ))}
             <div className="FName">
-                <FirstName />
+                <FirstNameProfile />
             </div>
             <div className="LName">
-                <LastName />
+                <LastNameProfile />
             </div>
             <div className="EmailP">
                 <EmailProfile />

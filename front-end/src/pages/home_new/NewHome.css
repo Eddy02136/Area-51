@@ -1,4 +1,17 @@
-@import url("https://fonts.googleapis.com/css2?family=Nunito:wght@300;400;600;700&display=swap");
+@font-face {
+    font-family: 'PriegoRegular';
+    src: url('../../fonts/Priego-Regular.otf') format('truetype');
+}
+  
+@font-face {
+    font-family: 'PriegoBold';
+    src: url('../../fonts/Priego-Bold.otf') format('truetype');
+}
+  
+@font-face {
+    font-family: 'PriegoSemibold';
+    src: url('../../fonts/Priego-SemiBold.otf') format('truetype');
+}
 
 .new-home-page {
     display: flex;
@@ -54,11 +67,8 @@
 .help-button {
     align-items: center;
     appearance: none;
-    background-image: radial-gradient(
-        100% 100% at 100% 0,
-        #5adaff 0,
-        #5468ff 100%
-    );
+    background-color: #0015d0;
+    font-family: PriegoRegular;
     border: 0;
     border-radius: 6px;
     box-shadow:
@@ -120,8 +130,9 @@
 }
 
 .nh-title {
-    font-family: Nunito;
-    font-size: 5vh;
+    font-family: PriegoBold;
+    font-size: 400%;
+    color: #fdff91;
 }
 
 .planet-container {

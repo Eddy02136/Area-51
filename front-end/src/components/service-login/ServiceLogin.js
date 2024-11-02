@@ -100,7 +100,7 @@ const ServiceLogin = ({
       <img
         src={logoUrl}
         alt={`${service} logo`}
-        style={{ width: "70px", height: "auto" }}
+        style={{ width: "70px", height: "auto", marginBottom: "0" }}
       />
       <h2>{service}</h2>
       {isConnected ? (

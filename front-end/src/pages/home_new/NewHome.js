@@ -89,7 +89,7 @@ const NewHomePage = () => {
         <div className="new-home-page">
             <header className="nh-header" style={{background: backgroundColor}}>
             {/* <header className="nh-header"> */}
-            <h1 className="nh-title"> AREA-51</h1>
+            <h1 className="nh-title"> AREA 51</h1>
   
                 <div ref={starsContainerRef} className="stars-container"></div>
                 <div className="planet-container">
