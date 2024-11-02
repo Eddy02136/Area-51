@@ -7,6 +7,10 @@ import axios from "axios";
 export class GithubService {
     private lastNumberFollowing = null
     private isNumberFollowingInit = false
+    private lastName = null
+    private isNameInit = false
+    private lastNumberFollowers = null
+    private isNumberFollowersInit = false
     constructor(private readonly configService: ConfigService) {}
 
     private readonly scopes = ['repo', 'user'];
@@ -73,6 +77,56 @@ export class GithubService {
             if (!currentNumberFollwing) return false;
             if (currentNumberFollwing !== this.lastNumberFollowing) {
                 this.lastNumberFollowing = currentNumberFollwing;
+                return true;
+            } else {
+                return false;
+            }
+        } catch (error) {
+            console.error(error.message)
+            return false
+        }
+    }
+
+    async checkChangeGithubName(accessToken: string) : Promise<boolean>
+    {
+        try {
+            const response = await axios.get('https://api.github.com/user', {
+                headers: {Authorization: `Bearer ${accessToken}`},
+            });
+            const currentName =  response.data.name;
+            if (!this.isNameInit) {
+                this.lastName = currentName
+                this.isNameInit = true
+                return false
+            }
+            if (!currentName) return false;
+            if (currentName !== this.lastName) {
+                this.lastName = currentName;
+                return true;
+            } else {
+                return false;
+            }
+        } catch (error) {
+            console.error(error.message)
+            return false
+        }
+    }
+
+    async checkNewFollowers(accessToken: string) : Promise<boolean>
+    {
+        try {
+            const response = await axios.get('https://api.github.com/user', {
+                headers: {Authorization: `Bearer ${accessToken}`},
+            });
+            const currentNumberFollowers =  response.data.followers;
+            if (!this.isNumberFollowersInit) {
+                this.lastNumberFollowers = currentNumberFollowers
+                this.isNumberFollowersInit = true
+                return false
+            }
+            if (!currentNumberFollowers) return false;
+            if (currentNumberFollowers !== this.lastNumberFollowers) {
+                this.lastNumberFollowers = currentNumberFollowers;
                 return true;
             } else {
                 return false;

@@ -55,7 +55,7 @@ export class SpotifyService {
       const { access_token, refresh_token, expires_in } = response.data;
       return { accessToken: access_token, refreshToken: refresh_token, expiresIn: expires_in };
     } catch (error) {
-      throw new Error(`Failed to get Spotify access token: ${error.response?.data?.error?.message || error.message}`);
+      throw new Error(`Failed to get Spotify access token: ${error}`);
     }
   }
 
@@ -77,6 +77,34 @@ export class SpotifyService {
     return tracks.length > 0 ? tracks[0].id : null;
   }
 
+  async getUserPlaylists(accessToken: string) {
+    try {
+      const response = await axios.get('https://api.spotify.com/v1/me/playlists', {
+        headers: {
+          Authorization: `Bearer ${accessToken}`,
+          'Content-Type': 'application/json'
+        },
+        params: { limit: 100 }
+      });
+
+      return response.data.items;
+    } catch (error) {
+      console.error('Failed to retrieve user playlists:', error);
+      return [];
+    }
+  }
+
+  async getPlaylistUriByName(accessToken: string, playlistName: string) {
+    const playlists = await this.getUserPlaylists(accessToken);
+    const foundPlaylist = playlists.find(playlist => playlist.name.toLowerCase() === playlistName.toLowerCase());
+
+    if (foundPlaylist) {
+      return foundPlaylist.uri;
+    } else {
+      return null;
+    }
+  }
+
   async playMusic(accessToken: string, musicName: string): Promise<string> {
     const trackId = await this.searchTrack(musicName, accessToken);
     const playUrl = 'https://api.spotify.com/v1/me/player/play';
@@ -94,6 +122,23 @@ export class SpotifyService {
       return 'Track started playing successfully!';
     } catch (error) {
       console.error('Failed to play music:', error);
+    }
+  }
+
+  async playSpotifyPlaylist(accessToken, playlistName: string) {
+    try {
+      const playlistUri = await this.getPlaylistUriByName(accessToken, playlistName);
+      const playUrl = 'https://api.spotify.com/v1/me/player/play';
+      const headers = {
+        Authorization: `Bearer ${accessToken}`,
+        'Content-Type': 'application/json',
+      };
+      const body = {
+        context_uri: playlistUri
+      };
+      const response = await axios.put(playUrl, body, { headers });
+    } catch (error) {
+      console.error('Failed to lunch playlist :', error);
     }
   }
 

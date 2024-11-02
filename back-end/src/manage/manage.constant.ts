@@ -16,6 +16,12 @@ export const ACTIONS_REACTIONS = {
                 description: 'Play music of your choice (precise the name of the artist) on Spotify',
                 parameters: { musicName: 'string'}
             },
+            playPlaylist: {
+                description: 'Lunch playlist of your choice',
+                parameters: {
+                    playlistName: 'string'
+                }
+            }
         },
     },
     Nasa: {
@@ -81,6 +87,14 @@ export const ACTIONS_REACTIONS = {
         actions: {
             followingUserGithub: {
                 description: 'Following a user github',
+                parameters: {}
+            },
+            changeUserGithub: {
+                description: 'Change user Github',
+                parameters: {}
+            },
+            followersUserGithub: {
+                description: 'Followers user Github',
                 parameters: {}
             }
         },

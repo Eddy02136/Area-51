@@ -124,13 +124,15 @@ export class UsersService {
     const user = await this.userModel.findOne({ _id: userId });
 
     if (!user) {
-      throw new Error('User not found');
+      console.error('User not found')
+      return;
     }
 
     const apiToken: ApiToken = user.apiTokens.find((token: ApiToken): boolean => token.apiName === apiName);
 
     if (!apiToken) {
-      throw new Error('User not connected')
+      console.error('User not connected to', apiName);
+      return;
     }
     return {refreshToken: apiToken.refreshToken, expiresAt: apiToken.expiresAt};
   }
