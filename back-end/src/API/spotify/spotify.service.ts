@@ -1,14 +1,17 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable} from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import axios from 'axios';
 import { stringify } from 'querystring';
 import {UsersService} from "../../users/users.service";
+import {HttpService} from "@nestjs/axios";
+import {lastValueFrom} from "rxjs";
 
 @Injectable()
 export class SpotifyService {
   constructor(
     private readonly configService: ConfigService,
-    private readonly usersService: UsersService
+    private readonly usersService: UsersService,
+    private readonly httpService: HttpService
   ) {}
 
   getSpotifyAuthUrl(userId: string): string {
@@ -56,9 +59,27 @@ export class SpotifyService {
     }
   }
 
-  async playMusic(accessToken: string, trackId: string): Promise<string> {
-    const playUrl = 'https://api.spotify.com/v1/me/player/play';
+  async searchTrack(musicName: string, token: string): Promise<string | null> {
+    const response = await lastValueFrom(
+        this.httpService.get(`https://api.spotify.com/v1/search`, {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+          params: {
+            q: musicName,
+            type: 'track',
+            limit: 1,
+          },
+        }),
+    );
 
+    const tracks = response.data.tracks.items;
+    return tracks.length > 0 ? tracks[0].id : null;
+  }
+
+  async playMusic(accessToken: string, musicName: string): Promise<string> {
+    const trackId = await this.searchTrack(musicName, accessToken);
+    const playUrl = 'https://api.spotify.com/v1/me/player/play';
     const headers = {
       Authorization: `Bearer ${accessToken}`,
       'Content-Type': 'application/json',

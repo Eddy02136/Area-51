@@ -94,8 +94,8 @@ export class SystemService implements OnModuleInit, OnModuleDestroy {
       case 'playMusic':
         await this.spotifyService.refreshToken(userId);
         token = await this.userService.getToken('Spotify', userId);
-        const { trackId } = ar.parameters;
-        await this.spotifyService.playMusic(token, trackId);
+        const { musicName } = ar.parameters;
+        await this.spotifyService.playMusic(token, musicName);
         break;
       case 'postCommentary':
         await this.youtubeService.refreshYoutubeToken(userId);
