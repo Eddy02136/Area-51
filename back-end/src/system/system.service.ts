@@ -20,7 +20,8 @@ export class SystemService implements OnModuleInit, OnModuleDestroy {
     'newVideoSpaceX': 3600000,
     'getViewerNasa': 300000,
     'streamerInLive': 300000,
-    'followingUserGithub': 30000,
+    'followingUserGithub': 300000,
+    'changeUserGithub': 300000,
   };
 
   private actionTimers: Map<string, NodeJS.Timeout> = new Map();
@@ -87,6 +88,9 @@ export class SystemService implements OnModuleInit, OnModuleDestroy {
         case 'followingUserGithub':
           token = await this.userService.getToken('Github', ar.userId);
           return await this.githubService.checkNewFollowing(token)
+        case 'changeUserGithub':
+          token = await this.userService.getToken('Github', ar.userId);
+          return await this.githubService.checkChangeGithubName(token);
       }
     } catch (error) {
       console.error(`Error checking actions for ${actionName}:`, error);
