@@ -1,0 +1,311 @@
+@import url("https://fonts.googleapis.com/css2?family=Nunito:wght@300;400;600;700&display=swap");
+
+.new-home-page {
+    display: flex;
+    width: 100vw;
+    height: 100vh;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+.stars-container {
+    position: absolute;
+    top: 0;
+    width: 100vw;
+    height: 100vh;
+    pointer-events: none;
+    overflow: hidden;
+}
+
+.nh-header {
+    transition: background 1.5s ease;
+    background: linear-gradient(
+        -45deg,
+        #010930,
+        #0f0e22,
+        #070735,
+        #0f0330,
+        #01082b,
+        #0f0d30,
+        #000000
+    );
+    animation: gradient 5s ease infinite;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    font-size: calc(10px + 2vmin);
+    color: white;
+    position: relative;
+    z-index: 0;
+}
+
+.help {
+    position: absolute;
+    right: 1%;
+    border-radius: 50%;
+    width: 5vw;
+    height: 5vw;
+    top: 90%;
+}
+
+.help-button {
+    align-items: center;
+    appearance: none;
+    background-image: radial-gradient(
+        100% 100% at 100% 0,
+        #5adaff 0,
+        #5468ff 100%
+    );
+    border: 0;
+    border-radius: 6px;
+    box-shadow:
+        rgba(45, 35, 66, 0.4) 0 2px 4px,
+        rgba(45, 35, 66, 0.3) 0 7px 13px -3px,
+        rgba(58, 65, 111, 0.5) 0 -3px 0 inset;
+    box-sizing: border-box;
+    color: #fff;
+    cursor: pointer;
+    display: inline-flex;
+    font-family: "JetBrains Mono", monospace;
+    height: 48px;
+    justify-content: center;
+    line-height: 1;
+    list-style: none;
+    overflow: hidden;
+    padding-left: 16px;
+    padding-right: 16px;
+    position: relative;
+    text-align: left;
+    text-decoration: none;
+    transition:
+        box-shadow 0.15s,
+        transform 0.15s;
+    user-select: none;
+    -webkit-user-select: none;
+    touch-action: manipulation;
+    white-space: nowrap;
+    will-change: box-shadow, transform;
+    font-size: 18px;
+}
+
+.help-button:hover {
+    box-shadow:
+        rgba(45, 35, 66, 0.4) 0 4px 8px,
+        rgba(45, 35, 66, 0.3) 0 7px 13px -3px,
+        #3c4fe0 0 -3px 0 inset;
+    transform: translateY(2px);
+}
+
+.help-button:active {
+    box-shadow:
+        rgba(45, 35, 66, 0.4) 0 1px 2px,
+        rgba(45, 35, 66, 0.3) 0 2px 4px,
+        #3c4fe0 0 -1px 0 inset;
+    transform: translateY(5px);
+}
+
+@keyframes gradient {
+    0% {
+        background-position: 0% 50%;
+    }
+    50% {
+        background-position: 100% 50%;
+    }
+    100% {
+        background-position: 0% 50%;
+    }
+}
+
+.nh-title {
+    font-family: Nunito;
+    font-size: 5vh;
+}
+
+.planet-container {
+    position: relative;
+    width: 100vw;
+    height: 100vh;
+    overflow: hidden;
+}
+
+.planet-container > div {
+    cursor: pointer;
+}
+
+.disabled {
+    pointer-events: none;
+    opacity: 0.3;
+    transition: opacity 0.5s ease-in-out;
+    cursor: default;
+}
+
+.planet {
+    position: relative;
+    border-radius: 50%;
+    background-color: transparent;
+}
+
+@keyframes moveMars {
+    0% {
+        transform: translate(0, 0);
+    }
+    25% {
+        transform: translate(100px, 50px);
+    }
+    50% {
+        transform: translate(200px, 0);
+    }
+    75% {
+        transform: translate(100px, -50px);
+    }
+    100% {
+        transform: translate(0, 0);
+    }
+}
+
+@keyframes moveEarth {
+    0% {
+        transform: translate(0, 0);
+    }
+    25% {
+        transform: translate(-100px, 50px);
+    }
+    50% {
+        transform: translate(-200px, 0);
+    }
+    75% {
+        transform: translate(-100px, -50px);
+    }
+    100% {
+        transform: translate(0, 0);
+    }
+}
+
+@keyframes moveEarthMoon {
+    0% {
+        transform: translate(0, 0);
+    }
+    25% {
+        transform: translate(50px, 100px);
+    }
+    50% {
+        transform: translate(0, 200px);
+    }
+    75% {
+        transform: translate(-50px, 100px);
+    }
+    100% {
+        transform: translate(0, 0);
+    }
+}
+
+@keyframes moveNeptune {
+    0% {
+        transform: translate(0, 0);
+    }
+    25% {
+        transform: translate(50px, -100px);
+    }
+    50% {
+        transform: translate(0, -200px);
+    }
+    75% {
+        transform: translate(-50px, -100px);
+    }
+    100% {
+        transform: translate(0, 0);
+    }
+}
+
+.mars {
+    width: 6vw;
+    height: 6vw;
+    max-width: 30vw;
+    max-height: 30vw;
+    border-radius: 50%;
+    animation: moveMars 10s infinite;
+    position: absolute;
+    top: 36%;
+    left: 48%;
+    /* transform: translate(-50%, -50%); */
+}
+
+.earth {
+    width: 7vw;
+    height: 7vw;
+    max-width: 30vw;
+    max-height: 30vw;
+    border-radius: 50%;
+    animation: moveEarth 12s infinite;
+    position: absolute;
+    top: 35%;
+    left: 50%;
+    /* transform: translate(-50%, -50%); */
+}
+
+.earth-moon {
+    width: 4vw;
+    height: 4vw;
+    max-width: 30vw;
+    max-height: 30vw;
+    border-radius: 50%;
+    animation: moveEarthMoon 14s infinite;
+    position: absolute;
+    top: 30%;
+    left: 50%;
+    /* transform: translate(-50%, -50%); */
+}
+
+.neptune {
+    width: 20vw;
+    height: 20vw;
+    max-width: 30vw;
+    max-height: 30vw;
+    border-radius: 50%;
+    animation: moveNeptune 16s infinite;
+    position: absolute;
+    top: 20%;
+    left: 43%;
+    /* transform: translate(-50%, -50%); */
+}
+
+.mars:hover,
+.earth:hover {
+    box-shadow: 0 0 40px rgba(255, 255, 255, 0.8);
+}
+
+.neptune:hover {
+    box-shadow: 0 0 40px rgba(255, 255, 255, 0.8);
+}
+
+.earth-moon:hover {
+    box-shadow: 0 0 20px rgba(255, 255, 255, 0.8);
+}
+
+@keyframes moveToCenter {
+    from {
+        transform: translate(var(--x), var(--y));
+    }
+    to {
+        transform: translate(0, 0) scale(1.2);
+    }
+}
+
+@keyframes continueAnimation {
+    0% {
+    }
+    100% {
+        transform: translate3d(0px, 0px, 300px);
+    }
+}
+
+.centered {
+    animation:
+        moveToCenter 1.5s forwards,
+        continueAnimation 0.5s 0.5s forwards;
+    transform-origin: center center;
+    z-index: 10;
+}

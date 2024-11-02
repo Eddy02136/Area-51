@@ -1,0 +1,23 @@
+.mo-circle {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 15vw; 
+    height: 15vw; 
+    border: 1px solid rgb(255, 255, 255);
+    border-radius: 50%; 
+    transform: translate(-50%, -50%) scale(0);
+    transition: opacity 0.3s, transform 0.3s; 
+    box-shadow: 0 0 20px rgb(216, 216, 215), inset 0 0 20px rgb(255, 255, 224);
+}
+
+.mo-circle.visible {
+    transform: translate(-50%, -50%) scale(1);
+    opacity: 1;
+}
+
+.mo-glowing-point {
+    border-radius: 700%; 
+    background-color: rgb(255, 255, 255); 
+    box-shadow: 0 0 20px rgb(255, 255, 255); 
+}

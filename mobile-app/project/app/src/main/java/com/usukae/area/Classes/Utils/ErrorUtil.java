@@ -7,6 +7,8 @@ public class ErrorUtil {
         switch (code) {
             case 401:
                 return R.string.invalid_email_or_password;
+            case 404:
+                return R.string.server_unreachable;
             case 500:
                 return R.string.internal_server_error;
             default:
@@ -20,6 +22,8 @@ public class ErrorUtil {
                 return R.string.required_field_empty;
             case 401:
                 return R.string.invalid_password;
+            case 404:
+                return R.string.server_unreachable;
             case 500:
                 return R.string.internal_server_error;
             default:
@@ -31,6 +35,8 @@ public class ErrorUtil {
         switch (code) {
             case 401:
                 return R.string.jwt_problem;
+            case 404:
+                return R.string.server_unreachable;
             case 500:
                 return R.string.internal_server_error;
             default:

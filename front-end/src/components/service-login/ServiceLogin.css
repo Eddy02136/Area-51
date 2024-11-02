@@ -17,10 +17,10 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    height: 30vh;
+    height: 20vh;
     width: 35vh;
     background-color: white;
-    border-radius: 20px;
+    border-radius: 1vh;
     flex-direction: column;
     font-family: PriegoSemibold;
 }
