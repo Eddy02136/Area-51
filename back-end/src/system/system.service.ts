@@ -12,6 +12,7 @@ import {SpotifyController} from "../API/spotify/spotify.controller";
 import {YoutubeService} from "../API/youtube/youtube.service";
 import * as console from "node:console";
 import {TwitchService} from "../API/twitch/twitch.service";
+import {DiscordService} from "../API/discord/discord.service";
 
 @Injectable()
 export class SystemService implements OnModuleInit, OnModuleDestroy {
@@ -23,6 +24,8 @@ export class SystemService implements OnModuleInit, OnModuleDestroy {
     'followingUserGithub': 300000,
     'changeUserGithub': 300000,
     'followersUserGithub': 300000,
+    'checkChangeUserNameDiscord': 300000,
+    'checkJoinOtherServerDiscord': 300000,
   };
 
   private actionTimers: Map<string, NodeJS.Timeout> = new Map();
@@ -34,6 +37,7 @@ export class SystemService implements OnModuleInit, OnModuleDestroy {
     private readonly youtubeService: YoutubeService,
     private readonly twitchService: TwitchService,
     private readonly githubService: GithubService,
+    private readonly discordService: DiscordService,
     @InjectModel(ActionReaction.name) private actionReactionModel: Model<ActionReaction>,
   ) {}
 
@@ -113,6 +117,18 @@ export class SystemService implements OnModuleInit, OnModuleDestroy {
             return false;
           }
           return await this.githubService.checkNewFollowers(token);
+        case 'checkChangeUserNameDiscord':
+          token = await this.userService.getToken('Discord', ar.userId);
+          if (token) {
+            return false;
+          }
+          return await this.discordService.checkUsernameDiscord(token)
+        case 'checkJoinOtherServerDiscord':
+          token = await this.userService.getToken('Discord', ar.userId);
+          if (token) {
+            return false;
+          }
+          return this.discordService.checkJoinOtherServerDiscord(token)
       }
     } catch (error) {
       console.error(`Error checking actions for ${actionName}:`, error);

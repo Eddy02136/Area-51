@@ -9,6 +9,7 @@ import {UsersModule} from "../users/users.module";
 import {YoutubeModule} from "../API/youtube/youtube.module";
 import {TwitchModule} from "../API/twitch/twitch.module";
 import {GithubModule} from "../API/github/github.module";
+import {DiscordModule} from "../API/discord/discord.module";
 
 @Module({
   imports: [
@@ -18,6 +19,7 @@ import {GithubModule} from "../API/github/github.module";
     YoutubeModule,
     TwitchModule,
     GithubModule,
+    DiscordModule,
     MongooseModule.forFeature([{ name: ActionReaction.name, schema: ActionReactionSchema }]),
   ],
   controllers: [SystemController],

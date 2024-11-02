@@ -1,7 +1,14 @@
 export const ACTIONS_REACTIONS = {
     Discord: {
         actions: {
-
+            checkChangeUserNameDiscord: {
+                description: 'Check change user name discord',
+                parameters: {}
+            },
+            checkJoinOtherServerDiscord: {
+                description: 'Check when user join server discord',
+                parameters: {}
+            }
         },
         reactions: {
 
