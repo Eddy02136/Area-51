@@ -1,7 +1,7 @@
 import { UsersService } from './users.service';
 import { CreateUserDto } from './dto/CreateUser.dto';
 import { ApiBody, ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
-import {Body, Controller, Get, Headers, Post, UseGuards} from '@nestjs/common';
+import {Body, Controller, Get, Headers, Post, Put, UseGuards} from '@nestjs/common';
 import {User} from "../schema/User.schema";
 import {AuthGuard} from "@nestjs/passport";
 import {FastifyReply} from "fastify";
@@ -68,5 +68,14 @@ export class UsersController {
     const decoded = jwt.verify(jwtToken, process.env.JWT_SECRET);
     const userId = (decoded as { sub: string }).sub;
     return this.userService.getInfoUser(userId);
+  }
+
+  @UseGuards(AuthGuard('jwt'))
+  @Put('update')
+  updateUserInfo(@Headers('authorization') authorization: string, @Body() updateUserDto: Partial<User>) {
+    const jwtToken = authorization.replace('Bearer ', '');
+    const decoded = jwt.verify(jwtToken, process.env.JWT_SECRET);
+    const userId = (decoded as { sub: string }).sub;
+    return this.userService.updateUser(userId, updateUserDto);
   }
 }

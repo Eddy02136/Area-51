@@ -1,4 +1,4 @@
-import {BadRequestException, Headers, Injectable, Response, UnauthorizedException} from '@nestjs/common';
+import { BadRequestException, Headers, Injectable, NotFoundException, Response, UnauthorizedException } from '@nestjs/common';
 import { User } from '../schema/User.schema';
 import { Model } from 'mongoose';
 import { InjectModel } from '@nestjs/mongoose';
@@ -91,7 +91,12 @@ export class UsersService {
 
     const existingTokenIndex = user.apiTokens.findIndex(token => token.apiName === apiName);
 
-    const apiToken = new this.apiTokenModel({ apiName, accessToken, refreshToken, expiresAt });
+    let apiToken: ApiToken;
+    if (refreshToken != "") {
+      apiToken = new this.apiTokenModel({apiName, accessToken, refreshToken, expiresAt});
+    } else {
+      apiToken = new this.apiTokenModel({apiName, accessToken});
+    }
 
     if (existingTokenIndex > -1) {
       user.apiTokens[existingTokenIndex] = apiToken;
@@ -115,5 +120,44 @@ export class UsersService {
     }
 
     return apiToken.accessToken;
+  }
+
+  async removeToken(apiName: string, userId: unknown): Promise<string> {
+    const user = await this.userModel.findOne({ _id: userId });
+
+    if (!user) {
+      return 'User not found';
+    }
+
+    const tokenIndex = user.apiTokens.findIndex((token: ApiToken) => token.apiName === apiName);
+    if (tokenIndex === -1) {
+      return 'User not connected to Spotify';
+    }
+
+    user.apiTokens.splice(tokenIndex, 1);
+
+    await user.save();
+    return ""
+  }
+
+  async updateUser(userId: string, updateUserDto : Partial<User>) {
+
+    const allowedFields = ['firstname', 'lastname', 'email'];
+
+    const fieldsToUpdate = Object.keys(updateUserDto).reduce((acc, key) => {
+      if (updateUserDto[key] !== undefined && allowedFields.includes(key)) {
+        acc[key] = updateUserDto[key];
+      }
+      return acc;
+    }, {});
+
+    const updatedUser = await this.userModel.findByIdAndUpdate(userId, fieldsToUpdate, {
+      new: true,
+    });
+
+    if (!updatedUser) {
+      throw new NotFoundException('User not found');
+    }
+    return 'User successfully updated';
   }
 }
