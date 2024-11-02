@@ -86,6 +86,10 @@ export const ACTIONS_REACTIONS = {
             changeUserGithub: {
                 description: 'Change user Github',
                 parameters: {}
+            },
+            followersUserGithub: {
+                description: 'Followers user Github',
+                parameters: {}
             }
         },
         reactions: {
