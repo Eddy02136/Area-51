@@ -8,16 +8,23 @@ export class ActionReaction extends Document {
   userId: string;
 
   @Prop({ required: true, type: String })
-  actionType: string;
+  areaName: string;
 
   @Prop({ required: true, type: String })
-  reactionType: string;
+  actionName: string;
+
+  @Prop({ required: true, type: String })
+  actionApi: string;
+
+  @Prop({ required: true, type: String })
+  reactionName: string;
+
+  @Prop({ required: true, type: String })
+  reactionApi: string;
 
   @Prop({ required: true, type: Object })
   parameters: any;
 
-  @Prop({ type: String, default: null })
-  schedule: string;
 }
 
 export const ActionReactionSchema = SchemaFactory.createForClass(ActionReaction);

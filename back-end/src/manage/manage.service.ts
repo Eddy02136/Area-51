@@ -1,6 +1,7 @@
-import { Injectable } from "@nestjs/common";
-import { ActionReaction } from "../schema/ActionReaction.schema";
+import {Injectable} from "@nestjs/common";
+import {ActionReaction} from "../schema/ActionReaction.schema";
 import {InjectModel} from "@nestjs/mongoose";
+import { ACTIONS_REACTIONS } from "./manage.constant";
 import {Model} from "mongoose";
 
 @Injectable()
@@ -8,14 +9,83 @@ import {Model} from "mongoose";
 export class ManageService {
     constructor(@InjectModel(ActionReaction.name) private readonly actionReactionModel: Model<ActionReaction>) {}
 
-    async addActionReaction(userId : string, action: string, reaction: string, parameters: any, schedule?: string ) {
+    async findActionReaction( userId: string, actionName: string, actionApi: string, reactionName: string, reactionApi: string, parameters: Record<string, any>) {
+        return this.actionReactionModel.findOne({
+            userId,
+            actionName,
+            actionApi,
+            reactionName,
+            reactionApi,
+            parameters
+        });
+    }
+
+    async addActionReaction(userId : string, areaName: string, actionName: string, actionApi: string, reactionName: string, reactionApi: string, parameters: any) {
         const actionReaction = new this.actionReactionModel({
             userId,
-            actionType: action,
-            reactionType: reaction,
+            areaName,
+            actionName,
+            actionApi,
+            reactionName,
+            reactionApi,
             parameters,
-            schedule: schedule || null,
         });
         return await actionReaction.save();
+    }
+
+    async getActionReaction(userId: string) {
+        const actionsReactions = await this.actionReactionModel.find({ userId });
+        return actionsReactions.map(actionReaction => ({
+            _id: actionReaction.id,
+            areaName: actionReaction.areaName,
+            actionName: actionReaction.actionName,
+            actionApi: actionReaction.actionApi,
+            reactionName: actionReaction.reactionName,
+            reactionApi: actionReaction.reactionApi,
+            parameters: actionReaction.parameters,
+        }));
+    }
+
+    async deleteActionReaction(id: string) {
+        return this.actionReactionModel.findByIdAndDelete(id);
+    }
+
+    async updateActionReaction(id: string, updateData: any): Promise<boolean> {
+        const check = this.checkActionReaction(updateData.actionName, updateData.actionApi, updateData.reactionName, updateData.reactionApi, updateData.parameters);
+        if (!check) {
+            return false;
+        }
+        await this.actionReactionModel.findByIdAndUpdate(id, updateData);
+        return true;
+    }
+
+    checkParams(expectedParams: Record<string, string>, actualParams: Record<string, any>): boolean {
+        for (const [key, type] of Object.entries(expectedParams)) {
+            if (!(key in actualParams) || typeof actualParams[key] !== type) {
+                return false;
+            }
+        }
+        return true;
+    }
+
+    checkActionReaction(actionName: string, actionApi: string, reactionName: string, reactionApi: string, parameters: any): boolean {
+        const actionApiName = ACTIONS_REACTIONS[actionApi];
+        const reactionApiName = ACTIONS_REACTIONS[reactionApi];
+        if (!actionApiName || !reactionApiName) {
+            return false
+        }
+        const action = ACTIONS_REACTIONS[actionApi]?.actions[actionName];
+        const reaction = ACTIONS_REACTIONS[reactionApi]?.reactions[reactionName];
+        if (!action || !reaction) {
+            return false
+        }
+        const expectedActionParams = action.parameters || {};
+        const expectedReactionParams = reaction.parameters || {};
+        const isValidActionParams = this.checkParams(expectedActionParams, parameters);
+        const isValidReactionParams = this.checkParams(expectedReactionParams, parameters);
+        if (!isValidActionParams || !isValidReactionParams) {
+            return false;
+        }
+        return true;
     }
 }
