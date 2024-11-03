@@ -76,7 +76,6 @@ const NewHomePage = () => {
     };
 
     const handlePlanetContainerClick = (planet, event) => {
-        // Condition pour vérifier que le clic vient bien du conteneur, et non d’un élément interne
         if (event.target === event.currentTarget) {
             handleClick(planet);
         }
@@ -131,8 +130,8 @@ const NewHomePage = () => {
                         onAnimationEnd={() => handleAnimationEnd("earthMoon")}
                     >
                         <EarthMoon />
-                        <MoonCircle type="apis" className={planetAnimationStates.earthMoon ? "visible" : ""} />
                     </div>
+                        <MoonCircle type="apis" className={planetAnimationStates.earthMoon ? "visible" : ""} />
                     <div className="help">
                         <button onClick={handleLogout} className="disconnect-button">Disconnect</button>
                         <button 
