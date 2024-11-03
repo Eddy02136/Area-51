@@ -18,7 +18,6 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.usukae.area.Classes.ActionReaction.ActionReactionAdapter;
 import com.usukae.area.Classes.ActionReaction.ActionReactionApiProtocol;
-import com.usukae.area.Classes.Actions.ActionUtil;
 import com.usukae.area.Classes.Actions.AddActionAdapter;
 import com.usukae.area.Classes.Api.ApiBaseUrlUtil;
 import com.usukae.area.Classes.Connections.AddConnectionAdapter;
@@ -34,7 +33,6 @@ public class MainActivity extends AppCompatActivity {
 
     private DialogUtil dialogUtil;
     private ConnectionsUtil connectionsUtil;
-    private ActionUtil actionUtil;
     private ConnectionChecker connectionChecker;
     private SharedPreferencesManager sharedPreferencesManager;
 
@@ -75,7 +73,6 @@ public class MainActivity extends AppCompatActivity {
     private void createClasses() {
         dialogUtil = new DialogUtil();
         connectionsUtil = new ConnectionsUtil();
-        actionUtil = new ActionUtil();
         connectionChecker = new ConnectionChecker(this);
         sharedPreferencesManager = new SharedPreferencesManager(this);
     }
@@ -141,7 +138,7 @@ public class MainActivity extends AppCompatActivity {
         ActionReactionApiProtocol apiProtocol = new ActionReactionApiProtocol(getApplicationContext());
         apiProtocol.getAllActions(getApplicationContext(), (success, code, data, list, actionsList, reactionsList) -> {
             if (success && actionsList != null) {
-                AddActionAdapter addActionAdapter = new AddActionAdapter(this, actionsList);
+                AddActionAdapter addActionAdapter = new AddActionAdapter(this, actionsList, addAreaDialog);
                 areasRecyclerView.setLayoutManager(new LinearLayoutManager(this));
                 areasRecyclerView.setAdapter(addActionAdapter);
             }

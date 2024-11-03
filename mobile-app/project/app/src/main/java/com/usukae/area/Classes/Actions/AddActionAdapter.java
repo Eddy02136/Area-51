@@ -16,7 +16,6 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.usukae.area.Classes.ActionReaction.ActionReactionApiProtocol;
 import com.usukae.area.Classes.Reactions.AddReactionAdapter;
-import com.usukae.area.Classes.Reactions.ReactionUtil;
 import com.usukae.area.Classes.Utils.DialogUtil;
 import com.usukae.area.R;
 
@@ -31,22 +30,22 @@ public class AddActionAdapter extends RecyclerView.Adapter<AddActionAdapter.Acti
     private final List<Action> actions;
 
     private ActionUtil actionUtil;
-    private ReactionUtil reactionUtil;
     private DialogUtil dialogUtil;
     private Dialog newActionDialog;
+    private final Dialog mainDialog;
 
     private List<EditText> inputFields;
     private LinearLayout inputContainer;
 
-    public AddActionAdapter(Context context, List<Action> actions) {
+    public AddActionAdapter(Context context, List<Action> actions, Dialog mainDialog) {
         this.context = context;
         this.actions = actions;
+        this.mainDialog = mainDialog;
         createClasses();
     }
 
     private void createClasses() {
         actionUtil = new ActionUtil();
-        reactionUtil = new ReactionUtil();
         dialogUtil = new DialogUtil();
     }
 
@@ -136,7 +135,7 @@ public class AddActionAdapter extends RecyclerView.Adapter<AddActionAdapter.Acti
 
         new ActionReactionApiProtocol(context).getAllReactions(context, (success, code, data, list, a, r) -> {
             if (success && r != null) {
-                AddReactionAdapter addReactionAdapter = new AddReactionAdapter(context, r, action, reactionDialog);
+                AddReactionAdapter addReactionAdapter = new AddReactionAdapter(context, r, action, reactionDialog, newActionDialog, mainDialog);
                 reactionsRecyclerView.setLayoutManager(new LinearLayoutManager(context));
                 reactionsRecyclerView.setAdapter(addReactionAdapter);
                 reactionDialog.show();

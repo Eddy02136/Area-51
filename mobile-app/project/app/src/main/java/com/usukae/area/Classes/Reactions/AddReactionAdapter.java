@@ -37,15 +37,19 @@ public class AddReactionAdapter extends RecyclerView.Adapter<AddReactionAdapter.
     private ReactionUtil reactionUtil;
     private DialogUtil dialogUtil;
     private Dialog newReactionDialog;
+    private final Dialog newActionDialog;
+    private final Dialog mainDialog;
 
     private List<EditText> inputFields;
     private LinearLayout inputContainer;
 
-    public AddReactionAdapter(Context context, List<Reaction> reactions, Action selectedAction, Dialog reactionDialog) {
+    public AddReactionAdapter(Context context, List<Reaction> reactions, Action selectedAction, Dialog reactionDialog, Dialog newActionDialog, Dialog mainDialog) {
         this.context = context;
         this.reactions = reactions;
         this.selectedAction = selectedAction;
         this.reactionDialog = reactionDialog;
+        this.newActionDialog = newActionDialog;
+        this.mainDialog = mainDialog;
         this.apiProtocol = new ActionReactionApiProtocol(context.getApplicationContext());
         createClasses();
     }
@@ -123,8 +127,6 @@ public class AddReactionAdapter extends RecyclerView.Adapter<AddReactionAdapter.
     private void setupValidateButton(Map<String, String> params, Reaction reaction) {
         newReactionDialog.findViewById(R.id.validateButton).setOnClickListener(v -> {
             reaction.setParameters(collectInputValues(params));
-            newReactionDialog.dismiss();
-            reactionDialog.dismiss();
             saveArea(selectedAction, reaction);
         });
     }
@@ -154,7 +156,9 @@ public class AddReactionAdapter extends RecyclerView.Adapter<AddReactionAdapter.
         apiProtocol.addActionReaction(context, request, (success, code, data, list, a, r) -> {
             if (success) {
                 new PrettyAlert((Activity) context).success(context.getString(R.string.action_reaction_saved), 3000);
-                newReactionDialog.dismiss();
+                if (newReactionDialog.isShowing()) newReactionDialog.dismiss();
+                if (reactionDialog.isShowing()) reactionDialog.dismiss();
+                if (mainDialog.isShowing()) mainDialog.dismiss();
             } else {
                 new PrettyAlert((Activity) context).error(context.getString(R.string.error_saving_action_reaction) + code, 3000);
             }
