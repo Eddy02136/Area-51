@@ -5,14 +5,20 @@ import {FastifyReply} from "fastify";
 import * as jwt from 'jsonwebtoken';
 import * as process from "node:process";
 import {UsersService} from "../../users/users.service";
-import {ApiHeader, ApiOperation, ApiResponse} from "@nestjs/swagger";
+import {ApiHeader, ApiOperation, ApiQuery, ApiResponse, ApiTags} from "@nestjs/swagger";
 
 @Controller('twitch')
+@ApiTags('Twitch')
 export class TwitchController {
   constructor(private readonly twitchService: TwitchService,
               private readonly usersService: UsersService) {}
 
   @UseGuards(AuthGuard('jwt'))
+  @ApiOperation({ summary: 'Get twitch authentication URL' })
+  @ApiHeader({ name: 'authorization', required: true, description: 'Bearer token for Area51 API access' })
+  @ApiResponse({ status: 200, description: 'Successful retrieval of the twitch authentication URL.', type: String })
+  @ApiResponse({ status: 401, description: 'Unauthorized. Invalid or missing JWT.' })
+  @ApiResponse({ status: 500, description: 'Internal server error.' })
   @Get('auth-url')
   async getAuthUrl(@Headers('authorization') authorization: string, @Response() reply: FastifyReply) {
     const jwtToken = authorization.replace('Bearer ', '');
@@ -26,6 +32,11 @@ export class TwitchController {
     }
   }
 
+  @ApiOperation({ summary: 'Handle twitch callback and retrieve access token' })
+  @ApiQuery({ name: 'code', required: true, description: 'The authorization code obtained from twitch' })
+  @ApiResponse({ status: 200, description: 'Twitch login successful' })
+  @ApiResponse({ status: 400, description: 'Bad Request. Authorization code is required.' })
+  @ApiResponse({ status: 500, description: 'Internal server error.' })
   @Get('callback')
   async handleTwitchCallback(@Query('code') code: string, @Query('state') state: string, @Response() reply: FastifyReply) {
     if (!code || !state) {
@@ -44,6 +55,13 @@ export class TwitchController {
     }
   }
 
+  @UseGuards(AuthGuard('jwt'))
+  @ApiOperation({ summary: 'Check twitch connection' })
+  @ApiHeader({ name: 'authorization', required: true, description: 'Bearer token for Area51 API access' })
+  @ApiResponse({ status: 200, description: 'User is connected to twitch', schema: { example: 'Connected'}})
+  @ApiResponse({ status: 201, description: 'User is not connected to twitch', schema: { example: 'Not connected'}})
+  @ApiResponse({ status: 401, description: 'Unauthorized. Invalid or missing JWT.' })
+  @ApiResponse({ status: 500, description: 'Internal server error.' })
   @Get('check-connection')
   async checkConnection(@Headers('authorization') authorization: string, @Response() reply: FastifyReply) {
     const jwtToken = authorization.replace('Bearer ', '');
@@ -57,7 +75,7 @@ export class TwitchController {
   }
 
   @UseGuards(AuthGuard('jwt'))
-  @ApiOperation({ summary: 'Logout Twitch connection'})
+  @ApiOperation({ summary: 'Logout twitch connection'})
   @ApiHeader({ name: 'authorization', required: true, description: 'Bearer token for Area51 API access' })
   @ApiResponse({ status: 200, description: 'Twitch logout successfully.' })
   @ApiResponse({ status: 401, description: 'Unauthorized. Invalid or missing JWT.' })

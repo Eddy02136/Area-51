@@ -14,9 +14,9 @@ export class GithubController {
                 private usersService: UsersService) {}
 
     @UseGuards(AuthGuard('jwt'))
-    @ApiOperation({ summary: 'Get Github authentication URL' })
+    @ApiOperation({ summary: 'Get github authentication URL' })
     @ApiHeader({ name: 'authorization', required: true, description: 'Bearer token for Area51 API access' })
-    @ApiResponse({ status: 200, description: 'Successful retrieval of the Github authentication URL.', type: String })
+    @ApiResponse({ status: 200, description: 'Successful retrieval of the github authentication URL.', type: String })
     @ApiResponse({ status: 401, description: 'Unauthorized. Invalid or missing JWT.' })
     @ApiResponse({ status: 500, description: 'Internal server error.' })
     @Get('auth-url')
@@ -32,8 +32,8 @@ export class GithubController {
         }
     }
 
-    @ApiOperation({ summary: 'Handle Github callback and retrieve access token' })
-    @ApiQuery({ name: 'code', required: true, description: 'The authorization code obtained from Github' })
+    @ApiOperation({ summary: 'Handle github callback and retrieve access token' })
+    @ApiQuery({ name: 'code', required: true, description: 'The authorization code obtained from github' })
     @ApiResponse({ status: 200, description: 'Successful retrieval of the access token.' })
     @ApiResponse({ status: 400, description: 'Bad Request. Authorization code is required.' })
     @ApiResponse({ status: 500, description: 'Internal server error.' })
@@ -55,10 +55,10 @@ export class GithubController {
     }
 
     @UseGuards(AuthGuard('jwt'))
-    @ApiOperation({ summary: 'Check Github connection' })
+    @ApiOperation({ summary: 'Check github connection' })
     @ApiHeader({ name: 'authorization', required: true, description: 'Bearer token for Area51 API access' })
-    @ApiResponse({ status: 200, description: 'User is connected to Github', schema: { example: 'Connected'}})
-    @ApiResponse({ status: 201, description: 'User is not connected to Github', schema: { example: 'Not connected'}})
+    @ApiResponse({ status: 200, description: 'User is connected to github', schema: { example: 'Connected'}})
+    @ApiResponse({ status: 201, description: 'User is not connected to github', schema: { example: 'Not connected'}})
     @ApiResponse({ status: 401, description: 'Unauthorized. Invalid or missing JWT.' })
     @ApiResponse({ status: 500, description: 'Internal server error.' })
     @Get('check-connection')
