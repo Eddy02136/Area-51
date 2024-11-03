@@ -3,6 +3,7 @@ package com.usukae.area.Classes.ActionReaction;
 import java.util.Map;
 
 public class ActionReactionRequest {
+    private final String areaName;
     private final String actionName;
     private final String actionApi;
     private final String reactionName;
@@ -10,13 +11,18 @@ public class ActionReactionRequest {
     private final Map<String, String> parameters;
     private final String schedule;
 
-    public ActionReactionRequest(String actionName, String actionApi, String reactionName, String reactionApi, Map<String, String> parameters, String schedule) {
+    public ActionReactionRequest(String areaName, String actionName, String actionApi, String reactionName, String reactionApi, Map<String, String> parameters, String schedule) {
+        this.areaName = areaName;
         this.actionName = actionName;
         this.actionApi = actionApi;
         this.reactionName = reactionName;
         this.reactionApi = reactionApi;
         this.parameters = parameters;
         this.schedule = schedule;
+    }
+
+    public String getAreaName() {
+        return areaName;
     }
 
     public String getAction() {

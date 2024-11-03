@@ -4,6 +4,7 @@ import java.util.Map;
 
 public class ActionReaction {
     private final String _id;
+    private final String areaName;
     private final String actionName;
     private final String actionApi;
     private final String reactionName;
@@ -11,8 +12,9 @@ public class ActionReaction {
     private final Map<String, String> parameters;
     private final String schedule;
 
-    public ActionReaction(String id, String actionName, String actionApi, String reactionName, String reactionApi, Map<String, String> parameters, String schedule) {
+    public ActionReaction(String id, String areaName, String actionName, String actionApi, String reactionName, String reactionApi, Map<String, String> parameters, String schedule) {
         this._id = id;
+        this.areaName = areaName;
         this.actionName = actionName;
         this.actionApi = actionApi;
         this.reactionName = reactionName;
@@ -35,6 +37,10 @@ public class ActionReaction {
 
     public String getReactionName() {
         return reactionName;
+    }
+
+    public String getAreaName() {
+        return areaName;
     }
 
     public String getReactionApi() {

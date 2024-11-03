@@ -39,7 +39,6 @@ public class AddReactionAdapter extends RecyclerView.Adapter<AddReactionAdapter.
     private ReactionUtil reactionUtil;
     private DialogUtil dialogUtil;
     private Dialog newReactionDialog;
-    private final Dialog newActionDialog;
     private final Dialog mainDialog;
 
     private List<EditText> inputFields;
@@ -50,7 +49,6 @@ public class AddReactionAdapter extends RecyclerView.Adapter<AddReactionAdapter.
         this.reactions = reactions;
         this.selectedAction = selectedAction;
         this.reactionDialog = reactionDialog;
-        this.newActionDialog = newActionDialog;
         this.mainDialog = mainDialog;
         this.apiProtocol = new ActionReactionApiProtocol(context.getApplicationContext());
         createClasses();
@@ -139,6 +137,7 @@ public class AddReactionAdapter extends RecyclerView.Adapter<AddReactionAdapter.
         combinedParameters.putAll(reaction.getParameters());
 
         ActionReactionRequest request = new ActionReactionRequest(
+                "Name",
                 action.getName(),
                 action.getService(),
                 reaction.getName(),

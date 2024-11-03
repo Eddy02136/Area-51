@@ -36,6 +36,10 @@
     <string name="registration_failed">Échec de l\'inscription</string>
     <string name="invalid_email_address">Adresse e-mail invalide.</string>
     <string name="invalid_password">Mot de passe invalide.</string>
+    <string name="update_success">Mise à jour réussie</string>
+    <string name="update_failed">Échec de la mise à jour</string>
+    <string name="delete_success">Supprimé avec succès</string>
+    <string name="delete_failed">Échec de la suppression</string>
     <string name="action_reaction_saved">Action et réaction enregistrées avec succès</string>
     <string name="error_saving_action_reaction">Erreur lors de l\'enregistrement de l\'action et de la réaction : </string>
     <string name="password_length_error">Le mot de passe doit comporter entre 5 et 25 caractères.</string>

@@ -38,6 +38,10 @@
     <string name="registration_failed">Registration failed</string>
     <string name="invalid_email_address">Invalid email address.</string>
     <string name="invalid_password">Invalid password.</string>
+    <string name="update_success">Update successful</string>
+    <string name="update_failed">Update failed</string>
+    <string name="delete_success">Successfully deleted</string>
+    <string name="delete_failed">Deletion failed</string>
     <string name="password_length_error">Password must be between 5 and 25 characters.</string>
     <string name="passwords_do_not_match">Passwords do not match.</string>
     <string name="required_field_empty">Required fields are missing in the request body.</string>
