@@ -16,6 +16,11 @@ import java.util.Map;
 public class SharedPreferencesManager {
 
     private static final String PREF_NAME = "AreaPreferences";
+    private static final String KEY_FIRST_NAME = "first_name";
+    private static final String KEY_LAST_NAME = "last_name";
+    private static final String KEY_EMAIL = "email";
+    private static final String KEY_TOKEN = "auth_token";
+
     private final SharedPreferences sharedPreferences;
     private final SharedPreferences.Editor editor;
     private final Gson gson;
@@ -28,6 +33,12 @@ public class SharedPreferencesManager {
 
     public Map<String, ?> getAll() {
         return sharedPreferences.getAll();
+    }
+
+    public void clearAllExceptApiBaseUrl() {
+        String apiBaseUrl = sharedPreferences.getString("api_base_url", null);
+        sharedPreferences.edit().clear().apply();
+        sharedPreferences.edit().putString("api_base_url", apiBaseUrl).apply();
     }
 
     public void setStringList(String key, String... values) {
@@ -59,7 +70,8 @@ public class SharedPreferencesManager {
         if (json == null) {
             return new HashMap<>();
         }
-        Type type = new TypeToken<Map<String, String>>(){}.getType();
+        Type type = new TypeToken<Map<String, String>>() {
+        }.getType();
         return gson.fromJson(json, type);
     }
 
@@ -111,5 +123,41 @@ public class SharedPreferencesManager {
     public void clear() {
         editor.clear();
         editor.apply();
+    }
+
+    public void saveUserInfo(String firstName, String lastName, String email) {
+        editor.putString(KEY_FIRST_NAME, firstName);
+        editor.putString(KEY_LAST_NAME, lastName);
+        editor.putString(KEY_EMAIL, email);
+        editor.apply();
+    }
+
+    public String getFirstName() {
+        return sharedPreferences.getString(KEY_FIRST_NAME, "");
+    }
+
+    public String getLastName() {
+        return sharedPreferences.getString(KEY_LAST_NAME, "");
+    }
+
+    public String getEmail() {
+        return sharedPreferences.getString(KEY_EMAIL, "");
+    }
+
+    public void clearUserInfo() {
+        editor.clear();
+        editor.apply();
+    }
+
+    public String getToken() {
+        return sharedPreferences.getString(KEY_TOKEN, "");
+    }
+
+    public void setToken(String token) {
+        setString(KEY_TOKEN, token);
+    }
+
+    public void resetToken() {
+        setString(KEY_TOKEN, "");
     }
 }

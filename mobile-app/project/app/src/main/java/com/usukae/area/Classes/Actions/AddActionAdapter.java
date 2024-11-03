@@ -1,5 +1,7 @@
 package com.usukae.area.Classes.Actions;
 
+import static com.usukae.area.Classes.Utils.TextUtil.formatCamelCase;
+
 import android.app.Dialog;
 import android.content.Context;
 import android.view.LayoutInflater;
@@ -14,8 +16,9 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.usukae.area.Classes.ActionReaction.ActionReactionAdapter;
+import com.usukae.area.Classes.ActionReaction.ActionReactionApiProtocol;
 import com.usukae.area.Classes.Reactions.AddReactionAdapter;
-import com.usukae.area.Classes.Reactions.ReactionUtil;
 import com.usukae.area.Classes.Utils.DialogUtil;
 import com.usukae.area.R;
 
@@ -30,22 +33,25 @@ public class AddActionAdapter extends RecyclerView.Adapter<AddActionAdapter.Acti
     private final List<Action> actions;
 
     private ActionUtil actionUtil;
-    private ReactionUtil reactionUtil;
     private DialogUtil dialogUtil;
     private Dialog newActionDialog;
+    private final Dialog mainDialog;
 
     private List<EditText> inputFields;
     private LinearLayout inputContainer;
 
-    public AddActionAdapter(Context context, List<Action> actions) {
+    private final ActionReactionAdapter.OnAreaChangeListener onAreaChangeListener;
+
+    public AddActionAdapter(Context context, List<Action> actions, Dialog mainDialog, ActionReactionAdapter.OnAreaChangeListener onAreaChangeListener) {
         this.context = context;
         this.actions = actions;
+        this.mainDialog = mainDialog;
+        this.onAreaChangeListener = onAreaChangeListener;
         createClasses();
     }
 
     private void createClasses() {
         actionUtil = new ActionUtil();
-        reactionUtil = new ReactionUtil();
         dialogUtil = new DialogUtil();
     }
 
@@ -84,21 +90,36 @@ public class AddActionAdapter extends RecyclerView.Adapter<AddActionAdapter.Acti
         inputContainer = newActionDialog.findViewById(R.id.inputContainer);
         inputFields = new ArrayList<>();
         inputContainer.removeAllViews();
-        dialogTitle.setText(action.getName());
+        dialogTitle.setText(formatCamelCase(action.getName()));
         dialogSubtitle.setText(action.getDescription());
     }
 
     private void createInputFields(Map<String, String> params) {
+        inputFields = new ArrayList<>();
+
         for (Map.Entry<String, String> entry : params.entrySet()) {
             View inputFieldView = LayoutInflater.from(context).inflate(R.layout.input_field_layout, inputContainer, false);
             EditText editText = inputFieldView.findViewById(R.id.editTextInput);
+
             String key = entry.getKey();
             String capitalizedKey = key.substring(0, 1).toUpperCase() + key.substring(1);
+            editText.setHint(formatCamelCase(capitalizedKey));
 
-            editText.setHint(capitalizedKey);
             inputContainer.addView(inputFieldView);
             inputFields.add(editText);
         }
+    }
+
+    private Map<String, String> collectInputValues(Map<String, String> params) {
+        Map<String, String> inputValues = new HashMap<>();
+        int i = 0;
+
+        for (Map.Entry<String, String> entry : params.entrySet()) {
+            String value = inputFields.get(i).getText().toString();
+            inputValues.put(entry.getKey(), value);
+            i++;
+        }
+        return inputValues;
     }
 
     private void setupValidateButton(Map<String, String> params, Action action) {
@@ -109,23 +130,18 @@ public class AddActionAdapter extends RecyclerView.Adapter<AddActionAdapter.Acti
         });
     }
 
-    private Map<String, String> collectInputValues(Map<String, String> params) {
-        Map<String, String> inputValues = new HashMap<>();
-        int i = 0;
-        for (Map.Entry<String, String> entry : params.entrySet()) {
-            inputValues.put(entry.getKey(), inputFields.get(i).getText().toString());
-            i++;
-        }
-        return inputValues;
-    }
-
     private void proceedToReactionSelection(Action action) {
-        Dialog reactionDialog = dialogUtil.createBottomDialog(context, R.layout.modal_add_connection);
-        RecyclerView reactionsRecyclerView = reactionDialog.findViewById(R.id.connectionsRecyclerView);
-        AddReactionAdapter addReactionAdapter = new AddReactionAdapter(context, reactionUtil.getReactions(), action, reactionDialog);
-        reactionsRecyclerView.setLayoutManager(new LinearLayoutManager(context));
-        reactionsRecyclerView.setAdapter(addReactionAdapter);
-        reactionDialog.show();
+        Dialog reactionDialog = dialogUtil.createBottomDialog(context, R.layout.modal_add_reaction);
+        RecyclerView reactionsRecyclerView = reactionDialog.findViewById(R.id.areasRecyclerView);
+
+        new ActionReactionApiProtocol(context).getAllReactions(context, (success, code, data, list, a, r) -> {
+            if (success && r != null) {
+                AddReactionAdapter addReactionAdapter = new AddReactionAdapter(context, r, action, reactionDialog, newActionDialog, mainDialog, onAreaChangeListener);
+                reactionsRecyclerView.setLayoutManager(new LinearLayoutManager(context));
+                reactionsRecyclerView.setAdapter(addReactionAdapter);
+                reactionDialog.show();
+            }
+        });
     }
 
     @Override
@@ -146,9 +162,10 @@ public class AddActionAdapter extends RecyclerView.Adapter<AddActionAdapter.Acti
         }
 
         public void bind(Action action, ActionUtil actionUtil) {
-            titleTextView.setText(action.getName());
+            titleTextView.setText(formatCamelCase(action.getService() + " - " + action.getName()));
             descriptionTextView.setText(action.getDescription());
-            pictureImageView.setImageResource(actionUtil.getActionIcon(action.getId()));
+            pictureImageView.setImageResource(actionUtil.getActionIcon(action.getService()));
         }
+
     }
 }

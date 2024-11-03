@@ -3,11 +3,11 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/main"
-    tools:ignore="ContentDescription"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/dark_primary"
-    tools:context=".Activities.MainActivity">
+    tools:context=".Activities.MainActivity"
+    tools:ignore="ContentDescription">
 
     <ImageView
         android:id="@+id/profileButton"
@@ -18,7 +18,19 @@
         app:layout_constraintBottom_toBottomOf="@+id/welcomeBack"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="@+id/welcomeBack"
-        app:tint="@color/white" />
+        app:tint="@color/light_primary" />
+
+    <ImageView
+        android:id="@+id/urlButton"
+        android:layout_width="25dp"
+        android:layout_height="25dp"
+        android:layout_marginEnd="15dp"
+        android:padding="2dp"
+        android:src="@drawable/ic_link"
+        app:layout_constraintBottom_toBottomOf="@+id/welcomeBack"
+        app:layout_constraintEnd_toStartOf="@+id/profileButton"
+        app:layout_constraintTop_toTopOf="@+id/welcomeBack"
+        app:tint="@color/light_primary" />
 
     <TextView
         android:id="@+id/welcomeBack"
@@ -26,10 +38,12 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="30dp"
         android:layout_marginTop="30dp"
+        android:layout_marginEnd="20dp"
         android:fontFamily="@font/gotham_rounded_light"
         android:text="@string/welcome_back"
         android:textColor="@color/light_primary"
         android:textSize="30sp"
+        app:layout_constraintEnd_toStartOf="@+id/urlButton"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
@@ -39,7 +53,7 @@
         android:layout_height="wrap_content"
         android:fontFamily="@font/gotham_rounded_bold"
         android:text="@string/benjamin"
-        android:textColor="@color/white"
+        android:textColor="@color/light_primary"
         android:textSize="30sp"
         app:layout_constraintEnd_toEndOf="@+id/welcomeBack"
         app:layout_constraintStart_toStartOf="@+id/welcomeBack"
@@ -49,9 +63,9 @@
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:layout_marginTop="15dp"
+        android:fillViewport="true"
         android:nestedScrollingEnabled="false"
         android:scrollbars="none"
-        android:fillViewport="true"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -83,9 +97,10 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="15dp"
                 android:layout_marginTop="15dp"
+                android:layout_marginEnd="15dp"
                 app:cardBackgroundColor="@color/dark_secondary"
                 app:cardCornerRadius="25dp"
-                app:layout_constraintEnd_toStartOf="@+id/dashboardCardExecutions"
+                app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/dashboardLabel">
 
@@ -124,60 +139,12 @@
                 </androidx.constraintlayout.widget.ConstraintLayout>
             </androidx.cardview.widget.CardView>
 
-            <androidx.cardview.widget.CardView
-                android:id="@+id/dashboardCardExecutions"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="15dp"
-                android:layout_marginEnd="15dp"
-                app:cardBackgroundColor="@color/dark_secondary"
-                app:cardCornerRadius="25dp"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toEndOf="@+id/dashboardCardActive"
-                app:layout_constraintTop_toTopOf="@+id/dashboardCardActive">
-
-                <androidx.constraintlayout.widget.ConstraintLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent">
-
-                    <TextView
-                        android:id="@+id/dashboardExecutionsValue"
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_marginStart="30dp"
-                        android:layout_marginTop="10dp"
-                        android:fontFamily="@font/gotham_rounded_bold"
-                        android:text="@string/_0"
-                        android:textColor="@color/accent"
-                        android:textSize="40sp"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toTopOf="parent" />
-
-                    <TextView
-                        android:id="@+id/dashboardExecutionsTitle"
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_marginEnd="30dp"
-                        android:layout_marginBottom="20dp"
-                        android:fontFamily="@font/gotham_rounded_book"
-                        android:text="@string/total_executions"
-                        android:textColor="@color/light_primary"
-                        android:textSize="16sp"
-                        app:layout_constraintBottom_toBottomOf="parent"
-                        app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintHorizontal_bias="0.0"
-                        app:layout_constraintStart_toStartOf="@+id/dashboardExecutionsValue"
-                        app:layout_constraintTop_toBottomOf="@+id/dashboardExecutionsValue"
-                        app:layout_constraintVertical_bias="0.0" />
-                </androidx.constraintlayout.widget.ConstraintLayout>
-            </androidx.cardview.widget.CardView>
-
             <TextView
                 android:id="@+id/listTitle"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="25dp"
-                android:layout_marginTop="45dp"
+                android:layout_marginTop="35dp"
                 android:layout_marginEnd="25dp"
                 android:fontFamily="@font/gotham_rounded_book"
                 android:text="@string/your_area_s"

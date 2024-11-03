@@ -43,4 +43,39 @@ public class ErrorUtil {
                 return R.string.login_failed;
         }
     }
+
+    public int getUserInfoError(int code) {
+        switch (code) {
+            case 401:
+                return R.string.invalid_token;
+            case 500:
+                return R.string.internal_server_error;
+            default:
+                return R.string.get_user_info_failed;
+        }
+    }
+
+    public int updateUserInfoError(int code) {
+        switch (code) {
+            case 401:
+                return R.string.invalid_token;
+            case 500:
+                return R.string.internal_server_error;
+            default:
+                return R.string.update_user_info_failed;
+        }
+    }
+
+    public int getLogoutError(int code) {
+        switch (code) {
+            case 401:
+                return R.string.unauthorized_logout;
+            case 404:
+                return R.string.logout_service_unreachable;
+            case 500:
+                return R.string.internal_server_error;
+            default:
+                return R.string.logout_failed;
+        }
+    }
 }

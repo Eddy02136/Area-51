@@ -1,12 +1,12 @@
-package com.usukae.area.Classes.User;
+package com.usukae.area.Classes.Auth.User;
 
-public class User {
+public class UserRequest {
     private String firstName;
     private String lastName;
     private String email;
     private String password;
 
-    public User(String firstName, String lastName, String email, String password) {
+    public UserRequest(String firstName, String lastName, String email, String password) {
         this.firstName = firstName;
         this.lastName = lastName;
         this.email = email;

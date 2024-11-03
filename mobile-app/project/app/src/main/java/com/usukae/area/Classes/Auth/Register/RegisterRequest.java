@@ -1,6 +1,6 @@
 package com.usukae.area.Classes.Auth.Register;
 
-import com.usukae.area.Classes.User.User;
+import com.usukae.area.Classes.Auth.User.UserRequest;
 
 public class RegisterRequest {
     private String firstname;
@@ -8,7 +8,7 @@ public class RegisterRequest {
     private String email;
     private String password;
 
-    public RegisterRequest(User user) {
+    public RegisterRequest(UserRequest user) {
         this.firstname = user.getFirstName();
         this.lastname = user.getLastName();
         this.email = user.getEmail();
