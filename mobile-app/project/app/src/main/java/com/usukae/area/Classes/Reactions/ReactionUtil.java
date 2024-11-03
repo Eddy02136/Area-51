@@ -5,6 +5,16 @@ import com.usukae.area.R;
 public class ReactionUtil {
     public int getReactionIcon(String id) {
         switch (id.toLowerCase()) {
+            case "nasa":
+                return R.drawable.ic_nasa;
+            case "youtube":
+                return R.drawable.ic_yt;
+            case "twitch":
+                return R.drawable.ic_twitch;
+            case "github":
+                return R.drawable.ic_git;
+            case "discord":
+                return R.drawable.ic_color_discord;
             case "spotify":
                 return R.drawable.ic_color_spotify;
             default:

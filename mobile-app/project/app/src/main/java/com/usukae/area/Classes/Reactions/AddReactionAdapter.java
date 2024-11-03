@@ -179,7 +179,7 @@ public class AddReactionAdapter extends RecyclerView.Adapter<AddReactionAdapter.
         }
 
         public void bind(Reaction reaction, ReactionUtil reactionUtil) {
-            titleTextView.setText(formatCamelCase(reaction.getService() + " " + reaction.getName()));
+            titleTextView.setText(formatCamelCase(reaction.getService() + " - " + reaction.getName()));
             descriptionTextView.setText(reaction.getDescription());
             pictureImageView.setImageResource(reactionUtil.getReactionIcon(reaction.getService()));
         }

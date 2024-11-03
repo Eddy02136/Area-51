@@ -162,9 +162,9 @@ public class AddActionAdapter extends RecyclerView.Adapter<AddActionAdapter.Acti
         }
 
         public void bind(Action action, ActionUtil actionUtil) {
-            titleTextView.setText(formatCamelCase(action.getService() + " " + action.getName()));
+            titleTextView.setText(formatCamelCase(action.getService() + " - " + action.getName()));
             descriptionTextView.setText(action.getDescription());
-            pictureImageView.setImageResource(actionUtil.getActionIcon(action.getName()));
+            pictureImageView.setImageResource(actionUtil.getActionIcon(action.getService()));
         }
 
         public String formatCamelCase(String input) {
