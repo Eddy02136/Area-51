@@ -29,7 +29,7 @@ import com.usukae.area.Classes.Utils.DialogUtil;
 import com.usukae.area.Classes.Utils.PrettyAlert;
 import com.usukae.area.R;
 
-public class MainActivity extends AppCompatActivity implements AddConnectionAdapter.ConnectionAddedCallback {
+public class MainActivity extends AppCompatActivity {
 
     private DialogUtil dialogUtil;
     private ConnectionsUtil connectionsUtil;
@@ -95,15 +95,10 @@ public class MainActivity extends AppCompatActivity implements AddConnectionAdap
         reset = urlDialog.findViewById(R.id.reset);
     }
 
-    @Override
-    public void onConnectionAdded() {
-        initConnectionsList();
-    }
-
     private void assignButtons() {
         addArea.setOnClickListener(v -> addAreaDialog.show());
         addConnection.setOnClickListener(v -> {
-            AddConnectionAdapter addConnectionAdapter = new AddConnectionAdapter(this, connectionsUtil.getConnections(getApplicationContext()), this);
+            AddConnectionAdapter addConnectionAdapter = new AddConnectionAdapter(this, connectionsUtil.getConnections(getApplicationContext()));
             connectionsRecyclerView.setLayoutManager(new LinearLayoutManager(this));
             connectionsRecyclerView.setAdapter(addConnectionAdapter);
             addConnectionDialog.show();
@@ -130,12 +125,14 @@ public class MainActivity extends AppCompatActivity implements AddConnectionAdap
     }
 
     private void initDashboard() {
+        if (userName == null || activesAreasValue == null || totalExecutionsValue == null || sharedPreferencesManager == null) return;
         userName.setText(sharedPreferencesManager.getFirstName());
         activesAreasValue.setText(String.valueOf(0));
         totalExecutionsValue.setText(String.valueOf(0));
     }
 
     private void initActionsList() {
+        if (areasRecyclerView == null || addAreaDialog == null) return;
         ActionReactionApiProtocol apiProtocol = new ActionReactionApiProtocol(getApplicationContext());
         apiProtocol.getAllActions(getApplicationContext(), (success, code, data, list, actionsList, reactionsList) -> {
             if (success && actionsList != null) {
@@ -147,12 +144,16 @@ public class MainActivity extends AppCompatActivity implements AddConnectionAdap
     }
 
     private void initConnectionsList() {
+        if (connectionsUtil == null || dashboardAreasRecyclerView == null) {
+            return;
+        }
         DashboardConnectionAdapter dashboardConnectionAdapter = new DashboardConnectionAdapter(this, connectionsUtil.getStateConnections(getApplicationContext(), "true"));
         dashboardConnectionsRecyclerView.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false));
         dashboardConnectionsRecyclerView.setAdapter(dashboardConnectionAdapter);
     }
 
     private void loadAreas() {
+        if (dashboardAreasRecyclerView == null || activesAreasValue == null) return;
         ActionReactionApiProtocol apiProtocol = new ActionReactionApiProtocol(getApplicationContext());
         apiProtocol.getAllActionReactions(this, (success, code, data, actionReactions, a, r) -> {
             if (success) {
@@ -165,6 +166,7 @@ public class MainActivity extends AppCompatActivity implements AddConnectionAdap
     }
 
     private void checkConnections() {
+        if (connectionChecker == null) return;
         connectionChecker.checkConnections(getApplicationContext(), () -> {
             initDashboard();
             initActionsList();
@@ -186,5 +188,15 @@ public class MainActivity extends AppCompatActivity implements AddConnectionAdap
     @SuppressLint("MissingSuperCall")
     @Override
     public void onBackPressed() {
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        SharedPreferencesManager sharedPreferencesManager1 = new SharedPreferencesManager(getApplicationContext());
+        if (sharedPreferencesManager1.getString("reloadedList").equals("true")) {
+            sharedPreferencesManager1.remove("reloadedList");
+            checkConnections();
+        }
     }
 }
