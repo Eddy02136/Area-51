@@ -156,7 +156,7 @@ public class MainActivity extends AppCompatActivity {
         ActionReactionApiProtocol apiProtocol = new ActionReactionApiProtocol(getApplicationContext());
         apiProtocol.getAllActionReactions(this, (success, code, data, actionReactions, a, r) -> {
             if (success) {
-                ActionReactionAdapter actionReactionAdapter = new ActionReactionAdapter(this, actionReactions);
+                ActionReactionAdapter actionReactionAdapter = new ActionReactionAdapter(this, actionReactions, this::checkConnections);
                 dashboardAreasRecyclerView.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false));
                 dashboardAreasRecyclerView.setAdapter(actionReactionAdapter);
                 activesAreasValue.setText(String.valueOf(actionReactions.size()));

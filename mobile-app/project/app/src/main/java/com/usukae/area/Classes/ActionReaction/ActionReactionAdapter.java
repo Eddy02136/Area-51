@@ -34,10 +34,17 @@ public class ActionReactionAdapter extends RecyclerView.Adapter<ActionReactionAd
     private final List<ActionReaction> actionReactions;
     private final DialogUtil dialogUtil;
 
-    public ActionReactionAdapter(Context context, List<ActionReaction> actionReactions) {
+    private final OnAreaChangeListener onAreaChangeListener;
+
+    public interface OnAreaChangeListener {
+        void onAreaChanged();
+    }
+
+    public ActionReactionAdapter(Context context, List<ActionReaction> actionReactions, OnAreaChangeListener onAreaChangeListener) {
         this.context = context;
         this.actionReactions = actionReactions;
         this.dialogUtil = new DialogUtil();
+        this.onAreaChangeListener = onAreaChangeListener;
     }
 
     @NonNull
@@ -52,10 +59,10 @@ public class ActionReactionAdapter extends RecyclerView.Adapter<ActionReactionAd
         ActionReaction actionReaction = actionReactions.get(position);
         holder.bind(actionReaction);
 
-        holder.itemView.setOnClickListener(v -> openBottomSheetDialog(actionReaction));
+        holder.itemView.setOnClickListener(v -> openBottomSheetDialog(actionReaction, position));
     }
 
-    private void openBottomSheetDialog(ActionReaction actionReaction) {
+    private void openBottomSheetDialog(ActionReaction actionReaction, int position) {
         Dialog bottomSheetDialog = dialogUtil.createBottomDialog(context, R.layout.modal_edit_area);
 
         ImageView actionImage = bottomSheetDialog.findViewById(R.id.actionImage);
@@ -70,7 +77,7 @@ public class ActionReactionAdapter extends RecyclerView.Adapter<ActionReactionAd
         updateButton.setOnClickListener(v -> updateActionReaction(actionReaction, bottomSheetDialog, inputContainer));
 
         CardView deleteButton = bottomSheetDialog.findViewById(R.id.deleteButton);
-        deleteButton.setOnClickListener(v -> deleteActionReaction(actionReaction, bottomSheetDialog));
+        deleteButton.setOnClickListener(v -> deleteActionReaction(actionReaction, bottomSheetDialog, position));
 
         ActionUtil actionUtil = new ActionUtil();
         ReactionUtil reactionUtil = new ReactionUtil();
@@ -130,6 +137,7 @@ public class ActionReactionAdapter extends RecyclerView.Adapter<ActionReactionAd
             PrettyAlert alert = new PrettyAlert((Activity) context);
             if (success) {
                 alert.success(context.getString(R.string.update_success), 3000);
+                onAreaChangeListener.onAreaChanged();
                 dialog.dismiss();
             } else {
                 alert.error(context.getString(R.string.update_failed), 3000);
@@ -137,13 +145,16 @@ public class ActionReactionAdapter extends RecyclerView.Adapter<ActionReactionAd
         });
     }
 
-    private void deleteActionReaction(ActionReaction actionReaction, Dialog dialog) {
+    private void deleteActionReaction(ActionReaction actionReaction, Dialog dialog, int position) {
         ActionReactionApiProtocol apiProtocol = new ActionReactionApiProtocol(context);
         apiProtocol.deleteActionReaction(context, actionReaction.get_id(), (success, code, data, list, actions, reactions) -> {
             PrettyAlert alert = new PrettyAlert((Activity) context);
             if (success) {
                 alert.success(context.getString(R.string.delete_success), 3000);
+                actionReactions.remove(actionReaction);
+                notifyItemRemoved(position);
                 dialog.dismiss();
+                onAreaChangeListener.onAreaChanged();
             } else {
                 alert.error(context.getString(R.string.delete_failed), 3000);
             }
