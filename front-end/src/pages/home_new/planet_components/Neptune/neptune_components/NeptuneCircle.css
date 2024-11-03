@@ -59,6 +59,7 @@
     width: 60vh;
     right: 110%;
     top: 45%;
+    padding-bottom: 5%;
 }
 
 .ne-chose-action h1,
@@ -66,16 +67,18 @@
     color: black;
     font-size: 120%;
     font-weight: bold;
-    margin-bottom: 1vh;
+    margin-bottom: 1%;
     font-family: PriegoSemibold;
+    position: absolute;
 }
 
 .ne-chose-action label,
 .ne-chose-reaction label {
     color: black;
     font-size: 80%;
-    margin-bottom: 2vh;
+    margin-bottom: 2%;
     font-family: PriegoSemibold;
+    
 }
 
 .ne-chose-action-container,
@@ -84,16 +87,18 @@
     flex-direction: column;
     align-items: center;
     height: 100%;
-    width: 25vw;
-    margin-top: 2vh;
-    gap: 2vh;
+    width: 75%;
+    margin-top: 18%;
+    margin-bottom:8%;
+    gap: 5%;
+    position: relative;
 }
 
 .ne-chose-action-container Input,
 .ne-chose-reaction-container Input {
-    width: 25vw;
+    width: 100%;
     border-radius: 4px;
-    padding-left: 1vh;
+    padding-left: 1%;
     font-family: PriegoRegular;
 }
 
