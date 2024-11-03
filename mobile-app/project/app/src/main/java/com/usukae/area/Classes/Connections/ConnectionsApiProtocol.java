@@ -6,7 +6,7 @@ import androidx.annotation.NonNull;
 
 import com.usukae.area.Classes.Api.ApiClient;
 import com.usukae.area.Classes.Api.ApiService;
-import com.usukae.area.Classes.Areas.AreasAuthUrlResponse;
+import com.usukae.area.Classes.ActionReaction.ActionReactionCallback;
 import com.usukae.area.Classes.Managers.SharedPreferencesManager;
 
 import retrofit2.Call;
@@ -22,10 +22,10 @@ public class ConnectionsApiProtocol {
     }
 
     public void getAuthUrlForService(Context context, String serviceUrl, ConnectionCallback callback) {
-        Call<AreasAuthUrlResponse> call = apiService.getAuthUrl(serviceUrl, "Bearer " + getAuthToken(context));
-        call.enqueue(new Callback<AreasAuthUrlResponse>() {
+        Call<ActionReactionCallback> call = apiService.getAuthUrl(serviceUrl, "Bearer " + getAuthToken(context));
+        call.enqueue(new Callback<ActionReactionCallback>() {
             @Override
-            public void onResponse(@NonNull Call<AreasAuthUrlResponse> call, @NonNull Response<AreasAuthUrlResponse> response) {
+            public void onResponse(@NonNull Call<ActionReactionCallback> call, @NonNull Response<ActionReactionCallback> response) {
                 if (response.isSuccessful() && response.body() != null) {
                     callback.onResult(true, response.code(), response.body().getUrl());
                 } else {
@@ -34,7 +34,7 @@ public class ConnectionsApiProtocol {
             }
 
             @Override
-            public void onFailure(@NonNull Call<AreasAuthUrlResponse> call, @NonNull Throwable t) {
+            public void onFailure(@NonNull Call<ActionReactionCallback> call, @NonNull Throwable t) {
                 callback.onResult(false, 404, t.getMessage());
             }
         });
