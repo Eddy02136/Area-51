@@ -126,5 +126,27 @@
     top: 40%;
     left: 110%;
     border-radius: 20px;
-    height: 10vh;
+    height: 70%;
+    flex-direction: column;
+    align-items: center;
+}
+
+.ne-create-button-container h1 {
+    color: black;
+    font-size: 120%;
+    font-weight: bold;
+    margin-bottom: 8%;
+    font-family: PriegoSemibold;
+}
+
+.ne-action-param,
+.ne-reaction-param {
+    width:100%;
+}
+
+.ne-create-button-container Input {
+    width: 75%;
+    border-radius: 4px;
+    padding-left: 1%;
+    font-family: PriegoRegular;
 }
