@@ -3,8 +3,8 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    tools:ignore="ContentDescription"
-    android:layout_height="wrap_content">
+    android:layout_height="wrap_content"
+    tools:ignore="ContentDescription">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
@@ -97,7 +97,6 @@
                                 app:tint="@color/accent" />
 
                             <EditText
-                                android:autofillHints="name"
                                 android:id="@+id/firstName"
                                 android:layout_width="match_parent"
                                 android:layout_height="40dp"
@@ -105,12 +104,13 @@
                                 android:layout_marginTop="5dp"
                                 android:layout_marginEnd="15dp"
                                 android:layout_marginBottom="5dp"
+                                android:autofillHints="name"
                                 android:background="@color/transparent"
                                 android:fontFamily="@font/gotham_rounded_light"
                                 android:hint="@string/first_name"
                                 android:inputType="textPersonName"
-                                android:maxLines="1"
                                 android:lines="1"
+                                android:maxLines="1"
                                 android:textColor="@color/light_primary"
                                 android:textColorHint="@color/light_secondary"
                                 android:textSize="16sp"
@@ -150,7 +150,6 @@
                                 app:tint="@color/accent" />
 
                             <EditText
-                                android:autofillHints="name"
                                 android:id="@+id/lastName"
                                 android:layout_width="match_parent"
                                 android:layout_height="40dp"
@@ -158,12 +157,13 @@
                                 android:layout_marginTop="5dp"
                                 android:layout_marginEnd="15dp"
                                 android:layout_marginBottom="5dp"
+                                android:autofillHints="name"
                                 android:background="@color/transparent"
                                 android:fontFamily="@font/gotham_rounded_light"
                                 android:hint="@string/last_name"
                                 android:inputType="textPersonName"
-                                android:maxLines="1"
                                 android:lines="1"
+                                android:maxLines="1"
                                 android:textColor="@color/light_primary"
                                 android:textColorHint="@color/light_secondary"
                                 android:textSize="16sp"
@@ -215,8 +215,8 @@
                                 android:fontFamily="@font/gotham_rounded_light"
                                 android:hint="@string/email"
                                 android:inputType="textEmailAddress"
-                                android:maxLines="1"
                                 android:lines="1"
+                                android:maxLines="1"
                                 android:textColor="@color/light_primary"
                                 android:textColorHint="@color/light_secondary"
                                 android:textSize="16sp"
@@ -268,8 +268,8 @@
                                 android:fontFamily="@font/gotham_rounded_light"
                                 android:hint="@string/password"
                                 android:inputType="textPassword"
-                                android:maxLines="1"
                                 android:lines="1"
+                                android:maxLines="1"
                                 android:textColor="@color/light_primary"
                                 android:textColorHint="@color/light_secondary"
                                 android:textSize="16sp"
@@ -309,7 +309,6 @@
                                 app:tint="@color/accent" />
 
                             <EditText
-                                android:autofillHints="password"
                                 android:id="@+id/passwordConfirm"
                                 android:layout_width="match_parent"
                                 android:layout_height="40dp"
@@ -317,12 +316,13 @@
                                 android:layout_marginTop="5dp"
                                 android:layout_marginEnd="15dp"
                                 android:layout_marginBottom="5dp"
+                                android:autofillHints="password"
                                 android:background="@color/transparent"
                                 android:fontFamily="@font/gotham_rounded_light"
                                 android:hint="@string/confirm_password"
                                 android:inputType="textPassword"
-                                android:maxLines="1"
                                 android:lines="1"
+                                android:maxLines="1"
                                 android:textColor="@color/light_primary"
                                 android:textColorHint="@color/light_secondary"
                                 android:textSize="16sp"

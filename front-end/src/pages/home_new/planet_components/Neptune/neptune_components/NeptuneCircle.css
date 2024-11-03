@@ -1,0 +1,150 @@
+@font-face {
+    font-family: "PriegoRegular";
+    src: url("../../../../../fonts/Priego-Regular.otf") format("truetype");
+}
+
+@font-face {
+    font-family: "PriegoBold";
+    src: url("../../../../../fonts/Priego-Bold.otf") format("truetype");
+}
+
+@font-face {
+    font-family: "PriegoSemibold";
+    src: url("../../../../../fonts/Priego-SemiBold.otf") format("truetype");
+}
+
+.ne-circle {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 22vw;
+    height: 22vw;
+    border: 1px solid rgb(42, 241, 248);
+    border-radius: 50%;
+    transform: translate(-50%, -50%) scale(0);
+    transition:
+        opacity 0.3s,
+        transform 0.3s;
+    box-shadow:
+        0 0 20px rgb(0, 255, 242),
+        inset 0 0 20px rgb(0, 255, 242);
+}
+
+.ne-circle.visible {
+    transform: translate(-50%, -50%) scale(1);
+    opacity: 1;
+}
+
+.ne-chose-action {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    position: absolute;
+    background-color: white;
+    border-radius: 20px;
+    height: 30vh;
+    width: 60vh;
+    right: 110%;
+    top: -20%;
+}
+
+.ne-chose-reaction {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    position: absolute;
+    background-color: white;
+    border-radius: 20px;
+    height: 40vh;
+    width: 60vh;
+    right: 110%;
+    top: 50%;
+    padding-bottom: 5%;
+}
+
+.ne-chose-action h1,
+.ne-chose-reaction h1 {
+    color: black;
+    font-size: 120%;
+    font-weight: bold;
+    margin-bottom: 1%;
+    font-family: PriegoSemibold;
+    position: absolute;
+}
+
+.ne-chose-action label,
+.ne-chose-reaction label {
+    color: black;
+    font-size: 80%;
+    margin-bottom: 2%;
+    font-family: PriegoSemibold;
+}
+
+.ne-chose-action-container,
+.ne-chose-reaction-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    height: 100%;
+    width: 75%;
+    margin-top: 18%;
+    margin-bottom: 8%;
+    gap: 5%;
+    position: relative;
+}
+
+.ne-chose-action-container Input,
+.ne-chose-reaction-container Input {
+    width: 100%;
+    border-radius: 4px;
+    padding-left: 1%;
+    font-family: PriegoRegular;
+}
+
+.ne-create-button {
+    background-color: #0015d0;
+    color: white;
+    border: none;
+    text-align: center;
+    text-decoration: none;
+    font-size: 60%;
+    height: 5vh;
+    width: 18vh;
+    cursor: pointer;
+    border-radius: 4px;
+    font-family: PriegoRegular;
+    margin-top: 2vh;
+}
+
+.ne-create-button-container {
+    display: flex;
+    justify-content: center;
+    width: 100%;
+    background-color: white;
+    position: absolute;
+    top: 15%;
+    left: 110%;
+    border-radius: 20px;
+    height: 70%;
+    flex-direction: column;
+    align-items: center;
+}
+
+.ne-create-button-container h1 {
+    color: black;
+    font-size: 120%;
+    font-weight: bold;
+    margin-bottom: 8%;
+    font-family: PriegoSemibold;
+}
+
+.ne-action-param,
+.ne-reaction-param {
+    width: 100%;
+}
+
+.ne-create-button-container Input {
+    width: 75%;
+    border-radius: 4px;
+    padding-left: 1%;
+}

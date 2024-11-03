@@ -1,5 +1,8 @@
 package com.usukae.area.Classes.Reactions;
 
+import static com.usukae.area.Classes.Utils.TextUtil.formatCamelCase;
+
+import android.app.Activity;
 import android.app.Dialog;
 import android.content.Context;
 import android.view.LayoutInflater;
@@ -13,11 +16,12 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.google.gson.Gson;
+import com.usukae.area.Classes.ActionReaction.ActionReactionAdapter;
+import com.usukae.area.Classes.ActionReaction.ActionReactionApiProtocol;
+import com.usukae.area.Classes.ActionReaction.ActionReactionRequest;
 import com.usukae.area.Classes.Actions.Action;
-import com.usukae.area.Classes.Areas.Area;
-import com.usukae.area.Classes.Managers.SharedPreferencesManager;
 import com.usukae.area.Classes.Utils.DialogUtil;
+import com.usukae.area.Classes.Utils.PrettyAlert;
 import com.usukae.area.R;
 
 import java.util.ArrayList;
@@ -31,21 +35,26 @@ public class AddReactionAdapter extends RecyclerView.Adapter<AddReactionAdapter.
     private final List<Reaction> reactions;
     private final Action selectedAction;
     private final Dialog reactionDialog;
+    private final ActionReactionApiProtocol apiProtocol;
 
     private ReactionUtil reactionUtil;
     private DialogUtil dialogUtil;
     private Dialog newReactionDialog;
+    private final Dialog mainDialog;
 
     private List<EditText> inputFields;
     private LinearLayout inputContainer;
 
-    private SharedPreferencesManager sharedPreferencesManager;
+    private final ActionReactionAdapter.OnAreaChangeListener onAreaChangeListener;
 
-    public AddReactionAdapter(Context context, List<Reaction> reactions, Action selectedAction, Dialog reactionDialog) {
+    public AddReactionAdapter(Context context, List<Reaction> reactions, Action selectedAction, Dialog reactionDialog, Dialog newActionDialog, Dialog mainDialog, ActionReactionAdapter.OnAreaChangeListener onAreaChangeListener) {
         this.context = context;
         this.reactions = reactions;
         this.selectedAction = selectedAction;
         this.reactionDialog = reactionDialog;
+        this.mainDialog = mainDialog;
+        this.apiProtocol = new ActionReactionApiProtocol(context.getApplicationContext());
+        this.onAreaChangeListener = onAreaChangeListener;
         createClasses();
     }
 
@@ -77,7 +86,6 @@ public class AddReactionAdapter extends RecyclerView.Adapter<AddReactionAdapter.
     private void createClasses() {
         reactionUtil = new ReactionUtil();
         dialogUtil = new DialogUtil();
-        sharedPreferencesManager = new SharedPreferencesManager(context);
     }
 
     private void createDialogs() {
@@ -89,7 +97,7 @@ public class AddReactionAdapter extends RecyclerView.Adapter<AddReactionAdapter.
         inputContainer.removeAllViews();
 
         TextView dialogTitle = newReactionDialog.findViewById(R.id.title);
-        dialogTitle.setText(reaction.getName());
+        dialogTitle.setText(formatCamelCase(reaction.getName()));
 
         TextView dialogSubtitle = newReactionDialog.findViewById(R.id.subtitle);
         dialogSubtitle.setText(reaction.getDescription());
@@ -104,7 +112,7 @@ public class AddReactionAdapter extends RecyclerView.Adapter<AddReactionAdapter.
             String key = entry.getKey();
             String capitalizedKey = key.substring(0, 1).toUpperCase() + key.substring(1);
 
-            editText.setHint(capitalizedKey);
+            editText.setHint(formatCamelCase(capitalizedKey));
             inputContainer.addView(inputFieldView);
             inputFields.add(editText);
         }
@@ -113,8 +121,6 @@ public class AddReactionAdapter extends RecyclerView.Adapter<AddReactionAdapter.
     private void setupValidateButton(Map<String, String> params, Reaction reaction) {
         newReactionDialog.findViewById(R.id.validateButton).setOnClickListener(v -> {
             reaction.setParameters(collectInputValues(params));
-            newReactionDialog.dismiss();
-            reactionDialog.dismiss();
             saveArea(selectedAction, reaction);
         });
     }
@@ -131,11 +137,29 @@ public class AddReactionAdapter extends RecyclerView.Adapter<AddReactionAdapter.
     }
 
     private void saveArea(Action action, Reaction reaction) {
-        String areaId = action.getId() + "#" + reaction.getId() + "#" + System.currentTimeMillis();
-        Area newArea = new Area(areaId, action, reaction, "Custom Area", "Créé par l'utilisateur");
-        Gson gson = new Gson();
-        String areaJson = gson.toJson(newArea);
-        sharedPreferencesManager.setString(areaId, areaJson);
+        Map<String, String> combinedParameters = new HashMap<>(action.getParameters());
+        combinedParameters.putAll(reaction.getParameters());
+
+        ActionReactionRequest request = new ActionReactionRequest(
+                "Name",
+                action.getName(),
+                action.getService(),
+                reaction.getName(),
+                reaction.getService(),
+                combinedParameters
+        );
+
+        apiProtocol.addActionReaction(context, request, (success, code, data, list, a, r) -> {
+            if (success) {
+                new PrettyAlert((Activity) context).success(context.getString(R.string.action_reaction_saved), 3000);
+                if (newReactionDialog.isShowing()) newReactionDialog.dismiss();
+                if (reactionDialog.isShowing()) reactionDialog.dismiss();
+                if (mainDialog.isShowing()) mainDialog.dismiss();
+                onAreaChangeListener.onAreaChanged();
+            } else {
+                new PrettyAlert((Activity) context).error(context.getString(R.string.error_saving_action_reaction) + code, 3000);
+            }
+        });
     }
 
     @Override
@@ -156,9 +180,9 @@ public class AddReactionAdapter extends RecyclerView.Adapter<AddReactionAdapter.
         }
 
         public void bind(Reaction reaction, ReactionUtil reactionUtil) {
-            titleTextView.setText(reaction.getName());
+            titleTextView.setText(formatCamelCase(reaction.getService() + " - " + reaction.getName()));
             descriptionTextView.setText(reaction.getDescription());
-            pictureImageView.setImageResource(reactionUtil.getReactionIcon(reaction.getId()));
+            pictureImageView.setImageResource(reactionUtil.getReactionIcon(reaction.getService()));
         }
     }
 }

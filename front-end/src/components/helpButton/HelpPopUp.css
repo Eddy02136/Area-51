@@ -1,0 +1,165 @@
+@font-face {
+    font-family: 'PriegoRegular';
+    src: url('../../fonts/Priego-Regular.otf') format('truetype');
+  }
+  
+  @font-face {
+    font-family: 'PriegoBold';
+    src: url('../../fonts/Priego-Bold.otf') format('truetype');
+  }
+  
+  @font-face {
+    font-family: 'PriegoSemibold';
+    src: url('../../fonts/Priego-SemiBold.otf') format('truetype');
+  }
+
+.popup {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 10px;
+    box-sizing: border-box;
+}
+
+.popup-inner {
+    background-color: rgb(255, 255, 255);
+    padding: 2vh;
+    border-radius: 1vh;
+    width: 80vw;
+    max-width: 500px;
+    max-height: 90vh;
+    overflow-y: auto;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    border: 1px solid #ffffff;
+}
+
+.image-list {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    padding: 10px;
+    width: 100%;
+}
+
+.image-item {
+    display: flex;
+    align-items: center;
+    margin-bottom: 15px;
+    width: 100%;
+}
+
+.image {
+    width: 80px;
+    height: 80px;
+    border-radius: 80px;
+    margin-right: 10px;
+    color: #000;
+}
+
+.image:hover {
+    transform: scale(1.1) ;
+}
+
+.hover-description {
+    color: red;
+    border-radius: 4px;
+    font-size: 12px;
+    font-family: PriegoRegular;
+    white-space: nowrap;
+    opacity: 0;
+    transition:
+        opacity 0.3s ease,
+        transform 0.3s ease;
+    pointer-events: none;
+}
+
+.image-container:hover .hover-description {
+    opacity: 1;
+}
+
+.description {
+    font-family: PriegoRegular;
+    text-align: left;
+    flex: 1;
+    color: #000;
+    /* background-color: red; */
+    height: 3vh;
+    border-radius: 1vh;
+    margin-left: 13px;
+    padding-left: 10px;
+}
+
+.close-popup-button {
+    background-color: #0015d0;
+    color: white;
+    border: none;
+    text-align: center;
+    font-size: 100%;
+    cursor: pointer;
+    border-radius: 4px;
+    height: 10vh;
+    width: 10vw;
+    font-family: PriegoRegular;
+}
+
+.popup {
+    align-items: center;
+    justify-content: center;
+}
+
+.download-button {
+    background-color: #0015d0;
+    color: white;
+    border: none;
+    text-align: center;
+    font-size: 100%;
+    cursor: pointer;
+    border-radius: 4px;
+    height: 10vh;
+    width: 10vw;
+    font-family: PriegoRegular;
+    margin-bottom: 10%;
+    padding: 5px;
+}
+
+@media (min-width: 768px) {
+    .popup-inner {
+        width: 60vw;
+        padding: 3vh;
+    }
+
+    .image {
+        width: 100px;
+        height: 100px;
+    }
+}
+
+@media (min-width: 1024px) {
+    .popup-inner {
+        width: 40vw;
+        padding: 4vh;
+    }
+
+    .image {
+        width: 120px;
+        height: 120px;
+    }
+
+    .description {
+        font-size: 18px;
+        font-weight: 600;
+        margin-bottom: 30px;
+    }
+
+    .close-popup-button {
+        font-size: 16px;
+    }
+}

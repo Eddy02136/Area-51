@@ -14,18 +14,16 @@ import android.webkit.WebViewClient;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.usukae.area.Classes.Managers.SharedPreferencesManager;
 import com.usukae.area.Classes.Utils.PrettyAlert;
 import com.usukae.area.R;
 
 public class WebViewActivity extends AppCompatActivity {
 
     private static final String REDIRECT_URL = "localhost:3001";
-
     private PrettyAlert prettyAlert;
-    
     private Handler handler;
     private Runnable runnable;
-
     private WebView webView;
 
     @Override
@@ -79,6 +77,7 @@ public class WebViewActivity extends AppCompatActivity {
             @Override
             public void run() {
                 if (webView.getUrl() != null && webView.getUrl().contains(REDIRECT_URL)) {
+                    new SharedPreferencesManager(getApplicationContext()).setString("reloadedList", "true");
                     finish();
                 } else {
                     handler.postDelayed(this, 100);
@@ -86,6 +85,14 @@ public class WebViewActivity extends AppCompatActivity {
             }
         };
         handler.postDelayed(runnable, 100);
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        if (handler != null && runnable != null) {
+            handler.removeCallbacks(runnable);
+        }
     }
 
     private class CustomWebViewClient extends WebViewClient {
@@ -99,6 +106,7 @@ public class WebViewActivity extends AppCompatActivity {
         public boolean shouldOverrideUrlLoading(WebView view, WebResourceRequest request) {
             String url = request.getUrl().toString();
             if (url.contains(REDIRECT_URL)) {
+                new SharedPreferencesManager(getApplicationContext()).setString("reloadedList", "true");
                 finish();
                 return true;
             }
@@ -108,16 +116,9 @@ public class WebViewActivity extends AppCompatActivity {
         @Override
         public void onPageFinished(WebView view, String url) {
             if (url.contains(REDIRECT_URL)) {
+                new SharedPreferencesManager(getApplicationContext()).setString("reloadedList", "true");
                 finish();
             }
-        }
-    }
-
-    @Override
-    protected void onDestroy() {
-        super.onDestroy();
-        if (handler != null && runnable != null) {
-            handler.removeCallbacks(runnable);
         }
     }
 }

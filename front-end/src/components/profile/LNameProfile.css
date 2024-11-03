@@ -1,0 +1,55 @@
+@font-face {
+    font-family: 'PriegoRegular';
+    src: url('../../fonts/Priego-Regular.otf') format('truetype');
+}
+  
+@font-face {
+    font-family: 'PriegoBold';
+    src: url('../../fonts/Priego-Bold.otf') format('truetype');
+}
+  
+@font-face {
+    font-family: 'PriegoSemibold';
+    src: url('../../fonts/Priego-SemiBold.otf') format('truetype');
+}
+
+.last-name-container {
+    background-color: white;
+    border-radius: 20px;
+    font-family: PriegoRegular;
+    display: flex;
+    flex-direction: column ;
+    align-items: center;
+    color : black;
+    height: 20vh;
+    width: 35vh;
+    overflow: hidden;
+}
+
+.last-name-container h1 {
+    font-size: 120%;
+    font-weight: bold;
+    margin-bottom: 1vh;
+    font-family: PriegoSemibold;
+}
+
+.last-name-container h2 {
+    font-size: 80%;
+    margin-bottom: 2vh;
+    font-family: PriegoSemibold;
+}
+
+.last-edit-button {
+    background-color: #0015D0;
+    color: white;
+    border: none;
+    text-align: center;
+    text-decoration: none;
+    font-size: 60%;
+    height: 5vh;
+    width: 18vh;
+    cursor: pointer;
+    border-radius: 4px;
+    font-family: PriegoRegular;
+    margin-bottom: 2vh;
+}

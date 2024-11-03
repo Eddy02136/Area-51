@@ -3,28 +3,28 @@ package com.usukae.area.Classes.Actions;
 import java.util.Map;
 
 public class Action {
-    private final String id;
+    private final String service;
     private final String name;
     private final String description;
     private Map<String, String> parameters;
 
-    public Action(String id, String name, String description, Map<String, String> parameters) {
-        this.id = id;
+    public Action(String service, String description, String name, Map<String, String> parameters) {
+        this.service = service;
         this.name = name;
         this.description = description;
         this.parameters = parameters;
     }
 
-    public String getId() {
-        return id;
-    }
-
-    public String getName() {
-        return name;
+    public String getService() {
+        return service;
     }
 
     public String getDescription() {
         return description;
+    }
+
+    public String getName() {
+        return name;
     }
 
     public Map<String, String> getParameters() {

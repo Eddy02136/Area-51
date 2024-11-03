@@ -1,0 +1,44 @@
+@font-face {
+    font-family: 'PriegoRegular';
+    src: url('../../fonts/Priego-Regular.otf') format('truetype');
+  }
+  
+  @font-face {
+    font-family: 'PriegoBold';
+    src: url('../../fonts/Priego-Bold.otf') format('truetype');
+  }
+  
+  @font-face {
+    font-family: 'PriegoSemibold';
+    src: url('../../fonts/Priego-SemiBold.otf') format('truetype');
+  }
+
+.update-profile-close-button {
+    background-color: #E71B1B;
+    color: white;
+    border: none;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 100%;
+    cursor: pointer;
+    border-radius: 4px;
+    height: 5vh;
+    width: 7vw;
+    font-family: PriegoRegular;
+}
+
+.update-profile-update-button {
+    background-color: #0015D0;
+    color: white;
+    border: none;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 100%;
+    cursor: pointer;
+    border-radius: 4px;
+    height: 5vh;
+    width: 7vw;
+    font-family: PriegoRegular;
+}

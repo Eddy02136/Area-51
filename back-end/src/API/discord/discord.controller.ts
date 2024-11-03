@@ -1,4 +1,4 @@
-import {Controller, Get, Headers, Query, Res, Response, UseGuards} from '@nestjs/common';
+import {Controller, Delete, Get, Headers, Patch, Query, Res, Response, UseGuards} from '@nestjs/common';
 import {FastifyReply} from 'fastify';
 import {DiscordService} from './discord.service';
 import * as process from "node:process";
@@ -14,9 +14,9 @@ export class DiscordController {
               private readonly usersService: UsersService) {}
 
   @UseGuards(AuthGuard('jwt'))
-  @ApiOperation({ summary: 'Get Discord authentication URL' })
+  @ApiOperation({ summary: 'Get discord authentication URL' })
   @ApiHeader({ name: 'authorization', required: true, description: 'Bearer token for Area51 API access' })
-  @ApiResponse({ status: 200, description: 'Successful retrieval of the Discord authentication URL.', type: String })
+  @ApiResponse({ status: 200, description: 'Successful retrieval of the discord authentication URL.', type: String })
   @ApiResponse({ status: 401, description: 'Unauthorized. Invalid or missing JWT.' })
   @ApiResponse({ status: 500, description: 'Internal server error.' })
   @Get('auth-url')
@@ -32,8 +32,8 @@ export class DiscordController {
     }
   }
 
-  @ApiOperation({ summary: 'Handle Discord callback and retrieve access token' })
-  @ApiQuery({ name: 'code', required: true, description: 'The authorization code obtained from Discord' })
+  @ApiOperation({ summary: 'Handle discord callback and retrieve access token' })
+  @ApiQuery({ name: 'code', required: true, description: 'The authorization code obtained from discord' })
   @ApiResponse({ status: 200, description: 'Successful retrieval of the access token.' })
   @ApiResponse({ status: 400, description: 'Bad Request. Authorization code is required.' })
   @ApiResponse({ status: 500, description: 'Internal server error.' })
@@ -47,7 +47,7 @@ export class DiscordController {
       const { accessToken, refreshToken, expiresIn } = await this.discordService.getDiscordAccessToken(code);
       const { userId } = JSON.parse(Buffer.from(state, 'base64').toString('utf-8'));
       await this.usersService.saveToken('Discord', accessToken, refreshToken, expiresIn, userId);
-      const frontendUrl = `http://localhost:3001/`;
+      const frontendUrl = `http://localhost:8081/`;
       return reply.redirect(302, frontendUrl);
     } catch (error) {
       return reply.status(500).send({ error: error.message });
@@ -56,10 +56,11 @@ export class DiscordController {
 
   @UseGuards(AuthGuard('jwt'))
   @ApiOperation({ summary: 'Check discord connection' })
-  @ApiHeader({ name: 'authorization', required: true, description: 'Bearer token for Spotify API access' })
-  @ApiResponse({ status: 200, description: 'Spotify login successfully.' })
-  @ApiResponse({ status: 400, description: 'Bad Request. Authorization code is required.' })
+  @ApiHeader({ name: 'authorization', required: true, description: 'Bearer token for Area51 API access' })
+  @ApiResponse({ status: 200, description: 'User is connected to discord', schema: { example: 'Connected'}})
+  @ApiResponse({ status: 201, description: 'User is not connected to discord', schema: { example: 'Not connected'}})
   @ApiResponse({ status: 401, description: 'Unauthorized. Invalid or missing JWT.' })
+  @ApiResponse({ status: 500, description: 'Internal server error.' })
   @Get('check-connection')
   async checkConnection(@Headers('authorization') authorization: string, @Response() reply: FastifyReply) {
     const jwtToken = authorization.replace('Bearer ', '');
@@ -67,8 +68,25 @@ export class DiscordController {
     const userId = (decoded as { sub: string }).sub;
     const token = await this.usersService.getToken('Discord', userId);
     if (!token) {
-      return reply.status(200).send({'connected': false});
+      return reply.status(201).send('Not connected');
     }
-    return reply.status(200).send({'connected': true});
+    return reply.status(200).send('Connected');
+  }
+
+  @UseGuards(AuthGuard('jwt'))
+  @ApiOperation({ summary: 'Logout discord connection'})
+  @ApiHeader({ name: 'authorization', required: true, description: 'Bearer token for Area51 API access' })
+  @ApiResponse({ status: 200, description: 'Discord logout successfully.' })
+  @ApiResponse({ status: 401, description: 'Unauthorized. Invalid or missing JWT.' })
+  @Delete('logout')
+  async logoutConnection(@Headers('authorization') authorization: string, @Response() reply: FastifyReply) {
+    const jwtToken = authorization.replace('Bearer ', '');
+    const decoded = jwt.verify(jwtToken, process.env.JWT_SECRET);
+    const userId = (decoded as { sub: string }).sub;
+    const result = await this.usersService.removeToken('Discord', userId);
+    if (result === "") {
+      return reply.status(200).send('Discord logout successfully.');
+    }
+    return reply.status(401).send(result);
   }
 }

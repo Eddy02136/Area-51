@@ -1,34 +1,24 @@
 <androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    xmlns:tools="http://schemas.android.com/tools"
     android:layout_marginStart="20dp"
     android:layout_marginTop="10dp"
-    tools:ignore="ContentDescription"
     android:layout_marginEnd="20dp"
     app:cardBackgroundColor="@color/dark_card"
-    app:cardCornerRadius="15dp">
+    app:cardCornerRadius="15dp"
+    tools:ignore="ContentDescription">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-        <ImageView
-            android:layout_width="18dp"
-            android:layout_height="18dp"
-            android:layout_marginStart="20dp"
-            android:src="@drawable/ic_user"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:tint="@color/accent" />
-
         <EditText
             android:id="@+id/editTextInput"
             android:layout_width="match_parent"
             android:layout_height="40dp"
-            android:layout_marginStart="50dp"
+            android:layout_marginStart="15dp"
             android:layout_marginTop="5dp"
             android:layout_marginEnd="15dp"
             android:layout_marginBottom="5dp"

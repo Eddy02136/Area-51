@@ -5,19 +5,31 @@ export class CreateActionReactionDto {
     @ApiProperty()
     @IsNotEmpty()
     @IsString()
-    action: string;
+    areaName: string;
 
     @ApiProperty()
     @IsNotEmpty()
     @IsString()
-    reaction: string;
+    actionName: string;
+
+    @ApiProperty()
+    @IsNotEmpty()
+    @IsString()
+    actionApi: string;
+
+    @ApiProperty()
+    @IsNotEmpty()
+    @IsString()
+    reactionName: string;
+
+    @ApiProperty()
+    @IsNotEmpty()
+    @IsString()
+    reactionApi: string;
 
     @ApiProperty()
     @IsNotEmpty()
     @IsObject()
     parameters: any;
 
-    @ApiProperty()
-    @IsString()
-    schedule?: string;
 }

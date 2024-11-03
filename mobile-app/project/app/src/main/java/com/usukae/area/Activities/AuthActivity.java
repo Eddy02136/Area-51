@@ -1,16 +1,24 @@
 package com.usukae.area.Activities;
 
+import android.annotation.SuppressLint;
 import android.app.Dialog;
 import android.content.Intent;
+import android.os.Build;
 import android.os.Bundle;
+import android.os.Handler;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.TextView;
 
+import androidx.activity.OnBackPressedCallback;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.cardview.widget.CardView;
 
+import com.usukae.area.Classes.Api.ApiBaseUrlUtil;
 import com.usukae.area.Classes.Auth.AuthApiProtocol;
-import com.usukae.area.Classes.User.User;
+import com.usukae.area.Classes.Auth.User.UserApiProtocol;
+import com.usukae.area.Classes.Auth.User.UserRequest;
+import com.usukae.area.Classes.Managers.SharedPreferencesManager;
 import com.usukae.area.Classes.Utils.DialogUtil;
 import com.usukae.area.Classes.Utils.ErrorUtil;
 import com.usukae.area.Classes.Utils.PrettyAlert;
@@ -25,10 +33,11 @@ public class AuthActivity extends AppCompatActivity {
     private DialogUtil dialogUtil;
     private TextUtil textUtil;
 
-    private Dialog registerDialog, loginDialog;
-    private CardView loginEmailButton, loginGoogleButton, loginDialogButton, registerDialogButton;
-    private TextView registerButton;
-
+    private ImageView link;
+    private EditText editTextLink;
+    private Dialog registerDialog, loginDialog, urlDialog;
+    private CardView updateUrlButton, loginEmailButton, loginGoogleButton, loginDialogButton, registerDialogButton;
+    private TextView reset, registerButton;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -42,10 +51,11 @@ public class AuthActivity extends AppCompatActivity {
         createClasses();
         createDialogs();
         bindViews();
+        onBackPressedCallback();
     }
 
     private void createClasses() {
-        authApiProtocol = new AuthApiProtocol();
+        authApiProtocol = new AuthApiProtocol(getApplicationContext());
         textUtil = new TextUtil();
         dialogUtil = new DialogUtil();
         prettyAlert = new PrettyAlert(this);
@@ -55,6 +65,7 @@ public class AuthActivity extends AppCompatActivity {
     private void createDialogs() {
         registerDialog = dialogUtil.createBottomDialog(this, R.layout.modal_email_register);
         loginDialog = dialogUtil.createBottomDialog(this, R.layout.modal_email_login);
+        urlDialog = dialogUtil.createBottomDialog(this, R.layout.modal_base_api_url);
         manageDismiss();
     }
 
@@ -86,7 +97,11 @@ public class AuthActivity extends AppCompatActivity {
         registerButton = findViewById(R.id.register);
         loginDialogButton = loginDialog.findViewById(R.id.login);
         registerDialogButton = registerDialog.findViewById(R.id.register);
-
+        link = findViewById(R.id.urlButton);
+        editTextLink = urlDialog.findViewById(R.id.password);
+        editTextLink.setText(ApiBaseUrlUtil.getBaseUrl(getApplicationContext()));
+        reset = urlDialog.findViewById(R.id.reset);
+        updateUrlButton = urlDialog.findViewById(R.id.update);
         assignButtons();
     }
 
@@ -97,6 +112,24 @@ public class AuthActivity extends AppCompatActivity {
         registerButton.setOnClickListener(v -> registerDialog.show());
         loginDialogButton.setOnClickListener(v -> validateLogin());
         registerDialogButton.setOnClickListener(v -> validateRegister());
+        link.setOnClickListener(v -> urlDialog.show());
+        reset.setOnClickListener(v -> {
+            editTextLink.setText(ApiBaseUrlUtil.getDefault());
+        });
+        updateUrlButton.setOnClickListener(v -> {
+            new PrettyAlert(this).success(getString(R.string.base_url_changing), 2000);
+            ApiBaseUrlUtil.setBaseUrl(getApplicationContext(), editTextLink.getText().toString().trim());
+            new SharedPreferencesManager(getApplicationContext()).clearAllExceptApiBaseUrl();
+            urlDialog.dismiss();
+            new Handler().postDelayed(() -> {
+                new PrettyAlert(this).success(getString(R.string.base_url_changed), 2000);
+            }, 2000);
+            new Handler().postDelayed(() -> {
+                Intent intent = getIntent();
+                finish();
+                startActivity(intent);
+            }, 4000);
+        });
     }
 
     private void validateLogin() {
@@ -108,8 +141,7 @@ public class AuthActivity extends AppCompatActivity {
         }
         authApiProtocol.login(this, email, password, (success, code) -> {
             if (success) {
-                prettyAlert.success(getString(R.string.login_success), 3000);
-                startActivity(new Intent(getApplicationContext(), MainActivity.class));
+                loadUser(true);
             } else {
                 prettyAlert.error(getString(errorUtil.getAuthError(code)), 3000);
             }
@@ -138,11 +170,9 @@ public class AuthActivity extends AppCompatActivity {
         if (invalidateRegister(email, password, passwordConfirm)) {
             return;
         }
-        authApiProtocol.register(this, new User(firstName, lastName, email, password), (success, code) -> {
+        authApiProtocol.register(this, new UserRequest(firstName, lastName, email, password), (success, code) -> {
             if (success) {
-                prettyAlert.success(getString(R.string.registration_success), 3000);
-                startActivity(new Intent(getApplicationContext(), MainActivity.class));
-                finish();
+                loadUser(false);
             } else {
                 prettyAlert.error(getString(errorUtil.getRegisterError(code)), 3000);
             }
@@ -165,15 +195,36 @@ public class AuthActivity extends AppCompatActivity {
         return false;
     }
 
-    @Override
-    protected void onDestroy() {
-        super.onDestroy();
+    private void loadUser(boolean isLogin) {
+        SharedPreferencesManager sharedPreferencesManager = new SharedPreferencesManager(this);
+        UserApiProtocol userApiProtocol = new UserApiProtocol(getApplicationContext());
+        userApiProtocol.getInfos(sharedPreferencesManager.getToken(), (user, success, code) -> {
+            if (success && user != null) {
+                sharedPreferencesManager.saveUserInfo(
+                        user.getFirstname(),
+                        user.getLastname(),
+                        user.getEmail()
+                );
+                prettyAlert.success(getString(isLogin ? R.string.login_success : R.string.registration_success), 3000);
+                startActivity(new Intent(getApplicationContext(), MainActivity.class));
+            } else {
+                prettyAlert.error(getString(errorUtil.getUserInfoError(code)), 3000);
+            }
+        });
+    }
 
-        if (registerDialog != null && registerDialog.isShowing()) {
-            registerDialog.dismiss();
+    private void onBackPressedCallback() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+            getOnBackPressedDispatcher().addCallback(this, new OnBackPressedCallback(true) {
+                @Override
+                public void handleOnBackPressed() {
+                }
+            });
         }
-        if (loginDialog != null && loginDialog.isShowing()) {
-            loginDialog.dismiss();
-        }
+    }
+
+    @SuppressLint("MissingSuperCall")
+    @Override
+    public void onBackPressed() {
     }
 }
