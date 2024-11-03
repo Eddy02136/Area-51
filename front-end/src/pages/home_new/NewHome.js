@@ -11,6 +11,7 @@ import Earth from "./planet_components/Earth/earthComponent.js";
 import Neptune from "./planet_components/Neptune/neptuneComponent.js";
 import EarthMoon from "./planet_components/EarthMoon/earthMoonComponent";
 import HelpPopUp from "../../components/helpButton/HelpPopUp.js";
+import backgroundmusic from "../../assets/background.mp3";
 
 import createStars from "./stars";
 
@@ -21,6 +22,7 @@ const NewHomePage = () => {
     const [isAnimationComplete, setIsAnimationComplete] = useState(false);
     const [isClicked, setIsClicked] = useState(false);
     const [backgroundColor, setBackgroundColor] = useState("linear-gradient(-45deg, #010930, #0f0e22, #070735, #0f0330, #01082b, #0f0d30, #000000)");
+    const navigate = useNavigate();
 
     useEffect(() => {
         createStars(starsContainerRef.current);
@@ -81,6 +83,11 @@ const NewHomePage = () => {
         }
     };
 
+    const handleLogout = () => {
+        localStorage.removeItem("authToken");
+        window.location.reload();
+    };
+
     const togglePopup = () => {
         setIsOpen(!isOpen);
     };
@@ -88,8 +95,9 @@ const NewHomePage = () => {
     return (
         <div className="new-home-page">
             <header className="nh-header" style={{background: backgroundColor}}>
+            <audio src={backgroundmusic} autoPlay loop />
             {/* <header className="nh-header"> */}
-            <h1 className="nh-title"> AREA 51</h1>
+            <h1 className="nh-title"> AREA51</h1>
   
                 <div ref={starsContainerRef} className="stars-container"></div>
                 <div className="planet-container">
@@ -127,6 +135,7 @@ const NewHomePage = () => {
                     </div>
                         <MoonCircle type="apis" className={planetAnimationStates.earthMoon ? "visible" : ""} />
                     <div className="help">
+                        <button onClick={handleLogout} className="disconnect-button">Disconnect</button>
                         <button 
                             onClick={togglePopup} 
                             className={`help-button ${selectedPlanet ? "disabled" : ""}`}
