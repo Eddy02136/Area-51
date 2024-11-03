@@ -3,6 +3,13 @@ import { Select, Input, Button, message } from "antd";
 import axios from "axios";
 import "./MoonCircle.css";
 
+const parameterDisplayNames = {
+    streamerName: "Name of the streamer",
+    musicName: "Name of the music",
+    playlistName: "Name of the playlist",
+    videoUrl: "URL of the video",
+};
+
 const MoonCircle = ({ className }) => {
     const [actionReactions, setActionReactions] = useState([]);
     const [selectedAR, setSelectedAR] = useState(null);
@@ -73,6 +80,7 @@ const MoonCircle = ({ className }) => {
         try {
             const authToken = localStorage.getItem("authToken");
             const payload = {
+                areaName: selectedAR.areaName,
                 actionName: selectedAR.actionName,
                 actionApi: selectedAR.actionApi,
                 reactionName: selectedAR.reactionName,
@@ -94,14 +102,18 @@ const MoonCircle = ({ className }) => {
         }
     };
 
+    const getDisplayName = (param) => {
+        return parameterDisplayNames[param] || param;
+    };
+
     return (
         <div className={`me-circle ${className}`}>
             <div className="me-select-ar">
                 <h1>Select an AREA</h1>
                 <Select
-                    options={actionReactions.map(ar => ({ value: ar._id, label: ar._id }))}
+                    options={actionReactions.map(ar => ({ value: ar._id, label: ar.areaName }))}
                     onChange={handleSelectChange}
-                    placeholder="Choose an action-reaction by ID"
+                    placeholder="Choose an AREA by name"
                     style={{ width: "100%" }}
                 />
                 <Button className="me-delete-button" onClick={handleDelete}>Delete</Button>
@@ -112,7 +124,7 @@ const MoonCircle = ({ className }) => {
                     <div className="me-parameters">
                         {Object.keys(selectedAR.parameters).map(param => (
                             <div key={`action-param-${param}`}>
-                                <label>{param}</label>
+                                <label>{getDisplayName(param)}</label>
                                 <Input
                                     value={formParameters[param] || ""}
                                     onChange={(e) => handleParameterChange(param, e.target.value)}

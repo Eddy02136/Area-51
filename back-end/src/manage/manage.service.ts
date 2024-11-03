@@ -20,15 +20,15 @@ export class ManageService {
         });
     }
 
-    async addActionReaction(userId : string, actionName: string, actionApi: string, reactionName: string, reactionApi: string, parameters: any, schedule?: string ) {
+    async addActionReaction(userId : string, areaName: string, actionName: string, actionApi: string, reactionName: string, reactionApi: string, parameters: any) {
         const actionReaction = new this.actionReactionModel({
             userId,
+            areaName,
             actionName,
             actionApi,
             reactionName,
             reactionApi,
             parameters,
-            schedule: schedule || null,
         });
         return await actionReaction.save();
     }
@@ -37,12 +37,12 @@ export class ManageService {
         const actionsReactions = await this.actionReactionModel.find({ userId });
         return actionsReactions.map(actionReaction => ({
             _id: actionReaction.id,
+            areaName: actionReaction.areaName,
             actionName: actionReaction.actionName,
             actionApi: actionReaction.actionApi,
             reactionName: actionReaction.reactionName,
             reactionApi: actionReaction.reactionApi,
             parameters: actionReaction.parameters,
-            schedule: actionReaction.schedule,
         }));
     }
 

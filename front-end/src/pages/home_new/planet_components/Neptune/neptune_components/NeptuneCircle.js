@@ -5,6 +5,13 @@ import "./NeptuneCircle.css";
 
 const { Option } = Select;
 
+const parameterDisplayNames = {
+    streamerName: "Name of the streamer",
+    musicName: "Name of the music",
+    playlistName: "Name of the playlist",
+    videoUrl: "URL of the video",
+};
+
 const NeptuneCircle = ({ type, className }) => {
     const [actions, setActions] = useState([]);
     const [reactions, setReactions] = useState([]);
@@ -13,6 +20,7 @@ const NeptuneCircle = ({ type, className }) => {
     const [actionParameters, setActionParameters] = useState({});
     const [reactionParameters, setReactionParameters] = useState({});
     const [formParameters, setFormParameters] = useState({});
+    const [areaName, setAreaName] = useState("");
 
     const fetchOptions = async (url, setter) => {
         try {
@@ -58,13 +66,17 @@ const NeptuneCircle = ({ type, className }) => {
         }));
     };
 
+    const getDisplayName = (param) => {
+        return parameterDisplayNames[param] || capitalizeFirstLetter(param);
+    };
+
     const capitalizeFirstLetter = (string) => {
         return string.charAt(0).toUpperCase() + string.slice(1);
     };
 
     const handleCreate = async () => {
-        if (!selectedAction || !selectedReaction) {
-            message.error("Please select both an action and a reaction.");
+        if (!selectedAction || !selectedReaction || !areaName) {
+            message.error("Please provide all required fields: AREA name, action, and reaction.");
             return;
         }
 
@@ -73,6 +85,7 @@ const NeptuneCircle = ({ type, className }) => {
             if (!authToken) throw new Error("No auth token found.");
 
             const payload = {
+                areaName: areaName,
                 actionName: selectedAction.name,
                 actionApi: selectedAction.service,
                 reactionName: selectedReaction.name,
@@ -80,8 +93,7 @@ const NeptuneCircle = ({ type, className }) => {
                 parameters: {
                     ...formParameters.action,
                     ...formParameters.reaction
-                },
-                schedule: "some_schedule"
+                }
             };
 
             await axios.post("http://localhost:3000/manage/add-action-reaction", payload, {
@@ -130,7 +142,7 @@ const NeptuneCircle = ({ type, className }) => {
                     />
                     {Object.keys(actionParameters).map(param => (
                         <div className="ne-action-param" key={`action-${param}`}>
-                            <label>{capitalizeFirstLetter(param)}</label>
+                            <label>{getDisplayName(param)}</label>
                             {selectedAction?.name === "getIssPos" && param === "city" ? (
                                 <Select
                                     value={formParameters.action?.[param] || ''}
@@ -164,16 +176,23 @@ const NeptuneCircle = ({ type, className }) => {
                     />
                     {Object.keys(reactionParameters).map(param => (
                         <div className="ne-reaction-param" key={`reaction-${param}`}>
-                            <label>{capitalizeFirstLetter(param)}</label>
+                            <label>{getDisplayName(param)}</label>
                             <Input
                                 value={formParameters.reaction?.[param] || ''}
                                 onChange={e => handleParameterChange(param, e.target.value, "reaction")}
+                                style={{ width: "100%" }}
                             />
                         </div>
                     ))}
                 </div>
             </div>
             <div className="ne-create-button-container">
+                <h1>Create an AREA</h1>
+                <Input
+                    placeholder="Enter AREA name"
+                    value={areaName}
+                    onChange={(e) => setAreaName(e.target.value)}
+                />
                 <button className="ne-create-button" onClick={handleCreate}>Create</button>
             </div>
         </div>

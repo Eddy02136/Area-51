@@ -31,15 +31,27 @@
     opacity: 1;
 }
 
-.me-select-ar, .me-edit-ar {
+.me-select-ar {
     display: flex;
     flex-direction: column;
     align-items: center;
     background-color: white;
     border-radius: 20px;
     padding: 15px;
-    width: 15vw;
+    width: 20vw;
     height: 25vh;
+    bottom: -30%;
+}
+
+.me-edit-ar {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    background-color: white;
+    border-radius: 20px;
+    padding: 15px;
+    width: 20vw;
+    height: 40vh;
     bottom: -30%;
 }
 
@@ -98,7 +110,6 @@
     position: absolute;
     left: 110%;
     top: -25%;
-    height: 57vh;
 }
 
 .me-edit-ar label {
