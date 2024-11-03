@@ -58,7 +58,7 @@
     height: 40vh;
     width: 60vh;
     right: 110%;
-    top: 45%;
+    top: 50%;
     padding-bottom: 5%;
 }
 
@@ -78,7 +78,6 @@
     font-size: 80%;
     margin-bottom: 2%;
     font-family: PriegoSemibold;
-    
 }
 
 .ne-chose-action-container,
@@ -89,7 +88,7 @@
     height: 100%;
     width: 75%;
     margin-top: 18%;
-    margin-bottom:8%;
+    margin-bottom: 8%;
     gap: 5%;
     position: relative;
 }
@@ -141,7 +140,7 @@
 
 .ne-action-param,
 .ne-reaction-param {
-    width:100%;
+    width: 100%;
 }
 
 .ne-create-button-container Input {

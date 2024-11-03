@@ -6,7 +6,7 @@ function HelpPopUp({ isOpen, togglePopup }) {
 
   const items = [
     { imgSrc: process.env.PUBLIC_URL + "/earth_area.jpg", description: "Your profile page", hover_desc: "Earth" },
-    { imgSrc: process.env.PUBLIC_URL + "/moon_area.jpg", description: "Your A-REA", hover_desc: "Moon" },
+    { imgSrc: process.env.PUBLIC_URL + "/moon_area.jpg", description: "Your AREAs", hover_desc: "Moon" },
     { imgSrc: process.env.PUBLIC_URL + "/marss_area.jpg", description: "Your connected services", hover_desc: "Mars" },
     { imgSrc: process.env.PUBLIC_URL + "/neptune_area.jpg", description: "Create an AREA", hover_desc: "Neptune" },
   ];

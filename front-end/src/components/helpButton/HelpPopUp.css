@@ -72,7 +72,7 @@
     color: red;
     border-radius: 4px;
     font-size: 12px;
-    font-family: Nunito;
+    font-family: PriegoRegular;
     white-space: nowrap;
     opacity: 0;
     transition:
@@ -86,7 +86,7 @@
 }
 
 .description {
-    font-family: Nunito;
+    font-family: PriegoRegular;
     text-align: left;
     flex: 1;
     color: #000;
