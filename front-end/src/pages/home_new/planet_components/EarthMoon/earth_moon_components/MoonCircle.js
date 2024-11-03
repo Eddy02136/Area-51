@@ -20,7 +20,7 @@ const MoonCircle = ({ className }) => {
             const authToken = localStorage.getItem("authToken");
             if (!authToken) throw new Error("No auth token found.");
 
-            const response = await axios.get("http://localhost:3000/manage/get-action-reaction", {
+            const response = await axios.get("http://localhost:8080/manage/get-action-reaction", {
                 headers: {
                     Authorization: `Bearer ${authToken}`,
                 },
@@ -57,7 +57,7 @@ const MoonCircle = ({ className }) => {
 
         try {
             const authToken = localStorage.getItem("authToken");
-            await axios.delete(`http://localhost:3000/manage/delete-action-reaction/${selectedAR._id}`, {
+            await axios.delete(`http://localhost:8080/manage/delete-action-reaction/${selectedAR._id}`, {
                 headers: {
                     Authorization: `Bearer ${authToken}`,
                 },
@@ -90,7 +90,7 @@ const MoonCircle = ({ className }) => {
                 schedule: selectedAR.schedule || "some_schedule"
             };
 
-            await axios.put(`http://localhost:3000/manage/update-action-reaction/${selectedAR._id}`, payload, {
+            await axios.put(`http://localhost:8080/manage/update-action-reaction/${selectedAR._id}`, payload, {
                 headers: {
                     Authorization: `Bearer ${authToken}`,
                 },

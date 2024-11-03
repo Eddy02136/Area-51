@@ -35,7 +35,6 @@ C[App web] --> D{React}
 ```
 docker compose up -d --build
 ```
+and go on `http://localhost/8081`
 
-__ For the moment, it will change __
-
-It will start the back-end and front-end Dockerfiles. You can connect to `http://localhost/3000`
+[AREA51](http://localhost/8081)

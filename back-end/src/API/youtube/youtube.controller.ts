@@ -48,7 +48,7 @@ export class YouTubeController {
             const { accessToken, refreshToken, expiresIn } = await this.youtubeService.getYouTubeAccessToken(code);
             const { userId } = JSON.parse(Buffer.from(state, 'base64').toString('utf-8'));
             await this.usersService.saveToken('YouTube', accessToken, refreshToken, expiresIn, userId);
-            const frontendUrl = `http://localhost:3001/`;
+            const frontendUrl = `http://localhost:8081/`;
             return reply.redirect(302, frontendUrl);
         } catch (error) {
             return reply.status(500).send({ error: error.message });

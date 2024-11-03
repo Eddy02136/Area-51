@@ -115,6 +115,21 @@
     justify-content: center;
 }
 
+.download-button {
+    background-color: #0015d0;
+    color: white;
+    border: none;
+    text-align: center;
+    font-size: 100%;
+    cursor: pointer;
+    border-radius: 4px;
+    height: 10vh;
+    width: 10vw;
+    font-family: PriegoRegular;
+    margin-bottom: 10%;
+    padding: 5px;
+}
+
 @media (min-width: 768px) {
     .popup-inner {
         width: 60vw;

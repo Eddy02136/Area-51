@@ -12,7 +12,7 @@ const Register = () => {
 
   const mutation = useMutation({
     mutationFn: (newUser) => {
-      return axios.post('http://localhost:3000/users/register', newUser);
+      return axios.post('http://localhost:8080/users/register', newUser);
     },
     onSuccess: () => {
       queryClient.invalidateQueries(['users']);

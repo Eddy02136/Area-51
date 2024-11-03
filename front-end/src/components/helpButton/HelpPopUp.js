@@ -27,6 +27,13 @@ function HelpPopUp({ isOpen, togglePopup }) {
           ))}
         </div>
         </div>
+        <a
+          href="./AREA-51-UserGuide.pdf"
+          download
+          className="download-button"
+        >
+          Download User Guide
+        </a>
 
         <button onClick={togglePopup} className="close-popup-button">
           Close

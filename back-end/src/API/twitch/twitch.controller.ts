@@ -47,7 +47,7 @@ export class TwitchController {
       const { accessToken, refreshToken, expiresIn } = await this.twitchService.getTwitchAccessToken(code);
       const { userId } = JSON.parse(Buffer.from(state, 'base64').toString('utf-8'));
       await this.usersService.saveToken('Twitch', accessToken, refreshToken, expiresIn, userId);
-      const frontendUrl = `http://localhost:3001/`;
+      const frontendUrl = `http://localhost:8081/`;
       console.log(accessToken)
       return reply.redirect(302, frontendUrl);
     } catch (error) {
