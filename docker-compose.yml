@@ -16,5 +16,12 @@ services:
     volumes:
       - apk:/mobile_app/
 
+  # client_mobile:
+  #   build: './mobile-app'
+  #   depends_on:
+  #     - server
+  #   volumes:
+  #     - apk:/mobile_app/
+
 volumes:
   apk:

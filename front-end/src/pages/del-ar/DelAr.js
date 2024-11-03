@@ -15,7 +15,7 @@ const DelAr = () => {
                 const authToken = localStorage.getItem("authToken");
                 if (!authToken) throw new Error("No auth token found.");
 
-                const response = await axios.get("http://localhost:3000/manage/get-action-reaction", {
+                const response = await axios.get("http://localhost:8080/manage/get-action-reaction", {
                     headers: {
                         Authorization: `Bearer ${authToken}`,
                     },
@@ -40,7 +40,7 @@ const DelAr = () => {
             const authToken = localStorage.getItem("authToken");
             if (!authToken) throw new Error("No auth token found.");
 
-            await axios.delete(`http://localhost:3000/manage/delete-action-reaction/${selectedId}`, {
+            await axios.delete(`http://localhost:8080/manage/delete-action-reaction/${selectedId}`, {
                 headers: {
                     Authorization: `Bearer ${authToken}`,
                 },

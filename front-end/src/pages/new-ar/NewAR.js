@@ -35,8 +35,8 @@ const NewAR = () => {
     };
 
     useEffect(() => {
-        fetchOptions("http://localhost:3000/manage/getAllAction", setActions);
-        fetchOptions("http://localhost:3000/manage/getAllReaction", setReactions);
+        fetchOptions("http://localhost:8080/manage/getAllAction", setActions);
+        fetchOptions("http://localhost:8080/manage/getAllReaction", setReactions);
     }, []);
 
     const handleActionChange = (value) => {
@@ -79,7 +79,7 @@ const NewAR = () => {
                 schedule: "some_schedule"
             };
 
-            await axios.post("http://localhost:3000/manage/add-action-reaction", payload, {
+            await axios.post("http://localhost:8080/manage/add-action-reaction", payload, {
                 headers: {
                     Authorization: `Bearer ${authToken}`,
                 },

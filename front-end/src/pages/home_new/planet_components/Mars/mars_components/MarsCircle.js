@@ -46,9 +46,9 @@ const MarsCircle = ({ type, className }) => {
                 <ServiceLogin
                     service="Spotify"
                     logoUrl="https://upload.wikimedia.org/wikipedia/commons/thumb/1/19/Spotify_logo_without_text.svg/2048px-Spotify_logo_without_text.svg.png"
-                    checkConnectionUrl="http://localhost:3000/spotify/check-connection"
-                    authUrl="http://localhost:3000/spotify/auth-url"
-                    disconnectUrl="http://localhost:3000/spotify/logout"
+                    checkConnectionUrl="http://localhost:8080/spotify/check-connection"
+                    authUrl="http://localhost:8080/spotify/auth-url"
+                    disconnectUrl="http://localhost:8080/spotify/logout"
                 />
             </div>
             <div className="discord-card">
@@ -56,9 +56,9 @@ const MarsCircle = ({ type, className }) => {
                     className="discord-card"
                     service="Discord"
                     logoUrl="https://cdn.worldvectorlogo.com/logos/discord-4.svg"
-                    checkConnectionUrl="http://localhost:3000/discord/check-connection"
-                    authUrl="http://localhost:3000/discord/auth-url"
-                    disconnectUrl="http://localhost:3000/discord/logout"
+                    checkConnectionUrl="http://localhost:8080/discord/check-connection"
+                    authUrl="http://localhost:8080/discord/auth-url"
+                    disconnectUrl="http://localhost:8080/discord/logout"
                 />
             </div>
             <div className="youtube-card">
@@ -66,9 +66,9 @@ const MarsCircle = ({ type, className }) => {
                     className="youtube-card"
                     service="Youtube"
                     logoUrl="https://upload.wikimedia.org/wikipedia/commons/4/42/YouTube_icon_%282013-2017%29.png"
-                    checkConnectionUrl="http://localhost:3000/youtube/check-connection"
-                    authUrl="http://localhost:3000/youtube/auth-url"
-                    disconnectUrl="http://localhost:3000/youtube/logout"
+                    checkConnectionUrl="http://localhost:8080/youtube/check-connection"
+                    authUrl="http://localhost:8080/youtube/auth-url"
+                    disconnectUrl="http://localhost:8080/youtube/logout"
                 />
             </div>
             <div className="twitch-card">
@@ -76,9 +76,9 @@ const MarsCircle = ({ type, className }) => {
                     className="twitch-card"
                     service="Twitch"
                     logoUrl="https://cdn3.iconfinder.com/data/icons/social-messaging-ui-color-shapes-2-free/128/social-twitch-square1-512.png"
-                    checkConnectionUrl="http://localhost:3000/twitch/check-connection"
-                    authUrl="http://localhost:3000/twitch/auth-url"
-                    disconnectUrl="http://localhost:3000/twitch/logout"
+                    checkConnectionUrl="http://localhost:8080/twitch/check-connection"
+                    authUrl="http://localhost:8080/twitch/auth-url"
+                    disconnectUrl="http://localhost:8080/twitch/logout"
                 />
             </div>
             <div className="github-card">
@@ -86,9 +86,9 @@ const MarsCircle = ({ type, className }) => {
                     className="github-card"
                     service="Github"
                     logoUrl="https://upload.wikimedia.org/wikipedia/commons/9/91/Octicons-mark-github.svg"
-                    checkConnectionUrl="http://localhost:3000/github/check-connection"
-                    authUrl="http://localhost:3000/github/auth-url"
-                    disconnectUrl="http://localhost:3000/github/logout"
+                    checkConnectionUrl="http://localhost:8080/github/check-connection"
+                    authUrl="http://localhost:8080/github/auth-url"
+                    disconnectUrl="http://localhost:8080/github/logout"
                 />
             </div>
             <div className="nasa-card">

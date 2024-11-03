@@ -21,7 +21,7 @@ const UpdateProfileDialog = ({ visible, onClose, fieldToUpdate }) => {
     try {
       const authToken = localStorage.getItem("authToken");
       await axios.put(
-        "http://localhost:3000/users/update",
+        "http://localhost:8080/users/update",
         { [fieldToUpdate]: inputValue },
         {
           headers: {

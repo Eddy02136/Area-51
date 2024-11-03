@@ -12,7 +12,7 @@ const LastNameProfile = () => {
             const authToken = localStorage.getItem("authToken");
             if (!authToken) return;
 
-            const response = await axios.get("http://localhost:3000/users/infos", {
+            const response = await axios.get("http://localhost:8080/users/infos", {
                 headers: {
                     Authorization: `Bearer ${authToken}`,
                 },
