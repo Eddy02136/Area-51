@@ -5,6 +5,7 @@ import static com.usukae.area.Classes.Utils.TextUtil.formatCamelCase;
 import android.app.Activity;
 import android.app.Dialog;
 import android.content.Context;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -18,6 +19,7 @@ import androidx.annotation.NonNull;
 import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.google.gson.Gson;
 import com.usukae.area.Classes.Actions.ActionUtil;
 import com.usukae.area.Classes.Reactions.ReactionUtil;
 import com.usukae.area.Classes.Utils.DialogUtil;
@@ -118,22 +120,22 @@ public class ActionReactionAdapter extends RecyclerView.Adapter<ActionReactionAd
             View view = inputContainer.getChildAt(i);
             EditText editText = view.findViewById(R.id.editTextInput);
             String key = editText.getHint().toString();
+            String camelCaseKey = convertToCamelCase(key);
             String value = editText.getText().toString();
-            updatedParameters.put(key, value);
+            updatedParameters.put(camelCaseKey, value);
         }
 
         ActionReactionRequestUp request = new ActionReactionRequestUp(
                 "Name",
-                actionReaction.getActionApi(),
                 actionReaction.getActionName(),
-                actionReaction.getReactionApi(),
+                actionReaction.getActionApi(),
                 actionReaction.getReactionName(),
+                actionReaction.getReactionApi(),
                 updatedParameters
         );
 
         ActionReactionApiProtocol apiProtocol = new ActionReactionApiProtocol(context);
         apiProtocol.updateActionReaction(context, actionReaction.get_id(), request, (success, code, data, list, actions, reactions) -> {
-            Toast.makeText(context, "" + code, Toast.LENGTH_SHORT).show();
             PrettyAlert alert = new PrettyAlert((Activity) context);
             if (success) {
                 alert.success(context.getString(R.string.update_success), 3000);
@@ -143,6 +145,16 @@ public class ActionReactionAdapter extends RecyclerView.Adapter<ActionReactionAd
                 alert.error(context.getString(R.string.update_failed), 3000);
             }
         });
+    }
+
+    private String convertToCamelCase(String str) {
+        String[] parts = str.split(" ");
+        StringBuilder camelCaseString = new StringBuilder(parts[0].toLowerCase());
+        for (int i = 1; i < parts.length; i++) {
+            camelCaseString.append(parts[i].substring(0, 1).toUpperCase())
+                    .append(parts[i].substring(1).toLowerCase());
+        }
+        return camelCaseString.toString();
     }
 
     private void deleteActionReaction(ActionReaction actionReaction, Dialog dialog, int position) {
