@@ -26,13 +26,15 @@ public class AddConnectionAdapter extends RecyclerView.Adapter<AddConnectionAdap
 
     private final List<Connection> connections;
     private final Context context;
+    private ConnectionAddedCallback callback;
 
     private PrettyAlert prettyAlert;
     private ErrorUtil errorUtil;
 
-    public AddConnectionAdapter(Context context, List<Connection> connections) {
+    public AddConnectionAdapter(Context context, List<Connection> connections, ConnectionAddedCallback callback) {
         this.context = context;
         this.connections = connections;
+        this.callback = callback;
     }
 
     @NonNull
@@ -86,6 +88,12 @@ public class AddConnectionAdapter extends RecyclerView.Adapter<AddConnectionAdap
 
     private void checkSuccess(boolean success, int code, String url) {
         if (success) {
+            WebViewActivity webViewActivity = new WebViewActivity();
+            webViewActivity.setWebViewCallback(() -> {
+                if (callback != null) {
+                    callback.onConnectionAdded();
+                }
+            });
             context.startActivity(new Intent(context, WebViewActivity.class).putExtra("auth_url", url));
         } else {
             prettyAlert.error(context.getString(errorUtil.getAuthUrlError(code)), 3000);
@@ -115,8 +123,14 @@ public class AddConnectionAdapter extends RecyclerView.Adapter<AddConnectionAdap
             connectionIcon.setImageResource(connection.getDrawable());
             if (connection.getData() != null && !connection.getData().isEmpty() && Objects.equals(connection.getData().get(0), "true")) {
                 connectionLoggedIcon.setVisibility(View.VISIBLE);
+                connectionMainCard.setEnabled(false);
+                connectionMainCard.setClickable(false);
                 connectionMainCard.setCardBackgroundColor(ContextCompat.getColor(context, R.color.success));
             }
         }
+    }
+
+    public interface ConnectionAddedCallback {
+        void onConnectionAdded();
     }
 }

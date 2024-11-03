@@ -28,6 +28,16 @@ public class WebViewActivity extends AppCompatActivity {
 
     private WebView webView;
 
+    public interface WebViewCallback {
+        void onWebViewRedirectSuccess();
+    }
+
+    private WebViewCallback webViewCallback;
+
+    public void setWebViewCallback(WebViewCallback callback) {
+        this.webViewCallback = callback;
+    }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -79,6 +89,9 @@ public class WebViewActivity extends AppCompatActivity {
             @Override
             public void run() {
                 if (webView.getUrl() != null && webView.getUrl().contains(REDIRECT_URL)) {
+                    if (webViewCallback != null) {
+                        webViewCallback.onWebViewRedirectSuccess();
+                    }
                     finish();
                 } else {
                     handler.postDelayed(this, 100);
@@ -119,5 +132,9 @@ public class WebViewActivity extends AppCompatActivity {
                 finish();
             }
         }
+    }
+
+    public interface AuthCallback {
+        void onAuthSuccess();
     }
 }
