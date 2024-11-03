@@ -17,13 +17,13 @@
     position: absolute;
     top: 50%;
     left: 50%;
-    width: 24vw;
-    height: 24vw;
-    border: 1px solid rgb(42, 241, 248);
+    width: 7vw;
+    height: 7vw;
+    border: 1px solid rgb(199, 207, 207);
     border-radius: 50%;
     transform: translate(-50%, -50%) scale(0);
     transition: opacity 0.3s, transform 0.3s;
-    box-shadow: 0 0 20px rgb(0, 255, 242), inset 0 0 20px rgb(0, 255, 242);
+    box-shadow: 0 0 20px rgb(199, 207, 207), inset 0 0 20px rgb(199, 207, 207);
 }
 
 .me-circle.visible {
@@ -37,8 +37,10 @@
     align-items: center;
     background-color: white;
     border-radius: 20px;
-    padding: 20px;
-    width: 80%;
+    padding: 15px;
+    width: 15vw;
+    height: 25vh;
+    bottom: -30%;
 }
 
 .me-select-ar h1, .me-edit-ar h1 {

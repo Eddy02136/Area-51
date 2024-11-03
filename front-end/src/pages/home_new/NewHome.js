@@ -19,7 +19,6 @@ const NewHomePage = () => {
     const starsContainerRef = useRef(null);
     const [isOpen, setIsOpen] = useState(false);
     const [selectedPlanet, setSelectedPlanet] = useState(null);
-    const [isAnimationComplete, setIsAnimationComplete] = useState(false);
     const [isClicked, setIsClicked] = useState(false);
     const [backgroundColor, setBackgroundColor] = useState("linear-gradient(-45deg, #010930, #0f0e22, #070735, #0f0330, #01082b, #0f0d30, #000000)");
     const navigate = useNavigate();
@@ -108,24 +107,24 @@ const NewHomePage = () => {
 
                     >
                         <Neptune />
-                        <NeptuneCircle type="apis" className={planetAnimationStates.neptune ? "visible" : ""} />
                     </div>
+                        <NeptuneCircle type="apis" className={planetAnimationStates.neptune ? "visible" : ""} />
                     <div
                         className={`mars ${selectedPlanet === "mars" ? "centered" : "animated"} ${selectedPlanet && selectedPlanet !== "mars" ? "disabled" : ""}`}
                         onClick={() => (!selectedPlanet || selectedPlanet === "mars") && handleClick("mars")}
                         onAnimationEnd={() => handleAnimationEnd("mars")}
                     >
                         <Mars />
-                        <MarsCircle type="apis" className={planetAnimationStates.mars ? "visible" : ""} />
                     </div>
+                        <MarsCircle type="apis" className={planetAnimationStates.mars ? "visible" : ""} />
                     <div
                         className={`earth ${selectedPlanet === "earth" ? "centered" : "animated"} ${selectedPlanet && selectedPlanet !== "earth" ? "disabled" : ""}`}
                         onClick={() => (!selectedPlanet || selectedPlanet === "earth") && handleClick("earth")}
                         onAnimationEnd={() => handleAnimationEnd("earth")}
                     >
                         <Earth />
-                        <EarthCircle type="apis" className={planetAnimationStates.earth ? "visible" : ""} />
                     </div>
+                        <EarthCircle type="apis" className={planetAnimationStates.earth ? "visible" : ""} />
                     <div
                         className={`earth-moon ${selectedPlanet === "earthMoon" ? "centered" : "animated"} ${selectedPlanet && selectedPlanet !== "earthMoon" ? "disabled" : ""}`}
                         onClick={() => (!selectedPlanet || selectedPlanet === "earthMoon") && handleClick("earthMoon")}

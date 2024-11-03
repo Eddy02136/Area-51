@@ -24,7 +24,6 @@
 
 .stars-container {
     position: absolute;
-    top: 0;
     width: 100vw;
     height: 100vh;
     pointer-events: none;
@@ -43,15 +42,13 @@
         #0f0d30,
         #000000
     );
+    max-height: 100vh;
     animation: gradient 5s ease infinite;
-    min-height: 100vh;
     display: flex;
     flex-direction: column;
-    align-items: center;
-    justify-content: center;
     font-size: calc(10px + 2vmin);
     color: white;
-    position: relative;
+    position: absolute;
     z-index: 0;
 }
 
@@ -138,6 +135,14 @@
     margin-right: 1vh;
 }
 
+.disconnect-button:hover {
+    box-shadow:
+        rgba(45, 35, 66, 0.4) 0 4px 8px,
+        rgba(45, 35, 66, 0.3) 0 7px 13px -3px,
+        #3c4fe0 0 -3px 0 inset;
+    transform: translateY(2px);
+}
+
 .help-button:hover {
     box-shadow:
         rgba(45, 35, 66, 0.4) 0 4px 8px,
@@ -170,10 +175,14 @@
     font-family: PriegoBold;
     font-size: 400%;
     color: #fdff91;
+    left: 40%;
+    top: -5%;
+    position: absolute;
 }
 
 .planet-container {
     position: relative;
+    margin-top: 20vh;
     width: 100vw;
     height: 100vh;
     overflow: hidden;
@@ -255,13 +264,13 @@
         transform: translate(0, 0);
     }
     25% {
-        transform: translate(50px, -100px);
+        transform: translate(100px, -50px);
     }
     50% {
-        transform: translate(0, -200px);
+        transform: translate(-50px, -100px);
     }
     75% {
-        transform: translate(-50px, -100px);
+        transform: translate(50px, -100px);
     }
     100% {
         transform: translate(0, 0);
