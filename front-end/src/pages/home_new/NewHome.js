@@ -100,32 +100,32 @@ const NewHomePage = () => {
 
                     >
                         <Neptune />
-                    </div>
                         <NeptuneCircle type="apis" className={planetAnimationStates.neptune ? "visible" : ""} />
+                    </div>
                     <div
                         className={`mars ${selectedPlanet === "mars" ? "centered" : "animated"} ${selectedPlanet && selectedPlanet !== "mars" ? "disabled" : ""}`}
                         onClick={() => (!selectedPlanet || selectedPlanet === "mars") && handleClick("mars")}
                         onAnimationEnd={() => handleAnimationEnd("mars")}
                     >
                         <Mars />
-                    </div>
                         <MarsCircle type="apis" className={planetAnimationStates.mars ? "visible" : ""} />
+                    </div>
                     <div
                         className={`earth ${selectedPlanet === "earth" ? "centered" : "animated"} ${selectedPlanet && selectedPlanet !== "earth" ? "disabled" : ""}`}
                         onClick={() => (!selectedPlanet || selectedPlanet === "earth") && handleClick("earth")}
                         onAnimationEnd={() => handleAnimationEnd("earth")}
                     >
                         <Earth />
-                    </div>
                         <EarthCircle type="apis" className={planetAnimationStates.earth ? "visible" : ""} />
+                    </div>
                     <div
                         className={`earth-moon ${selectedPlanet === "earthMoon" ? "centered" : "animated"} ${selectedPlanet && selectedPlanet !== "earthMoon" ? "disabled" : ""}`}
                         onClick={() => (!selectedPlanet || selectedPlanet === "earthMoon") && handleClick("earthMoon")}
                         onAnimationEnd={() => handleAnimationEnd("earthMoon")}
                     >
                         <EarthMoon />
-                    </div>
                         <MoonCircle type="apis" className={planetAnimationStates.earthMoon ? "visible" : ""} />
+                    </div>
                     <div className="help">
                         <button 
                             onClick={togglePopup} 
