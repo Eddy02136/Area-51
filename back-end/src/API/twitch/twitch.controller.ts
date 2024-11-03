@@ -56,39 +56,6 @@ export class TwitchController {
     return reply.status(200).send('Connected');
   }
 
-  async checkTwitchNasaLive(twitchToken: string, @Response() reply: FastifyReply) {
-    try {
-      const response = await this.twitchService.checkTwitchStreamerLive(twitchToken, "Nasa");
-
-      reply.status(200).send({message: response})
-    } catch(error) {
-      return reply.status(500).send({ error: error.message });
-    }
-  }
-
-  async sendTwitchNasaMessage(twitchToken: string, @Response() reply: FastifyReply) {
-    if (!twitchToken) {
-      return reply.status(400).send('Access token is required');
-    }
-    try {
-      const response = await this.twitchService.sendTwitchMessage("Nasa", twitchToken, "")
-
-      reply.status(200).send({message: response})
-    } catch (error) {
-      return reply.status(500).send({ error: error.message });
-    }
-  }
-
-  async checkViewerCount(twitchToken: string, @Response() reply: FastifyReply) {
-    try {
-      const response = await this.twitchService.checkTwitchNasaViewerCount(twitchToken)
-
-      reply.status(200).send({message: response})
-    } catch (error) {
-      return reply.status(500).send({ error: error.message });
-    }
-  }
-
   @UseGuards(AuthGuard('jwt'))
   @ApiOperation({ summary: 'Logout Twitch connection'})
   @ApiHeader({ name: 'authorization', required: true, description: 'Bearer token for Area51 API access' })
