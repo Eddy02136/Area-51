@@ -1,9 +1,9 @@
 package com.usukae.area.Classes.Api;
 
 import com.usukae.area.Classes.ActionReaction.ActionReaction;
+import com.usukae.area.Classes.ActionReaction.ActionReactionCallback;
 import com.usukae.area.Classes.ActionReaction.ActionReactionRequest;
 import com.usukae.area.Classes.Actions.Action;
-import com.usukae.area.Classes.Areas.AreasAuthUrlResponse;
 import com.usukae.area.Classes.Auth.Login.LoginRequest;
 import com.usukae.area.Classes.Auth.Login.LoginResponse;
 import com.usukae.area.Classes.Auth.Register.RegisterRequest;
@@ -38,7 +38,7 @@ public interface ApiService {
     Call<Void> checkTokenUser(@Header("Authorization") String token);
 
     @GET
-    Call<AreasAuthUrlResponse> getAuthUrl(@Url String url, @Header("Authorization") String token);
+    Call<ActionReactionCallback> getAuthUrl(@Url String url, @Header("Authorization") String token);
 
     @GET
     Call<Void> getCheckConnection(@Url String url, @Header("Authorization") String token);
@@ -69,6 +69,12 @@ public interface ApiService {
 
     @GET("/manage/get-action-reaction")
     Call<List<ActionReaction>> getAllActionReactions(@Header("Authorization") String token);
+
+    @GET("/manage/get-action-reaction/{id}")
+    Call<ActionReaction> getActionReactionById(@Header("Authorization") String token, @Path("id") String id);
+
+    @PUT("/manage/update-action-reaction/{id}")
+    Call<Void> updateActionReaction(@Header("Authorization") String token, @Path("id") String id, @Body ActionReactionRequest request);
 
     @DELETE("/manage/delete-action-reaction/{id}")
     Call<Void> deleteActionReaction(@Header("Authorization") String token, @Path("id") String id);
