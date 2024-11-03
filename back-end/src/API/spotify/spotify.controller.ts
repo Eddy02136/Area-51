@@ -14,9 +14,9 @@ export class SpotifyController {
   private readonly usersService: UsersService) {}
 
   @UseGuards(AuthGuard('jwt'))
-  @ApiOperation({ summary: 'Get Spotify authentication URL' })
+  @ApiOperation({ summary: 'Get spotify authentication URL' })
   @ApiHeader({ name: 'authorization', required: true, description: 'Bearer token for Area51 API access' })
-  @ApiResponse({ status: 200, description: 'Successful retrieval of the Spotify authentication URL.', type: String })
+  @ApiResponse({ status: 200, description: 'Successful retrieval of the spotify authentication URL.', type: String })
   @ApiResponse({ status: 401, description: 'Unauthorized. Invalid or missing JWT.' })
   @ApiResponse({ status: 500, description: 'Internal server error.' })
   @Get('auth-url')
@@ -32,8 +32,8 @@ export class SpotifyController {
     }
   }
 
-  @ApiOperation({ summary: 'Handle Spotify callback and retrieve access token' })
-  @ApiQuery({ name: 'code', required: true, description: 'The authorization code obtained from Spotify' })
+  @ApiOperation({ summary: 'Handle spotify callback and retrieve access token' })
+  @ApiQuery({ name: 'code', required: true, description: 'The authorization code obtained from spotify' })
   @ApiResponse({ status: 200, description: 'Spotify login successful' })
   @ApiResponse({ status: 400, description: 'Bad Request. Authorization code is required.' })
   @ApiResponse({ status: 500, description: 'Internal server error.' })
@@ -57,8 +57,8 @@ export class SpotifyController {
   @UseGuards(AuthGuard('jwt'))
   @ApiOperation({ summary: 'Check spotify connection' })
   @ApiHeader({ name: 'authorization', required: true, description: 'Bearer token for Area51 API access' })
-  @ApiResponse({ status: 200, description: 'User is connected to Spotify', schema: { example: 'Connected'}})
-  @ApiResponse({ status: 201, description: 'User is not connected to Spotify', schema: { example: 'Not connected'}})
+  @ApiResponse({ status: 200, description: 'User is connected to spotify', schema: { example: 'Connected'}})
+  @ApiResponse({ status: 201, description: 'User is not connected to spotify', schema: { example: 'Not connected'}})
   @ApiResponse({ status: 401, description: 'Unauthorized. Invalid or missing JWT.' })
   @ApiResponse({ status: 500, description: 'Internal server error.' })
   @Get('check-connection')

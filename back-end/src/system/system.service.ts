@@ -19,13 +19,13 @@ export class SystemService implements OnModuleInit, OnModuleDestroy {
   private readonly actionIntervals: { [key: string]: number } = {
     'getIssPos': 120000,
     'newVideoSpaceX': 3600000,
-    'getViewerNasa': 300000,
-    'streamerInLive': 300000,
-    'followingUserGithub': 300000,
-    'changeUserGithub': 300000,
-    'followersUserGithub': 300000,
-    'checkChangeUserNameDiscord': 300000,
-    'checkJoinOtherServerDiscord': 300000,
+    'getViewerNasa': 120000,
+    'streamerInLive': 120000,
+    'followingUserGithub': 120000,
+    'changeUserGithub': 120000,
+    'followersUserGithub': 120000,
+    'checkChangeUserNameDiscord': 120000,
+    'checkJoinOtherServerDiscord': 120000,
   };
 
   private actionTimers: Map<string, NodeJS.Timeout> = new Map();
@@ -118,12 +118,14 @@ export class SystemService implements OnModuleInit, OnModuleDestroy {
           }
           return await this.githubService.checkNewFollowers(token);
         case 'checkChangeUserNameDiscord':
+          await this.discordService.refreshDiscordToken(ar.userId);
           token = await this.userService.getToken('Discord', ar.userId);
           if (token === "") {
             return false;
           }
           return await this.discordService.checkUsernameDiscord(token)
         case 'checkJoinOtherServerDiscord':
+          await this.discordService.refreshDiscordToken(ar.userId);
           token = await this.userService.getToken('Discord', ar.userId);
           if (token === "") {
             return false;
@@ -186,7 +188,7 @@ export class SystemService implements OnModuleInit, OnModuleDestroy {
         await this.spotifyService.playSpotifyPlaylist(token, playlistName);
         break;
       default:
-        console.error(`Valeur inconnue pour reactionName: ${ar.reactionName}`);
+        console.error(`Error checking reactions for: ${ar.reactionName}`);
     }
   }
 }

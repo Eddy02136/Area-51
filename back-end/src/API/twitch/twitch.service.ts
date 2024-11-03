@@ -104,7 +104,7 @@ export class TwitchService {
     }
   }
 
-  async getMyTwitchid(twitchToken: string){
+  async getMyTwitchId(twitchToken: string){
     const clientId = process.env.TWITCH_CLIENT_ID;
 
     try {
@@ -149,7 +149,7 @@ export class TwitchService {
       if (!streamerId) {
         return;
       }
-      const senderId = await this.getMyTwitchid(twitchToken);
+      const senderId = await this.getMyTwitchId(twitchToken);
 
       const headers = {
         'Client-ID': clientId,
@@ -172,7 +172,11 @@ export class TwitchService {
   }
 
   async refreshTwitchToken(userId: string): Promise<void> {
-    const { refreshToken, expiresAt } = await this.usersService.getElemApiToken(userId, 'Twitch');
+    const data = await this.usersService.getElemApiToken(userId, 'Twitch');
+    if (!data) {
+      return;
+    }
+    const { refreshToken, expiresAt } = data;
     const isTokenExpired = new Date() >= new Date(expiresAt);
 
     if (!isTokenExpired) {
