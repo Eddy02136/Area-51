@@ -14,9 +14,9 @@ export class DiscordController {
               private readonly usersService: UsersService) {}
 
   @UseGuards(AuthGuard('jwt'))
-  @ApiOperation({ summary: 'Get Discord authentication URL' })
+  @ApiOperation({ summary: 'Get discord authentication URL' })
   @ApiHeader({ name: 'authorization', required: true, description: 'Bearer token for Area51 API access' })
-  @ApiResponse({ status: 200, description: 'Successful retrieval of the Discord authentication URL.', type: String })
+  @ApiResponse({ status: 200, description: 'Successful retrieval of the discord authentication URL.', type: String })
   @ApiResponse({ status: 401, description: 'Unauthorized. Invalid or missing JWT.' })
   @ApiResponse({ status: 500, description: 'Internal server error.' })
   @Get('auth-url')
@@ -32,8 +32,8 @@ export class DiscordController {
     }
   }
 
-  @ApiOperation({ summary: 'Handle Discord callback and retrieve access token' })
-  @ApiQuery({ name: 'code', required: true, description: 'The authorization code obtained from Discord' })
+  @ApiOperation({ summary: 'Handle discord callback and retrieve access token' })
+  @ApiQuery({ name: 'code', required: true, description: 'The authorization code obtained from discord' })
   @ApiResponse({ status: 200, description: 'Successful retrieval of the access token.' })
   @ApiResponse({ status: 400, description: 'Bad Request. Authorization code is required.' })
   @ApiResponse({ status: 500, description: 'Internal server error.' })
@@ -57,8 +57,8 @@ export class DiscordController {
   @UseGuards(AuthGuard('jwt'))
   @ApiOperation({ summary: 'Check discord connection' })
   @ApiHeader({ name: 'authorization', required: true, description: 'Bearer token for Area51 API access' })
-  @ApiResponse({ status: 200, description: 'User is connected to Discord', schema: { example: 'Connected'}})
-  @ApiResponse({ status: 201, description: 'User is not connected to Discord', schema: { example: 'Not connected'}})
+  @ApiResponse({ status: 200, description: 'User is connected to discord', schema: { example: 'Connected'}})
+  @ApiResponse({ status: 201, description: 'User is not connected to discord', schema: { example: 'Not connected'}})
   @ApiResponse({ status: 401, description: 'Unauthorized. Invalid or missing JWT.' })
   @ApiResponse({ status: 500, description: 'Internal server error.' })
   @Get('check-connection')
