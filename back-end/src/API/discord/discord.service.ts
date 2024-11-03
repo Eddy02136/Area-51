@@ -72,6 +72,7 @@ export class DiscordService {
   async checkUsernameDiscord(accessToken: string): Promise<boolean>
   {
     try {
+      console.log('Check user has changed his discord username');
       const response = await axios.get('https://discord.com/api/v10/users/@me', {
         headers: { Authorization: `Bearer ${accessToken}` },
       });
@@ -94,6 +95,7 @@ export class DiscordService {
 
   async checkJoinOtherServerDiscord(accessToken: string): Promise<boolean> {
     try {
+      console.log('Check user has joined server discord');
       const response = await axios.get('https://discord.com/api/users/@me/guilds', {
         headers: {Authorization: `Bearer ${accessToken}`},
       });

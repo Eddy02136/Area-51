@@ -65,6 +65,7 @@ export class GithubService {
     async checkNewFollowing(accessToken: string) : Promise<boolean>
     {
         try {
+            console.log('Check user follow new person');
             const response = await axios.get('https://api.github.com/user', {
                 headers: {Authorization: `Bearer ${accessToken}`},
             });
@@ -90,6 +91,7 @@ export class GithubService {
     async checkChangeGithubName(accessToken: string) : Promise<boolean>
     {
         try {
+            console.log('Check user has changed his github username');
             const response = await axios.get('https://api.github.com/user', {
                 headers: {Authorization: `Bearer ${accessToken}`},
             });

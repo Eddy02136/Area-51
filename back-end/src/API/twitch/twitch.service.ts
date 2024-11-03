@@ -80,7 +80,7 @@ export class TwitchService {
   }
 
   async checkTwitchNasaViewerCount(twitchToken: string): Promise<boolean> {
-    console.log('NasaViewerCount');
+    console.log('Check if nasa has more than 5000 viewers');
     const nasaTwitchId = "151920918"
     const clientId : string = process.env.TWITCH_CLIENT_ID;
     try {
@@ -144,6 +144,7 @@ export class TwitchService {
     const clientId = process.env.TWITCH_CLIENT_ID;
 
     try {
+      console.log(`Send ${message} to ${streamerName}`);
       const url = "https://api.twitch.tv/helix/chat/messages";
       const streamerId = await this.isStreamerLive(streamerName, twitchToken);
       if (!streamerId) {

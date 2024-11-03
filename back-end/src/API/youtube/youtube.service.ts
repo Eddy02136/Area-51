@@ -107,7 +107,6 @@ export class YoutubeService {
     async likeVideo(accessToken: string, url: string | URL): Promise<void> {
         try {
             const videoId: string = this.getVideoId(url);
-            console.log(videoId);
 
             const data = {
                 id: videoId,
@@ -161,23 +160,19 @@ export class YoutubeService {
 
                 this.lastVideoId = latestVideoId;
             } else {
-                console.log("Aucune vidéo trouvée pour cette chaîne.");
+                console.log("No video found.");
             }
             return false;
         } catch (error) {
-            console.error('Erreur lors de la vérification de nouvelles vidéos :', error.message);
+            console.error('Failed to check new video :', error.message);
             return false;
         }
     }
 
     async startCheckingForNewVideos(accessToken : string) : Promise<boolean> {
-        console.log('check Video')
+        console.log('Check new SpaceX video');
         const channelId: string = "UCtI0Hodo5o5dUb67FeUjDeA"; //Spacex channel id
-        const newVideoFound = await this.checkForNewVideo(accessToken, channelId);
-        if (newVideoFound) {
-            return true;
-        }
-        return false;
+        return await this.checkForNewVideo(accessToken, channelId);
     }
 
     async refreshYoutubeToken(userId: string): Promise<void> {

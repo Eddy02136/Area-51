@@ -106,6 +106,7 @@ export class SpotifyService {
   }
 
   async playMusic(accessToken: string, musicName: string): Promise<string> {
+    console.log(`Play ${musicName} on spotify`);
     const trackId = await this.searchTrack(musicName, accessToken);
     const playUrl = 'https://api.spotify.com/v1/me/player/play';
     const headers = {
@@ -125,8 +126,9 @@ export class SpotifyService {
     }
   }
 
-  async playSpotifyPlaylist(accessToken, playlistName: string) {
+  async playSpotifyPlaylist(accessToken: string, playlistName: string) {
     try {
+      console.log(`Play ${playlistName} on spotify`);
       const playlistUri = await this.getPlaylistUriByName(accessToken, playlistName);
       const playUrl = 'https://api.spotify.com/v1/me/player/play';
       const headers = {
