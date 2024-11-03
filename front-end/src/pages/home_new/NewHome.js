@@ -12,14 +12,12 @@ import Neptune from "./planet_components/Neptune/neptuneComponent.js";
 import EarthMoon from "./planet_components/EarthMoon/earthMoonComponent";
 import HelpPopUp from "../../components/helpButton/HelpPopUp.js";
 import backgroundmusic from "../../assets/background.mp3";
-
 import createStars from "./stars";
 
 const NewHomePage = () => {
     const starsContainerRef = useRef(null);
     const [isOpen, setIsOpen] = useState(false);
     const [selectedPlanet, setSelectedPlanet] = useState(null);
-    const [isClicked, setIsClicked] = useState(false);
     const [backgroundColor, setBackgroundColor] = useState("linear-gradient(-45deg, #010930, #0f0e22, #070735, #0f0330, #01082b, #0f0d30, #000000)");
     const navigate = useNavigate();
 
@@ -27,58 +25,29 @@ const NewHomePage = () => {
         createStars(starsContainerRef.current);
     }, []);
 
-    const togglePlanetCentering = (planet) => {
-        if (selectedPlanet === planet) {
-            setSelectedPlanet(null);
-            setBackgroundColor("linear-gradient(-45deg, #010930, #0f0e22, #070735, #0f0330, #01082b, #0f0d30, #000000)"); // couleur par défaut
-        } else {
-            setSelectedPlanet(planet);
-            switch (planet) {
-                case "mars":
-                    setBackgroundColor("linear-gradient(-45deg, #410a0a, #732201, #29170f, #5c1800)"); // orange pour Mars
-                    break;
-                case "earth":
-                    setBackgroundColor("linear-gradient(-45deg, #3d4f7a, #030e20, #071036, #00106a, #010500)"); // bleu pour Terre
-                    break;
-                case "neptune":
-                    setBackgroundColor("linear-gradient(-45deg, #253f4d, #000d22, #001b2b, #004567, #002021)"); // bleu pour Neptune
-                    break;
-                case "earthMoon":
-                    setBackgroundColor("linear-gradient(-45deg, #222c30, #444444, #1f1f1f, #111111, #6e6e6e, #212121)"); // gris pour la Lune
-                    break;
-                default:
-                    setBackgroundColor("linear-gradient(-45deg, #010930, #0f0e22, #070735, #0f0330, #01082b, #0f0d30, #000000)"); // couleur par défaut
-            }
+    const openPlanetCentering = (planet) => {
+        setSelectedPlanet(planet);
+        switch (planet) {
+            case "mars":
+                setBackgroundColor("linear-gradient(-45deg, #410a0a, #732201, #29170f, #5c1800)");
+                break;
+            case "earth":
+                setBackgroundColor("linear-gradient(-45deg, #3d4f7a, #030e20, #071036, #00106a, #010500)");
+                break;
+            case "neptune":
+                setBackgroundColor("linear-gradient(-45deg, #253f4d, #000d22, #001b2b, #004567, #002021)");
+                break;
+            case "earthMoon":
+                setBackgroundColor("linear-gradient(-45deg, #222c30, #444444, #1f1f1f, #111111, #6e6e6e, #212121)");
+                break;
+            default:
+                setBackgroundColor("linear-gradient(-45deg, #010930, #0f0e22, #070735, #0f0330, #01082b, #0f0d30, #000000)");
         }
     };
 
-    const [planetAnimationStates, setPlanetAnimationStates] = useState({
-        mars: false,
-        earth: false,
-        neptune: false,
-        earthMoon: false,
-    });
-
-    const handleClick = (planet) => {
-        togglePlanetCentering(planet);
-        setIsClicked(!isClicked);
-        setPlanetAnimationStates((prevStates) => ({
-            ...prevStates,
-            [planet]: false,
-        }));
-    };
-
-    const handleAnimationEnd = (planet) => {
-        setPlanetAnimationStates((prevStates) => ({
-            ...prevStates,
-            [planet]: true,
-        }));
-    };
-
-    const handlePlanetContainerClick = (planet, event) => {
-        if (event.target === event.currentTarget) {
-            handleClick(planet);
-        }
+    const closePlanet = () => {
+        setSelectedPlanet(null);
+        setBackgroundColor("linear-gradient(-45deg, #010930, #0f0e22, #070735, #0f0330, #01082b, #0f0d30, #000000)");
     };
 
     const handleLogout = () => {
@@ -92,46 +61,56 @@ const NewHomePage = () => {
 
     return (
         <div className="new-home-page">
-            <header className="nh-header" style={{background: backgroundColor}}>
-            <audio src={backgroundmusic} autoPlay loop />
-            {/* <header className="nh-header"> */}
-            <h1 className="nh-title"> AREA51</h1>
-  
+            <header className="nh-header" style={{ background: backgroundColor }}>
+                <audio src={backgroundmusic} autoPlay loop />
+                <h1 className="nh-title">AREA51</h1>
+
                 <div ref={starsContainerRef} className="stars-container"></div>
                 <div className="planet-container">
                     <div
                         className={`neptune ${selectedPlanet === "neptune" ? "centered" : "animated"} ${selectedPlanet && selectedPlanet !== "neptune" ? "disabled" : ""}`}
-                        onClick={() => (!selectedPlanet || selectedPlanet === "neptune") && handleClick("neptune")}
-                        onAnimationEnd={() => handleAnimationEnd("neptune")}
-
+                        onClick={() => !selectedPlanet && openPlanetCentering("neptune")}
                     >
                         <Neptune />
+                        {selectedPlanet === "neptune" && (
+                            <button className="close-button" onClick={closePlanet}>   </button>
+                        )}
+                        <NeptuneCircle type="apis" className={selectedPlanet === "neptune" ? "visible" : ""} />
                     </div>
-                        <NeptuneCircle type="apis" className={planetAnimationStates.neptune ? "visible" : ""} />
+
                     <div
                         className={`mars ${selectedPlanet === "mars" ? "centered" : "animated"} ${selectedPlanet && selectedPlanet !== "mars" ? "disabled" : ""}`}
-                        onClick={() => (!selectedPlanet || selectedPlanet === "mars") && handleClick("mars")}
-                        onAnimationEnd={() => handleAnimationEnd("mars")}
+                        onClick={() => !selectedPlanet && openPlanetCentering("mars")}
                     >
                         <Mars />
+                        {selectedPlanet === "mars" && (
+                            <button className="close-button" onClick={closePlanet}>   </button>
+                        )}
+                        <MarsCircle type="apis" className={selectedPlanet === "mars" ? "visible" : ""} />
                     </div>
-                        <MarsCircle type="apis" className={planetAnimationStates.mars ? "visible" : ""} />
+
                     <div
                         className={`earth ${selectedPlanet === "earth" ? "centered" : "animated"} ${selectedPlanet && selectedPlanet !== "earth" ? "disabled" : ""}`}
-                        onClick={() => (!selectedPlanet || selectedPlanet === "earth") && handleClick("earth")}
-                        onAnimationEnd={() => handleAnimationEnd("earth")}
+                        onClick={() => !selectedPlanet && openPlanetCentering("earth")}
                     >
                         <Earth />
+                        {selectedPlanet === "earth" && (
+                            <button className="close-button" onClick={closePlanet}>   </button>
+                        )}
+                        <EarthCircle type="apis" className={selectedPlanet === "earth" ? "visible" : ""} />
                     </div>
-                        <EarthCircle type="apis" className={planetAnimationStates.earth ? "visible" : ""} />
+
                     <div
                         className={`earth-moon ${selectedPlanet === "earthMoon" ? "centered" : "animated"} ${selectedPlanet && selectedPlanet !== "earthMoon" ? "disabled" : ""}`}
-                        onClick={() => (!selectedPlanet || selectedPlanet === "earthMoon") && handleClick("earthMoon")}
-                        onAnimationEnd={() => handleAnimationEnd("earthMoon")}
+                        onClick={() => !selectedPlanet && openPlanetCentering("earthMoon")}
                     >
                         <EarthMoon />
+                        {selectedPlanet === "earthMoon" && (
+                            <button className="close-button" onClick={closePlanet}>   </button>
+                        )}
+                        <MoonCircle type="apis" className={selectedPlanet === "earthMoon" ? "visible" : ""} />
                     </div>
-                        <MoonCircle type="apis" className={planetAnimationStates.earthMoon ? "visible" : ""} />
+
                     <div className="help">
                         <button onClick={handleLogout} className="disconnect-button">Disconnect</button>
                         <button 

@@ -366,3 +366,18 @@
     transform-origin: center center;
     z-index: 10;
 }
+
+.close-button {
+    position: absolute;
+    background-color: transparent;
+    top: 15%;
+    right: 15%;
+    border-radius: 100%;
+    border: none;
+    color: white;
+    font-size: 2em;
+    cursor: pointer;
+    z-index: 10;
+    width: 70%;
+    height: 70%;
+}
