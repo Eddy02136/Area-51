@@ -29,7 +29,7 @@ import com.usukae.area.Classes.Utils.DialogUtil;
 import com.usukae.area.Classes.Utils.PrettyAlert;
 import com.usukae.area.R;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity implements AddConnectionAdapter.ConnectionAddedCallback {
 
     private DialogUtil dialogUtil;
     private ConnectionsUtil connectionsUtil;
@@ -54,19 +54,10 @@ public class MainActivity extends AppCompatActivity {
     private void init() {
         createClasses();
         createDialogs();
-
         bindViews();
         bindDialogViews();
-
         assignButtons();
-
-        initDashboard();
-        initActionsList();
-        initConnectionsList();
-
-        loadAreas();
         checkConnections();
-
         onBackPressedCallback();
     }
 
@@ -104,9 +95,19 @@ public class MainActivity extends AppCompatActivity {
         reset = urlDialog.findViewById(R.id.reset);
     }
 
+    @Override
+    public void onConnectionAdded() {
+        initConnectionsList();
+    }
+
     private void assignButtons() {
         addArea.setOnClickListener(v -> addAreaDialog.show());
-        addConnection.setOnClickListener(v -> addConnectionDialog.show());
+        addConnection.setOnClickListener(v -> {
+            AddConnectionAdapter addConnectionAdapter = new AddConnectionAdapter(this, connectionsUtil.getConnections(getApplicationContext()), this);
+            connectionsRecyclerView.setLayoutManager(new LinearLayoutManager(this));
+            connectionsRecyclerView.setAdapter(addConnectionAdapter);
+            addConnectionDialog.show();
+        });
         profilePicture.setOnClickListener(v -> startActivity(new Intent(getApplicationContext(), UserProfile.class)));
         link.setOnClickListener(v -> urlDialog.show());
         reset.setOnClickListener(v -> {
@@ -146,10 +147,6 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void initConnectionsList() {
-        AddConnectionAdapter addConnectionAdapter = new AddConnectionAdapter(this, connectionsUtil.getConnections(getApplicationContext()));
-        connectionsRecyclerView.setLayoutManager(new LinearLayoutManager(this));
-        connectionsRecyclerView.setAdapter(addConnectionAdapter);
-
         DashboardConnectionAdapter dashboardConnectionAdapter = new DashboardConnectionAdapter(this, connectionsUtil.getStateConnections(getApplicationContext(), "true"));
         dashboardConnectionsRecyclerView.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false));
         dashboardConnectionsRecyclerView.setAdapter(dashboardConnectionAdapter);
@@ -168,7 +165,12 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void checkConnections() {
-        connectionChecker.checkConnections(getApplicationContext());
+        connectionChecker.checkConnections(getApplicationContext(), () -> {
+            initDashboard();
+            initActionsList();
+            initConnectionsList();
+            loadAreas();
+        });
     }
 
     private void onBackPressedCallback() {
