@@ -34,6 +34,9 @@ export class AboutService {
                         }, {
                             name: "play_playlist",
                             description: "Play playlist on Spotify"
+                        }, {
+                            name: "set_volume_max",
+                            description: "Sets current music volume to max"
                         }]
                     },
                     {
