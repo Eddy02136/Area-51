@@ -9,13 +9,15 @@ import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import Login from "./pages/login/Login";
 import Register from "./pages/register/Register";
 import Background from "./components/background/Background";
-import AuthContext, { AuthProvider } from "./auth/AuthContext";
+import { AuthProvider } from "./auth/AuthContext";
 import PrivateRoute from "./components/routes/PrivateRoute";
 import PublicRoute from "./components/routes/PublicRoutes";
 import HomePage from "./pages/home/Home";
-import DiscordCallback from "./pages/discord/DiscordCallback";
-import SpotifyCallback from "./pages/spotify/SpotifyCallback";
 import "./App.css";
+import NewAR from "./pages/new-ar/NewAR";
+import Profile from "./pages/profile/Profile";
+import DelAr from "./pages/del-ar/DelAr";
+import NewHomePage from "./pages/home_new/NewHome";
 
 const queryClient = new QueryClient();
 
@@ -48,13 +50,14 @@ function App() {
                 path="/"
                 element={
                   <PrivateRoute>
-                    <HomePage />
+                    <NewHomePage />
                   </PrivateRoute>
                 }
               />
               <Route path="*" element={<Navigate to="/" />} />
-              <Route path="/discord/callback" element={<DiscordCallback />} />
-              <Route path="/spotify/callback" element={<SpotifyCallback />} />
+              <Route path="/new-ar" element={<NewAR />} />
+              <Route path="/profile" element={<Profile />} />
+              <Route path="/del-ar" element={<DelAr />} />
             </Routes>
           </Router>
         </QueryClientProvider>

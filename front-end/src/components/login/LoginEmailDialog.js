@@ -13,8 +13,7 @@ const LoginEmailDialog = ({ onCancel }) => {
 
   const mutation = useMutation({
     mutationFn: async (loginData) => {
-      console.log('Login data:', loginData);
-      return axios.post('http://localhost:3000/users/login', loginData);
+      return axios.post('http://localhost:8080/users/login', loginData);
     },
     onSuccess: (response) => {
       console.log('Login response:', response);
@@ -72,9 +71,6 @@ const LoginEmailDialog = ({ onCancel }) => {
               disabled={mutation.isLoading}
             >
               {mutation.isLoading ? 'Logging in...' : 'Login'}
-            </button>
-            <button className='login-email-dialog-button'>
-              Forgot password
             </button>
             <button
               className='login-email-dialog-button'

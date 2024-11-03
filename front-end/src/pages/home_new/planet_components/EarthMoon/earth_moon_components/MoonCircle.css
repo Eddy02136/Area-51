@@ -1,0 +1,117 @@
+@font-face {
+    font-family: 'PriegoRegular';
+    src: url('../../../../../fonts/Priego-Regular.otf') format('truetype');
+}
+  
+@font-face {
+    font-family: 'PriegoBold';
+    src: url('../../../../../fonts/Priego-Bold.otf') format('truetype');
+}
+  
+@font-face {
+    font-family: 'PriegoSemibold';
+    src: url('../../../../../fonts/Priego-SemiBold.otf') format('truetype');
+}
+
+.me-circle {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 7vw;
+    height: 7vw;
+    border: 1px solid rgb(199, 207, 207);
+    border-radius: 50%;
+    transform: translate(-50%, -50%) scale(0);
+    transition: opacity 0.3s, transform 0.3s;
+    box-shadow: 0 0 20px rgb(199, 207, 207), inset 0 0 20px rgb(199, 207, 207);
+}
+
+.me-circle.visible {
+    transform: translate(-50%, -50%) scale(1);
+    opacity: 1;
+}
+
+.me-select-ar {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    background-color: white;
+    border-radius: 20px;
+    padding: 15px;
+    width: 20vw;
+    height: 25vh;
+    bottom: -30%;
+}
+
+.me-edit-ar {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    background-color: white;
+    border-radius: 20px;
+    padding: 15px;
+    width: 20vw;
+    height: 47vh;
+    bottom: -30%;
+}
+
+.me-select-ar h1, .me-edit-ar h1 {
+    color: black;
+    font-size: 1.2em;
+    font-family: PriegoSemibold;
+}
+
+.me-delete-button {
+    margin-top: 4vh;
+    width: 100%;
+    background-color: #ff4d4f;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    font-family: PriegoRegular;
+}
+
+.me-update-button {
+    margin-top: 10px;
+    width: 100%;
+    background-color: #0015d0;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    font-family: PriegoRegular;
+}
+
+.me-parameters {
+    width: 100%;
+}
+
+.me-parameters h2 {
+    font-family: PriegoSemibold;
+}
+
+.me-parameters label {
+    font-family: PriegoRegular;
+    font-size: 0.9em;
+}
+
+.me-edit-ar Input {
+    width: 100%;
+    margin-bottom: 10px;
+    border-radius: 4px;
+    padding-left: 8px;
+}
+
+.me-select-ar {
+    position: absolute;
+    right: 110%;
+}
+
+.me-edit-ar {
+    position: absolute;
+    left: 110%;
+    top: -25%;
+}
+
+.me-edit-ar label {
+    color: black;
+}

@@ -73,3 +73,26 @@
   padding-top: 5vh;
   font-family: PriegoRegular;
 }
+
+.home-auth-login {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 4vh;
+  padding-top: 4vh;
+}
+
+@media (max-width: 768px) {
+  .home-page h1 {
+    font-size: 400%;
+  }
+
+  .home-page-button {
+    width: 50vw;
+  }
+
+  .home-auth-login {
+    flex-direction: column;
+    gap: 2vh;
+  }
+}

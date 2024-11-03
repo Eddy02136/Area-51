@@ -1,138 +1,48 @@
-import React, { useContext, useState } from "react";
-import { useNavigate } from "react-router-dom";
-import AuthContext from "../../auth/AuthContext";
-import axios from "axios";
+import ServiceLogin from "../../components/service-login/ServiceLogin";
 import "./Home.css";
 
 const HomePage = () => {
-  const {
-    logout,
-    spotifyUser,
-    setSpotifyAccessToken,
-    setSpotifyUser,
-    isAuthenticated,
-  } = useContext(AuthContext);
-
-  const navigate = useNavigate();
-
-  const [selectedCity, setSelectedCity] = useState("New-York");
-
-  const handleLogout = () => {
-    logout();
-    navigate("/login");
-  };
-
-  const handleSpotifyLogin = () => {
-    const authToken = localStorage.getItem("authToken");
-    console.log("authToken", authToken);
-
-    if (!authToken) {
-      console.error("Erreur : jeton JWT manquant.");
-      return;
-    }
-
-    axios
-      .get("http://localhost:3000/spotify/auth-url", {
-        headers: {
-          Authorization: `Bearer ${authToken}`,
-        },
-      })
-      .then((response) => {
-        window.location.href = response.data.url;
-      })      
-      .catch((error) => {
-        console.error(
-          "Erreur lors de l'obtention de l'URL d'authentification Spotify :",
-          error
-        );
-      });
-  };
-
-  const handleSpotifyLogout = () => {
-    localStorage.removeItem("spotifyAccessToken");
-    localStorage.removeItem("spotifyUser");
-    setSpotifyAccessToken(null);
-    setSpotifyUser(null);
-  };
-
-  const handleSubmit = (event) => {
-    event.preventDefault();
-
-    const authToken = localStorage.getItem("authToken");
-
-    if (!authToken) {
-      console.error("Erreur : jeton JWT manquant.");
-      navigate("/login");
-      return;
-    }
-
-    const data = {
-      action: "iss_get_pos",
-      reaction: "spotify_play_music",
-      parameters: {
-        city: selectedCity,
-        trackId: "7qiZfU4dY1lWllzX7mPBI3",
-      },
-    };
-
-    axios
-      .post("http://localhost:3000/manage/add-action-reaction", data, {
-        headers: {
-          Authorization: `Bearer ${authToken}`,
-          "Content-Type": "application/json",
-        },
-      })
-      .then((response) => {
-        console.log("Action-Réaction ajoutée avec succès :", response.data);
-      })
-      .catch((error) => {
-        console.error(
-          "Erreur lors de l'ajout de l'Action-Réaction :",
-          error.response?.data || error.message
-        );
-      });
-  };
-
   return (
     <div className="home-page">
-      <h1>AREA 51</h1>
-      <div className="home-page-container">
-        <div className="api-logins-buttons">
-          {spotifyUser ? (
-            <div>
-              <p>Bienvenue, {spotifyUser.display_name}</p>
-              <button onClick={handleSpotifyLogout}>
-                Disconnect Spotify
-              </button>
-            </div>
-          ) : (
-            <button className="home-page-spotify-button" onClick={handleSpotifyLogin}>
-              Login with Spotify
-            </button>
-          )}
-        </div>
-
-        <div className="action-reaction-form">
-          <h2>Créer une Action-Réaction</h2>
-          <form onSubmit={handleSubmit}>
-            <label htmlFor="city">Chose a city :</label>
-            <select
-              id="city"
-              value={selectedCity}
-              onChange={(e) => setSelectedCity(e.target.value)}
-            >
-              <option value="Paris">Paris</option>
-              <option value="Tokyo">Tokyo</option>
-              <option value="New-York">New-York</option>
-              <option value="Londres">Londres</option>
-            </select>
-
-            <button type="submit" className="home-page-button">Submit</button>
-          </form>
-          <p>When the ISS passes 200km from the chosen city, Shape of you by Ed Sheeran will be launched on Spotify.</p>
-        </div>
-
-        <button onClick={handleLogout} className="home-page-button">Logout</button>
+      <h1>Home</h1>
+      <div className="home-auth-login">
+        <ServiceLogin 
+          service="Spotify"
+          logoUrl="https://upload.wikimedia.org/wikipedia/commons/thumb/1/19/Spotify_logo_without_text.svg/2048px-Spotify_logo_without_text.svg.png"
+          checkConnectionUrl="http://localhost:8080/spotify/check-connection"
+          authUrl="http://localhost:8080/spotify/auth-url"
+          disconnectUrl="http://localhost:8080/spotify/logout"
+        />
+        <ServiceLogin
+          service="Discord"
+          logoUrl="https://cdn.worldvectorlogo.com/logos/discord-4.svg"
+          checkConnectionUrl="http://localhost:8080/discord/check-connection"
+          authUrl="http://localhost:8080/discord/auth-url"
+          disconnectUrl="http://localhost:8080/discord/logout"
+        />
+        <ServiceLogin
+          service="Youtube"
+          logoUrl="https://upload.wikimedia.org/wikipedia/commons/4/42/YouTube_icon_%282013-2017%29.png"
+          checkConnectionUrl="http://localhost:8080/youtube/check-connection"
+          authUrl="http://localhost:8080/youtube/auth-url"
+          disconnectUrl="http://localhost:8080/youtube/logout"
+        />
+      </div>
+      <div className="home-auth-login">
+        <ServiceLogin 
+          service="Twitch"
+          logoUrl="https://cdn3.iconfinder.com/data/icons/social-messaging-ui-color-shapes-2-free/128/social-twitch-square1-512.png"
+          checkConnectionUrl="http://localhost:8080/twitch/check-connection"
+          authUrl="http://localhost:8080/twitch/auth-url"
+          disconnectUrl="http://localhost:8080/twitch/logout"
+        />
+        <ServiceLogin
+          service="Github"
+          logoUrl="https://upload.wikimedia.org/wikipedia/commons/9/91/Octicons-mark-github.svg"
+          checkConnectionUrl="http://localhost:8080/github/check-connection"
+          authUrl="http://localhost:8080/github/auth-url"
+          disconnectUrl="http://localhost:8080/github/logout"
+        />
       </div>
     </div>
   );
