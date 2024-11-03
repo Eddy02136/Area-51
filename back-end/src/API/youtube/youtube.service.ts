@@ -6,7 +6,7 @@ import {UsersService} from "../../users/users.service";
 
 @Injectable()
 export class YoutubeService {
-    private lastVideoId: string | null = null;
+    private lastVideoId: Map<string, string> = new Map();
     constructor(private readonly configService: ConfigService,
                 private readonly usersService: UsersService) {}
 
@@ -54,7 +54,6 @@ export class YoutubeService {
             });
 
             const { access_token, refresh_token, expires_in } = response.data;
-            console.log(access_token)
             return { accessToken: access_token, refreshToken: refresh_token, expiresIn: expires_in };
 
         } catch (error) {
@@ -96,7 +95,7 @@ export class YoutubeService {
                 }
             );
 
-            console.log('Comment posted:', response.data);
+            console.log('Comment posted');
             return true;
         } catch (error) {
             console.error('Error posting comment:', error);
@@ -125,14 +124,14 @@ export class YoutubeService {
             };
 
             const response = await axios.request(config);
-            console.log('Video liked successfully:', response.data);
+            console.log('Video liked successfully');
         } catch (error) {
             console.error('Error liking video:', error.message);
         }
     }
 
 
-    async checkForNewVideo(accessToken : string, channelId: string): Promise<boolean> {
+    async checkForNewVideo(accessToken : string, channelId: string, actionId: string): Promise<boolean> {
         try {
             const params = {
                 part: 'snippet',
@@ -153,12 +152,12 @@ export class YoutubeService {
                 const latestVideo = videos[0];
                 const latestVideoId = latestVideo.id.videoId;
 
-                if (this.lastVideoId && this.lastVideoId !== latestVideoId) {
+                if (this.lastVideoId.has(actionId) && this.lastVideoId.get(actionId) !== latestVideoId) {
                     console.log(`Nouvelle vidéo publiée : "${latestVideo.snippet.title}" (ID: ${latestVideoId})`);
                     return true;
                 }
 
-                this.lastVideoId = latestVideoId;
+                this.lastVideoId.set(actionId, latestVideoId);
             } else {
                 console.log("No video found.");
             }
@@ -169,10 +168,10 @@ export class YoutubeService {
         }
     }
 
-    async startCheckingForNewVideos(accessToken : string) : Promise<boolean> {
+    async startCheckingForNewVideos(accessToken : string, actionId: string) : Promise<boolean> {
         console.log('Check new SpaceX video');
         const channelId: string = "UCtI0Hodo5o5dUb67FeUjDeA"; //Spacex channel id
-        return await this.checkForNewVideo(accessToken, channelId);
+        return await this.checkForNewVideo(accessToken, channelId, actionId);
     }
 
     async refreshYoutubeToken(userId: string): Promise<void> {

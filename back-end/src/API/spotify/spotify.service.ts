@@ -84,7 +84,7 @@ export class SpotifyService {
           Authorization: `Bearer ${accessToken}`,
           'Content-Type': 'application/json'
         },
-        params: { limit: 100 }
+        params: { limit: 50 }
       });
 
       return response.data.items;
@@ -96,7 +96,7 @@ export class SpotifyService {
 
   async getPlaylistUriByName(accessToken: string, playlistName: string) {
     const playlists = await this.getUserPlaylists(accessToken);
-    const foundPlaylist = playlists.find(playlist => playlist.name.toLowerCase() === playlistName.toLowerCase());
+    const foundPlaylist = playlists.find((playlist: { name: string; }) => playlist.name.toLowerCase() === playlistName.toLowerCase());
 
     if (foundPlaylist) {
       return foundPlaylist.uri;

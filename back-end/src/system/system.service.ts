@@ -83,7 +83,7 @@ export class SystemService implements OnModuleInit, OnModuleDestroy {
           if (token === "") {
             return false;
           }
-          return await this.youtubeService.startCheckingForNewVideos(token);
+          return await this.youtubeService.startCheckingForNewVideos(token, ar._id.toString());
         case 'getViewerNasa':
           await this.twitchService.refreshTwitchToken(ar.userId);
           token = await this.userService.getToken('Twitch', ar.userId);
@@ -104,33 +104,33 @@ export class SystemService implements OnModuleInit, OnModuleDestroy {
           if (token === "") {
             return false;
           }
-          return await this.githubService.checkNewFollowing(token)
+          return await this.githubService.checkNewFollowing(token, ar._id.toString());
         case 'changeUserGithub':
           token = await this.userService.getToken('Github', ar.userId);
           if (token === "") {
             return false;
           }
-          return await this.githubService.checkChangeGithubName(token);
+          return await this.githubService.checkChangeGithubName(token, ar._id.toString());
         case 'followersUserGithub':
           token = await this.userService.getToken('Github', ar.userId);
           if (token === "") {
             return false;
           }
-          return await this.githubService.checkNewFollowers(token);
+          return await this.githubService.checkNewFollowers(token, ar._id.toString());
         case 'checkChangeUserNameDiscord':
           await this.discordService.refreshDiscordToken(ar.userId);
           token = await this.userService.getToken('Discord', ar.userId);
           if (token === "") {
             return false;
           }
-          return await this.discordService.checkUsernameDiscord(token)
+          return await this.discordService.checkUsernameDiscord(token, ar._id.toString());
         case 'checkJoinOtherServerDiscord':
           await this.discordService.refreshDiscordToken(ar.userId);
           token = await this.userService.getToken('Discord', ar.userId);
           if (token === "") {
             return false;
           }
-          return this.discordService.checkJoinOtherServerDiscord(token)
+          return this.discordService.checkJoinOtherServerDiscord(token, ar._id.toString());
       }
     } catch (error) {
       console.error(`Error checking actions for ${actionName}:`, error);

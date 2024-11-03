@@ -6,10 +6,8 @@ import {UsersService} from "../../users/users.service";
 
 @Injectable()
 export class DiscordService {
-  private lastGlobalName: string | null = null;
-  private isCurrentNameInit: boolean = false
-  private lastNumberServer: string | null = null;
-  private isCurrentNumberServerInit: boolean = false;
+  private lastGlobalName: Map<string, string> = new Map();
+  private lastNumberServer: Map<string, number> = new Map();
 
   constructor(
       private readonly configService: ConfigService,
@@ -54,22 +52,13 @@ export class DiscordService {
         },
       });
       const { access_token, refresh_token, expires_in } = response.data;
-      console.log(access_token)
       return { accessToken: access_token, refreshToken: refresh_token, expiresIn: expires_in };
     } catch (error) {
       throw new Error(`Failed to get Discord access token: ${error.response?.data?.error?.message || error.message}`);
     }
   }
 
-  async getUser(accessToken: string): Promise<any> {
-    const response = await axios.get('https://discord.com/api/v10/users/@me', {
-      headers: { Authorization: `Bearer ${accessToken}` },
-    });
-
-    return response.data;
-  }
-
-  async checkUsernameDiscord(accessToken: string): Promise<boolean>
+  async checkUsernameDiscord(accessToken: string, actionId: string): Promise<boolean>
   {
     try {
       console.log('Check user has changed his discord username');
@@ -77,13 +66,15 @@ export class DiscordService {
         headers: { Authorization: `Bearer ${accessToken}` },
       });
       const currentGlobalName =  response.data.global_name;
-      if (!this.isCurrentNameInit) {
-        this.lastGlobalName = currentGlobalName
-        this.isCurrentNameInit = true
+      if (currentGlobalName == null) {
+        return false;
       }
-      if (!currentGlobalName) return false;
-      if (currentGlobalName !== this.lastGlobalName) {
-        this.lastGlobalName = currentGlobalName;
+      if (!this.lastGlobalName.has(actionId)) {
+        this.lastGlobalName.set(actionId, currentGlobalName);
+        return false;
+      }
+      if (currentGlobalName !== this.lastGlobalName.get(actionId)) {
+        this.lastGlobalName.set(actionId, currentGlobalName);
         return true;
       } else {
         return false;
@@ -93,20 +84,22 @@ export class DiscordService {
     }
   }
 
-  async checkJoinOtherServerDiscord(accessToken: string): Promise<boolean> {
+  async checkJoinOtherServerDiscord(accessToken: string, actionId: string): Promise<boolean> {
     try {
       console.log('Check user has joined server discord');
       const response = await axios.get('https://discord.com/api/users/@me/guilds', {
         headers: {Authorization: `Bearer ${accessToken}`},
       });
       const currentNumberServer =  response.data.length;
-      if (!this.isCurrentNumberServerInit) {
-        this.lastNumberServer = currentNumberServer
-        this.isCurrentNumberServerInit = true
+      if (currentNumberServer == null) {
+        return false;
       }
-      if (!currentNumberServer) return false;
-      if (currentNumberServer !== this.lastNumberServer) {
-        this.lastNumberServer = currentNumberServer;
+      if (!this.lastNumberServer.has(actionId)) {
+        this.lastNumberServer.set(actionId, currentNumberServer);
+        return false;
+      }
+      if (currentNumberServer !== this.lastNumberServer.get(actionId)) {
+        this.lastNumberServer.set(actionId, currentNumberServer);
         return true;
       } else {
         return false;

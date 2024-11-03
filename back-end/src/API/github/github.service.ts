@@ -5,12 +5,9 @@ import axios from "axios";
 
 @Injectable()
 export class GithubService {
-    private lastNumberFollowing = null
-    private isNumberFollowingInit = false
-    private lastName = null
-    private isNameInit = false
-    private lastNumberFollowers = null
-    private isNumberFollowersInit = false
+    private lastNumberFollowing: Map<string, number> = new Map();
+    private lastName: Map<string, string> = new Map();
+    private lastNumberFollowers: Map<string, number> = new Map();
     constructor(private readonly configService: ConfigService) {}
 
     private readonly scopes = ['repo', 'user'];
@@ -54,7 +51,6 @@ export class GithubService {
             });
 
             const { access_token } = response.data;
-            console.log(access_token)
             return { accessToken: access_token};
 
         } catch (error) {
@@ -62,22 +58,23 @@ export class GithubService {
         }
     }
 
-    async checkNewFollowing(accessToken: string) : Promise<boolean>
+    async checkNewFollowing(accessToken: string, actionId: string) : Promise<boolean>
     {
         try {
             console.log('Check user follow new person');
             const response = await axios.get('https://api.github.com/user', {
                 headers: {Authorization: `Bearer ${accessToken}`},
             });
-            const currentNumberFollwing =  response.data.following;
-            if (!this.isNumberFollowingInit) {
-                this.lastNumberFollowing = currentNumberFollwing
-                this.isNumberFollowingInit = true
+            const currentNumberFollowing =  response.data.following;
+            if (currentNumberFollowing == null) {
+                return false;
+            }
+            if (!this.lastNumberFollowing.has(actionId)) {
+                this.lastNumberFollowing.set(actionId, currentNumberFollowing);
                 return false
             }
-            if (!currentNumberFollwing) return false;
-            if (currentNumberFollwing !== this.lastNumberFollowing) {
-                this.lastNumberFollowing = currentNumberFollwing;
+            if (currentNumberFollowing !== this.lastNumberFollowing.get(actionId)) {
+                this.lastNumberFollowing.set(actionId, currentNumberFollowing);
                 return true;
             } else {
                 return false;
@@ -88,7 +85,7 @@ export class GithubService {
         }
     }
 
-    async checkChangeGithubName(accessToken: string) : Promise<boolean>
+    async checkChangeGithubName(accessToken: string, actionId: string) : Promise<boolean>
     {
         try {
             console.log('Check user has changed his github username');
@@ -96,14 +93,15 @@ export class GithubService {
                 headers: {Authorization: `Bearer ${accessToken}`},
             });
             const currentName =  response.data.name;
-            if (!this.isNameInit) {
-                this.lastName = currentName
-                this.isNameInit = true
+            if (currentName == null) {
+                return false;
+            }
+            if (!this.lastName.has(actionId)) {
+                this.lastName.set(actionId, currentName);
                 return false
             }
-            if (!currentName) return false;
-            if (currentName !== this.lastName) {
-                this.lastName = currentName;
+            if (currentName !== this.lastName.get(actionId)) {
+                this.lastName.set(actionId, currentName);
                 return true;
             } else {
                 return false;
@@ -114,21 +112,22 @@ export class GithubService {
         }
     }
 
-    async checkNewFollowers(accessToken: string) : Promise<boolean>
+    async checkNewFollowers(accessToken: string, actionId: string) : Promise<boolean>
     {
         try {
             const response = await axios.get('https://api.github.com/user', {
                 headers: {Authorization: `Bearer ${accessToken}`},
             });
             const currentNumberFollowers =  response.data.followers;
-            if (!this.isNumberFollowersInit) {
-                this.lastNumberFollowers = currentNumberFollowers
-                this.isNumberFollowersInit = true
+            if (currentNumberFollowers == null) {
+                return false;
+            }
+            if (!this.lastNumberFollowers.has(actionId)) {
+                this.lastNumberFollowers.set(actionId, currentNumberFollowers);
                 return false
             }
-            if (!currentNumberFollowers) return false;
-            if (currentNumberFollowers !== this.lastNumberFollowers) {
-                this.lastNumberFollowers = currentNumberFollowers;
+            if (currentNumberFollowers !== this.lastNumberFollowers.get(actionId)) {
+                this.lastNumberFollowers.set(actionId, currentNumberFollowers);
                 return true;
             } else {
                 return false;
