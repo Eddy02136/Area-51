@@ -1,5 +1,7 @@
 package com.usukae.area.Classes.Actions;
 
+import static com.usukae.area.Classes.Utils.TextUtil.formatCamelCase;
+
 import android.app.Dialog;
 import android.content.Context;
 import android.view.LayoutInflater;
@@ -76,16 +78,6 @@ public class AddActionAdapter extends RecyclerView.Adapter<AddActionAdapter.Acti
 
     private void createDialogs() {
         newActionDialog = dialogUtil.createBottomDialog(context, R.layout.modal_new_area);
-    }
-
-    public String formatCamelCase(String input) {
-        String result = input.replaceAll("(?<!^)([A-Z])", " $1");
-        String[] words = result.split(" ");
-        StringBuilder formattedString = new StringBuilder();
-        for (String word : words) {
-            formattedString.append(Character.toUpperCase(word.charAt(0))).append(word.substring(1)).append(" ");
-        }
-        return formattedString.toString().trim();
     }
 
     private void initializeInputContainer(Action action) {
@@ -171,14 +163,5 @@ public class AddActionAdapter extends RecyclerView.Adapter<AddActionAdapter.Acti
             pictureImageView.setImageResource(actionUtil.getActionIcon(action.getService()));
         }
 
-        public String formatCamelCase(String input) {
-            String result = input.replaceAll("(?<!^)([A-Z])", " $1");
-            String[] words = result.split(" ");
-            StringBuilder formattedString = new StringBuilder();
-            for (String word : words) {
-                formattedString.append(Character.toUpperCase(word.charAt(0))).append(word.substring(1)).append(" ");
-            }
-            return formattedString.toString().trim();
-        }
     }
 }

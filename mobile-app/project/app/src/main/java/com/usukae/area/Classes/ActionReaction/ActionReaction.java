@@ -3,67 +3,49 @@ package com.usukae.area.Classes.ActionReaction;
 import java.util.Map;
 
 public class ActionReaction {
-    private String _id;
-    private String actionType;
-    private String action_api;
-    private String reactionType;
-    private String reaction_api;
-    private Map<String, String> parameters;
-    private String schedule;
+    private final String _id;
+    private final String actionName;
+    private final String actionApi;
+    private final String reactionName;
+    private final String reactionApi;
+    private final Map<String, String> parameters;
+    private final String schedule;
+
+    public ActionReaction(String id, String actionName, String actionApi, String reactionName, String reactionApi, Map<String, String> parameters, String schedule) {
+        this._id = id;
+        this.actionName = actionName;
+        this.actionApi = actionApi;
+        this.reactionName = reactionName;
+        this.reactionApi = reactionApi;
+        this.parameters = parameters;
+        this.schedule = schedule;
+    }
 
     public String get_id() {
         return _id;
     }
 
-    public void set_id(String _id) {
-        this._id = _id;
+    public String getActionName() {
+        return actionName;
     }
 
-    public String getActionType() {
-        return actionType;
+    public String getActionApi() {
+        return actionApi;
     }
 
-    public void setActionType(String actionType) {
-        this.actionType = actionType;
+    public String getReactionName() {
+        return reactionName;
     }
 
-    public String getAction_api() {
-        return action_api;
-    }
-
-    public void setAction_api(String action_api) {
-        this.action_api = action_api;
-    }
-
-    public String getReactionType() {
-        return reactionType;
-    }
-
-    public void setReactionType(String reactionType) {
-        this.reactionType = reactionType;
-    }
-
-    public String getReaction_api() {
-        return reaction_api;
-    }
-
-    public void setReaction_api(String reaction_api) {
-        this.reaction_api = reaction_api;
+    public String getReactionApi() {
+        return reactionApi;
     }
 
     public Map<String, String> getParameters() {
         return parameters;
     }
 
-    public void setParameters(Map<String, String> parameters) {
-        this.parameters = parameters;
-    }
-
     public String getSchedule() {
         return schedule;
-    }
-
-    public void setSchedule(String schedule) {
-        this.schedule = schedule;
     }
 }

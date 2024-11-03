@@ -1,5 +1,7 @@
 package com.usukae.area.Classes.Reactions;
 
+import static com.usukae.area.Classes.Utils.TextUtil.formatCamelCase;
+
 import android.app.Activity;
 import android.app.Dialog;
 import android.content.Context;
@@ -79,16 +81,6 @@ public class AddReactionAdapter extends RecyclerView.Adapter<AddReactionAdapter.
         setupValidateButton(params, reaction);
     }
 
-    public String formatCamelCase(String input) {
-        String result = input.replaceAll("(?<!^)([A-Z])", " $1");
-        String[] words = result.split(" ");
-        StringBuilder formattedString = new StringBuilder();
-        for (String word : words) {
-            formattedString.append(Character.toUpperCase(word.charAt(0))).append(word.substring(1)).append(" ");
-        }
-        return formattedString.toString().trim();
-    }
-
     private void createClasses() {
         reactionUtil = new ReactionUtil();
         dialogUtil = new DialogUtil();
@@ -147,10 +139,10 @@ public class AddReactionAdapter extends RecyclerView.Adapter<AddReactionAdapter.
         combinedParameters.putAll(reaction.getParameters());
 
         ActionReactionRequest request = new ActionReactionRequest(
-                action.getService(),
                 action.getName(),
-                reaction.getService(),
+                action.getService(),
                 reaction.getName(),
+                reaction.getService(),
                 combinedParameters,
                 ""
         );
@@ -188,16 +180,6 @@ public class AddReactionAdapter extends RecyclerView.Adapter<AddReactionAdapter.
             titleTextView.setText(formatCamelCase(reaction.getService() + " - " + reaction.getName()));
             descriptionTextView.setText(reaction.getDescription());
             pictureImageView.setImageResource(reactionUtil.getReactionIcon(reaction.getService()));
-        }
-
-        public String formatCamelCase(String input) {
-            String result = input.replaceAll("(?<!^)([A-Z])", " $1");
-            String[] words = result.split(" ");
-            StringBuilder formattedString = new StringBuilder();
-            for (String word : words) {
-                formattedString.append(Character.toUpperCase(word.charAt(0))).append(word.substring(1)).append(" ");
-            }
-            return formattedString.toString().trim();
         }
     }
 }
