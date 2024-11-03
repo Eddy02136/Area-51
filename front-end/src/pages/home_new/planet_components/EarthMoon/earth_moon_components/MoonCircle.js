@@ -66,6 +66,7 @@ const MoonCircle = ({ className }) => {
             message.success("Action-reaction deleted successfully.");
             setSelectedAR(null);
             fetchActionReactions();
+            window.location.reload();
         } catch (error) {
             message.error("Error deleting action-reaction.");
         }
@@ -97,6 +98,7 @@ const MoonCircle = ({ className }) => {
             });
             message.success("Action-reaction updated successfully.");
             fetchActionReactions();
+            window.location.reload();
         } catch (error) {
             message.error("Error updating action-reaction.");
         }

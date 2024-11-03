@@ -103,6 +103,7 @@ const NeptuneCircle = ({ type, className }) => {
                 withCredentials: true,
             });
             message.success("Action-reaction created successfully!");
+            window.location.reload();
         } catch (error) {
             message.error("Failed to create action-reaction.");
         }
