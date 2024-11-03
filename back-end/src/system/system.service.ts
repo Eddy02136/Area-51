@@ -187,6 +187,14 @@ export class SystemService implements OnModuleInit, OnModuleDestroy {
         const { playlistName } = ar.parameters;
         await this.spotifyService.playSpotifyPlaylist(token, playlistName);
         break;
+      case 'setVolumeMax':
+        await this.spotifyService.refreshToken(userId);
+        token = await this.userService.getToken('Spotify', userId);
+        if (token === "") {
+          return;
+        }
+        await this.spotifyService.setVolumeMax(token)
+        break
       default:
         console.error(`Error checking reactions for: ${ar.reactionName}`);
     }

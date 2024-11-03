@@ -28,6 +28,10 @@ export const ACTIONS_REACTIONS = {
                 parameters: {
                     playlistName: 'string'
                 }
+            },
+            setVolumeMax: {
+                description: "Sets current music volume to max",
+                parameters: {}
             }
         },
     },

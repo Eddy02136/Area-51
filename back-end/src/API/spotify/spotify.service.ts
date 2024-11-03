@@ -144,6 +144,28 @@ export class SpotifyService {
     }
   }
 
+  async setVolumeMax(accessToken: string) {
+    try {
+      console.log("Set volume max on Spotify");
+
+      const res = await axios.put(
+          "https://api.spotify.com/v1/me/player/volume",
+          null,
+          {
+            params: { volume_percent: 100 },
+            headers: {
+              Authorization: `Bearer ${accessToken}`
+            }
+          }
+      );
+
+      console.log("Volume music set 100%");
+    } catch (error) {
+      console.error("Failed to set volume max :", error.response?.data || error.message);
+    }
+  }
+
+
   async refreshToken(userId: string) : Promise<void> {
     const data = await this.usersService.getElemApiToken(userId, 'Spotify');
     if (!data) {

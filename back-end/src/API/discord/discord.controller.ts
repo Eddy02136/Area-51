@@ -89,5 +89,4 @@ export class DiscordController {
     }
     return reply.status(401).send(result);
   }
-
 }
