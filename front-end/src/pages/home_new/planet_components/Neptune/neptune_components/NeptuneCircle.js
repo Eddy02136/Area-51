@@ -3,6 +3,8 @@ import { Select, Input, message } from "antd";
 import axios from "axios";
 import "./NeptuneCircle.css";
 
+const { Option } = Select;
+
 const NeptuneCircle = ({ type, className }) => {
     const [actions, setActions] = useState([]);
     const [reactions, setReactions] = useState([]);
@@ -129,10 +131,24 @@ const NeptuneCircle = ({ type, className }) => {
                     {Object.keys(actionParameters).map(param => (
                         <div className="ne-action-param" key={`action-${param}`}>
                             <label>{capitalizeFirstLetter(param)}</label>
-                            <Input
-                                value={formParameters.action?.[param] || ''}
-                                onChange={e => handleParameterChange(param, e.target.value, "action")}
-                            />
+                            {selectedAction?.name === "getIssPos" && param === "city" ? (
+                                <Select
+                                    value={formParameters.action?.[param] || ''}
+                                    onChange={value => handleParameterChange(param, value, "action")}
+                                    style={{ width: "100%" }}
+                                >
+                                    <Option value="Toulouse">Toulouse</Option>
+                                    <Option value="Paris">Paris</Option>
+                                    <Option value="New-York">New-York</Option>
+                                    <Option value="Tokyo">Tokyo</Option>
+                                    <Option value="London">London</Option>
+                                </Select>
+                            ) : (
+                                <Input
+                                    value={formParameters.action?.[param] || ''}
+                                    onChange={e => handleParameterChange(param, e.target.value, "action")}
+                                />
+                            )}
                         </div>
                     ))}
                 </div>

@@ -131,8 +131,8 @@ const NewHomePage = () => {
                         onAnimationEnd={() => handleAnimationEnd("earthMoon")}
                     >
                         <EarthMoon />
-                        <MoonCircle type="apis" className={planetAnimationStates.earthMoon ? "visible" : ""} />
                     </div>
+                        <MoonCircle type="apis" className={planetAnimationStates.earthMoon ? "visible" : ""} />
                     <div className="help">
                         <button onClick={handleLogout} className="disconnect-button">Disconnect</button>
                         <button 
