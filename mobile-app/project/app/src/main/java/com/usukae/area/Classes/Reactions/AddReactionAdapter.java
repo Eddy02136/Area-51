@@ -16,6 +16,7 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.usukae.area.Classes.ActionReaction.ActionReactionAdapter;
 import com.usukae.area.Classes.ActionReaction.ActionReactionApiProtocol;
 import com.usukae.area.Classes.ActionReaction.ActionReactionRequest;
 import com.usukae.area.Classes.Actions.Action;
@@ -44,13 +45,16 @@ public class AddReactionAdapter extends RecyclerView.Adapter<AddReactionAdapter.
     private List<EditText> inputFields;
     private LinearLayout inputContainer;
 
-    public AddReactionAdapter(Context context, List<Reaction> reactions, Action selectedAction, Dialog reactionDialog, Dialog newActionDialog, Dialog mainDialog) {
+    private final ActionReactionAdapter.OnAreaChangeListener onAreaChangeListener;
+
+    public AddReactionAdapter(Context context, List<Reaction> reactions, Action selectedAction, Dialog reactionDialog, Dialog newActionDialog, Dialog mainDialog, ActionReactionAdapter.OnAreaChangeListener onAreaChangeListener) {
         this.context = context;
         this.reactions = reactions;
         this.selectedAction = selectedAction;
         this.reactionDialog = reactionDialog;
         this.mainDialog = mainDialog;
         this.apiProtocol = new ActionReactionApiProtocol(context.getApplicationContext());
+        this.onAreaChangeListener = onAreaChangeListener;
         createClasses();
     }
 
@@ -151,6 +155,7 @@ public class AddReactionAdapter extends RecyclerView.Adapter<AddReactionAdapter.
                 if (newReactionDialog.isShowing()) newReactionDialog.dismiss();
                 if (reactionDialog.isShowing()) reactionDialog.dismiss();
                 if (mainDialog.isShowing()) mainDialog.dismiss();
+                onAreaChangeListener.onAreaChanged();
             } else {
                 new PrettyAlert((Activity) context).error(context.getString(R.string.error_saving_action_reaction) + code, 3000);
             }

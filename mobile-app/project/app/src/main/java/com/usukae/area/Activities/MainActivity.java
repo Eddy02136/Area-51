@@ -135,7 +135,7 @@ public class MainActivity extends AppCompatActivity {
         ActionReactionApiProtocol apiProtocol = new ActionReactionApiProtocol(getApplicationContext());
         apiProtocol.getAllActions(getApplicationContext(), (success, code, data, list, actionsList, reactionsList) -> {
             if (success && actionsList != null) {
-                AddActionAdapter addActionAdapter = new AddActionAdapter(this, actionsList, addAreaDialog);
+                AddActionAdapter addActionAdapter = new AddActionAdapter(this, actionsList, addAreaDialog, this::checkConnections);
                 areasRecyclerView.setLayoutManager(new LinearLayoutManager(this));
                 areasRecyclerView.setAdapter(addActionAdapter);
             }

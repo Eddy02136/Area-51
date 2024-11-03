@@ -16,6 +16,7 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.usukae.area.Classes.ActionReaction.ActionReactionAdapter;
 import com.usukae.area.Classes.ActionReaction.ActionReactionApiProtocol;
 import com.usukae.area.Classes.Reactions.AddReactionAdapter;
 import com.usukae.area.Classes.Utils.DialogUtil;
@@ -39,10 +40,13 @@ public class AddActionAdapter extends RecyclerView.Adapter<AddActionAdapter.Acti
     private List<EditText> inputFields;
     private LinearLayout inputContainer;
 
-    public AddActionAdapter(Context context, List<Action> actions, Dialog mainDialog) {
+    private final ActionReactionAdapter.OnAreaChangeListener onAreaChangeListener;
+
+    public AddActionAdapter(Context context, List<Action> actions, Dialog mainDialog, ActionReactionAdapter.OnAreaChangeListener onAreaChangeListener) {
         this.context = context;
         this.actions = actions;
         this.mainDialog = mainDialog;
+        this.onAreaChangeListener = onAreaChangeListener;
         createClasses();
     }
 
@@ -132,7 +136,7 @@ public class AddActionAdapter extends RecyclerView.Adapter<AddActionAdapter.Acti
 
         new ActionReactionApiProtocol(context).getAllReactions(context, (success, code, data, list, a, r) -> {
             if (success && r != null) {
-                AddReactionAdapter addReactionAdapter = new AddReactionAdapter(context, r, action, reactionDialog, newActionDialog, mainDialog);
+                AddReactionAdapter addReactionAdapter = new AddReactionAdapter(context, r, action, reactionDialog, newActionDialog, mainDialog, onAreaChangeListener);
                 reactionsRecyclerView.setLayoutManager(new LinearLayoutManager(context));
                 reactionsRecyclerView.setAdapter(addReactionAdapter);
                 reactionDialog.show();
