@@ -5,6 +5,11 @@ export class CreateActionReactionDto {
     @ApiProperty()
     @IsNotEmpty()
     @IsString()
+    areaName: string;
+
+    @ApiProperty()
+    @IsNotEmpty()
+    @IsString()
     actionName: string;
 
     @ApiProperty()
@@ -27,7 +32,4 @@ export class CreateActionReactionDto {
     @IsObject()
     parameters: any;
 
-    @ApiProperty()
-    @IsString()
-    schedule?: string;
 }

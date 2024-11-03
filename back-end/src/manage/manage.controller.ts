@@ -27,8 +27,8 @@ export class ManageController {constructor( private readonly manageService: Mana
         const decoded = jwt.verify(jwtToken, process.env.JWT_SECRET);
         const userId = (decoded as { sub: string }).sub;
 
-        const { actionName, actionApi, reactionName, reactionApi, parameters, schedule } = createActionReactionDto;
-        if (!actionName || !actionApi || !reactionName || !reactionApi) {
+        const { areaName, actionName, actionApi, reactionName, reactionApi, parameters } = createActionReactionDto;
+        if (!areaName || !actionName || !actionApi || !reactionName || !reactionApi) {
             return reply.status(400).send('Bad Request. Invalid data format.');
         }
         const ar = this.manageService.checkActionReaction(actionName, actionApi, reactionName, reactionApi, parameters);
@@ -39,7 +39,7 @@ export class ManageController {constructor( private readonly manageService: Mana
         if (existingActionReaction) {
             return reply.status(409).send('Conflict. This action-reaction configuration already exists.');
         }
-        await this.manageService.addActionReaction(userId, actionName, actionApi, reactionName, reactionApi, parameters, schedule);
+        await this.manageService.addActionReaction(userId, areaName, actionName, actionApi, reactionName, reactionApi, parameters);
         return reply.status(200).send('Action reaction added successfully.');
     }
 
@@ -53,6 +53,7 @@ export class ManageController {constructor( private readonly manageService: Mana
             example: [
                 {
                     "_id": "string",
+                    "areaName": "string",
                     "actionName": "string",
                     "actionApi": "string",
                     "reactionName": "string",
@@ -60,8 +61,7 @@ export class ManageController {constructor( private readonly manageService: Mana
                     "parameters": {
                         "city": "string",
                         "music": "string"
-                    },
-                    "schedule": null
+                    }
                 },
             ]
         }

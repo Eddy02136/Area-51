@@ -15,7 +15,7 @@ export class NasaService {
   private readonly CITY_COORDINATES: { [key: string]: { latitude: number; longitude: number } } = {
     'New-York': { latitude: 40.712784, longitude: -74.005941 },
     'Paris': { latitude: 48.856613, longitude: 2.352222 },
-    'Londres': { latitude: 51.507351, longitude: -0.127758 },
+    'London': { latitude: 51.507351, longitude: -0.127758 },
     'Tokyo': { latitude: 35.682839, longitude: 139.759455 },
     'Toulouse': {latitude: 43.6045, longitude: 1.4442}
   };
