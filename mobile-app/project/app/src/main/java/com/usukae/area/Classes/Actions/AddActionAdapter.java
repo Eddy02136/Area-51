@@ -96,7 +96,7 @@ public class AddActionAdapter extends RecyclerView.Adapter<AddActionAdapter.Acti
         inputFields = new ArrayList<>();
         inputContainer.removeAllViews();
         dialogTitle.setText(formatCamelCase(action.getName()));
-        dialogSubtitle.setText("TODO");
+        dialogSubtitle.setText(action.getDescription());
     }
 
     private void createInputFields(Map<String, String> params) {
@@ -163,7 +163,7 @@ public class AddActionAdapter extends RecyclerView.Adapter<AddActionAdapter.Acti
 
         public void bind(Action action, ActionUtil actionUtil) {
             titleTextView.setText(formatCamelCase(action.getName()));
-            descriptionTextView.setText("TODO");
+            descriptionTextView.setText(action.getDescription());
             pictureImageView.setImageResource(actionUtil.getActionIcon(action.getName()));
         }
 

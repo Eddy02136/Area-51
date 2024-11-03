@@ -103,7 +103,7 @@ public class AddReactionAdapter extends RecyclerView.Adapter<AddReactionAdapter.
         dialogTitle.setText(formatCamelCase(reaction.getName()));
 
         TextView dialogSubtitle = newReactionDialog.findViewById(R.id.subtitle);
-        dialogSubtitle.setText("TODO");
+        dialogSubtitle.setText(reaction.getDescription());
 
         inputFields = new ArrayList<>();
     }
@@ -181,7 +181,7 @@ public class AddReactionAdapter extends RecyclerView.Adapter<AddReactionAdapter.
 
         public void bind(Reaction reaction, ReactionUtil reactionUtil) {
             titleTextView.setText(formatCamelCase(reaction.getName()));
-            descriptionTextView.setText("TODO");
+            descriptionTextView.setText(reaction.getDescription());
             pictureImageView.setImageResource(reactionUtil.getReactionIcon(reaction.getName()));
         }
 
