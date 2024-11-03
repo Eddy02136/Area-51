@@ -195,6 +195,7 @@ public class MainActivity extends AppCompatActivity {
         super.onResume();
         SharedPreferencesManager sharedPreferencesManager1 = new SharedPreferencesManager(getApplicationContext());
         if (sharedPreferencesManager1.getString("reloadedList").equals("true")) {
+            if (addConnectionDialog != null && addConnectionDialog.isShowing()) addConnectionDialog.dismiss();
             sharedPreferencesManager1.remove("reloadedList");
             checkConnections();
         }

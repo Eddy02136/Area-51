@@ -99,16 +99,31 @@ public class AddActionAdapter extends RecyclerView.Adapter<AddActionAdapter.Acti
     }
 
     private void createInputFields(Map<String, String> params) {
+        inputFields = new ArrayList<>();
+
         for (Map.Entry<String, String> entry : params.entrySet()) {
             View inputFieldView = LayoutInflater.from(context).inflate(R.layout.input_field_layout, inputContainer, false);
             EditText editText = inputFieldView.findViewById(R.id.editTextInput);
+
             String key = entry.getKey();
             String capitalizedKey = key.substring(0, 1).toUpperCase() + key.substring(1);
-
             editText.setHint(formatCamelCase(capitalizedKey));
+
             inputContainer.addView(inputFieldView);
             inputFields.add(editText);
         }
+    }
+
+    private Map<String, String> collectInputValues(Map<String, String> params) {
+        Map<String, String> inputValues = new HashMap<>();
+        int i = 0;
+
+        for (Map.Entry<String, String> entry : params.entrySet()) {
+            String value = inputFields.get(i).getText().toString();
+            inputValues.put(entry.getKey(), value);
+            i++;
+        }
+        return inputValues;
     }
 
     private void setupValidateButton(Map<String, String> params, Action action) {
@@ -117,16 +132,6 @@ public class AddActionAdapter extends RecyclerView.Adapter<AddActionAdapter.Acti
             newActionDialog.dismiss();
             proceedToReactionSelection(action);
         });
-    }
-
-    private Map<String, String> collectInputValues(Map<String, String> params) {
-        Map<String, String> inputValues = new HashMap<>();
-        int i = 0;
-        for (Map.Entry<String, String> entry : params.entrySet()) {
-            inputValues.put(entry.getKey(), inputFields.get(i).getText().toString());
-            i++;
-        }
-        return inputValues;
     }
 
     private void proceedToReactionSelection(Action action) {

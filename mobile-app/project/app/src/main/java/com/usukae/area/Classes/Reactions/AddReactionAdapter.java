@@ -143,13 +143,15 @@ public class AddReactionAdapter extends RecyclerView.Adapter<AddReactionAdapter.
     }
 
     private void saveArea(Action action, Reaction reaction) {
-        Map<String, String> parameters = reaction.getParameters();
+        Map<String, String> combinedParameters = new HashMap<>(action.getParameters());
+        combinedParameters.putAll(reaction.getParameters());
+
         ActionReactionRequest request = new ActionReactionRequest(
                 action.getService(),
                 action.getName(),
                 reaction.getService(),
                 reaction.getName(),
-                parameters,
+                combinedParameters,
                 ""
         );
 
