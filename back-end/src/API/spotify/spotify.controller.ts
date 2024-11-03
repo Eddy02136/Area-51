@@ -54,43 +54,6 @@ export class SpotifyController {
     }
   }
 
-  @ApiOperation({ summary: 'Play a track on Spotify' })
-  @ApiHeader({ name: 'authorization', required: true, description: 'Bearer token for Spotify API access' })
-  @ApiBody({
-    description: 'Track ID to be played',
-    schema: {
-      example: {
-        trackId: '123456789'
-      },
-    }
-  })
-  @ApiResponse({ status: 200, description: 'Track is being played successfully.' })
-  @ApiResponse({ status: 400, description: 'Bad Request. Access token or Track ID is required.' })
-  @ApiResponse({ status: 500, description: 'Internal server error.' })
-  @Put('play-music')
-  async playTrack(
-    @Headers('authorization') authorization: string,
-    @Body() playDto: { trackId: string },
-    @Response() reply: FastifyReply
-  ) {
-    if (!authorization) {
-      return reply.status(400).send('Access token is required');
-    }
-
-    const accessToken = authorization.replace('Bearer ', '');
-
-    if (!playDto.trackId) {
-      return reply.status(400).send('Track ID is required');
-    }
-
-    try {
-      const result = await this.spotifyService.playMusic(accessToken, playDto.trackId);
-      return reply.send({ message: result });
-    } catch (error) {
-      return reply.status(500).send({ error: error.message });
-    }
-  }
-
   @UseGuards(AuthGuard('jwt'))
   @ApiOperation({ summary: 'Check spotify connection' })
   @ApiHeader({ name: 'authorization', required: true, description: 'Bearer token for Area51 API access' })

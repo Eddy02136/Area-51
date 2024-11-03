@@ -1,4 +1,4 @@
-import {Body, Controller, Delete, Get, Headers, Param, Post, Response, UseGuards} from "@nestjs/common";
+import {Body, Controller, Delete, Get, Headers, Param, Post, Put, Response, UseGuards} from "@nestjs/common";
 import {ApiBearerAuth, ApiBody, ApiHeader, ApiOperation, ApiResponse, ApiTags} from "@nestjs/swagger";
 import {ManageService} from "./manage.service";
 import * as jwt from 'jsonwebtoken';
@@ -6,7 +6,7 @@ import * as process from "node:process";
 import {CreateActionReactionDto} from "./dto/create-action-reaction.dto";
 import {AuthGuard} from "@nestjs/passport";
 import {FastifyReply} from "fastify";
-
+import {ACTIONS_REACTIONS} from "./manage.constant";
 
 @Controller('manage')
 @ApiTags('Manage')
@@ -27,15 +27,19 @@ export class ManageController {constructor( private readonly manageService: Mana
         const decoded = jwt.verify(jwtToken, process.env.JWT_SECRET);
         const userId = (decoded as { sub: string }).sub;
 
-        const { action, action_api, reaction, reaction_api, parameters, schedule } = createActionReactionDto;
-        if (!action || !action_api || !reaction || !reaction_api || !parameters) {
+        const { actionName, actionApi, reactionName, reactionApi, parameters, schedule } = createActionReactionDto;
+        if (!actionName || !actionApi || !reactionName || !reactionApi) {
             return reply.status(400).send('Bad Request. Invalid data format.');
         }
-        const existingActionReaction = await this.manageService.findActionReaction(userId, action, action_api, reaction, reaction_api, parameters);
+        const ar = this.manageService.checkActionReaction(actionName, actionApi, reactionName, reactionApi, parameters);
+        if (!ar) {
+            return reply.status(400).send('Bad Request. Invalid data format.');
+        }
+        const existingActionReaction = await this.manageService.findActionReaction(userId, actionName, actionApi, reactionName, reactionApi, parameters);
         if (existingActionReaction) {
             return reply.status(409).send('Conflict. This action-reaction configuration already exists.');
         }
-        await this.manageService.addActionReaction(userId, action, action_api, reaction, reaction_api, parameters, schedule);
+        await this.manageService.addActionReaction(userId, actionName, actionApi, reactionName, reactionApi, parameters, schedule);
         return reply.status(200).send('Action reaction added successfully.');
     }
 
@@ -49,10 +53,10 @@ export class ManageController {constructor( private readonly manageService: Mana
             example: [
                 {
                     "_id": "string",
-                    "actionType": "string",
-                    "action_api": "string",
-                    "reactionType": "string",
-                    "reaction_api": "string",
+                    "actionName": "string",
+                    "actionApi": "string",
+                    "reactionName": "string",
+                    "reactionApi": "string",
                     "parameters": {
                         "city": "string",
                         "music": "string"
@@ -73,6 +77,29 @@ export class ManageController {constructor( private readonly manageService: Mana
     }
 
     @UseGuards(AuthGuard('jwt'))
+    @ApiOperation({ summary: 'Update an action reactions for a user' })
+    @ApiHeader({ name: 'authorization', required: true, description: 'Bearer token for Area51 API access' })
+    @ApiHeader({ name: 'id', required: true, description: 'action reaction id to update it'})
+    @ApiBody({ type: CreateActionReactionDto })
+    @ApiResponse({ status: 200, description: 'Action reaction update successfully' })
+    @ApiResponse({ status: 400, description: 'Bad Request. Invalid data.' })
+    @ApiResponse({ status: 404, description: 'Action-reaction not found.' })
+    @ApiResponse({ status: 401, description: 'Unauthorized. Invalid token.'})
+    @ApiResponse({ status: 500, description: 'Internal server error.' })
+    @Put('update-action-reaction/:id')
+    async updateActionReaction(@Param('id') id: string, @Body() updateData: CreateActionReactionDto, @Response() reply: FastifyReply) {
+        try {
+            const check = await this.manageService.updateActionReaction(id, updateData);
+            if (!check) {
+                return reply.status(400).send('Bad Request. Invalid data format.');
+            }
+            return reply.status(200).send({ message: 'Action reaction updated successfully.' });
+        } catch (error) {
+            return reply.status(500).send({ message: 'Internal server error.' });
+        }
+    }
+
+    @UseGuards(AuthGuard('jwt'))
     @ApiOperation({ summary: 'Delete an action reactions for a user' })
     @ApiHeader({ name: 'authorization', required: true, description: 'Bearer token for Area51 API access' })
     @ApiHeader({ name: 'id', required: true, description: 'action reaction id to delete it'})
@@ -87,5 +114,77 @@ export class ManageController {constructor( private readonly manageService: Mana
             return reply.status(404).send('Action-reaction not found.');
         }
         return reply.status(200).send('Action reaction delete successfully');
+    }
+
+    @UseGuards(AuthGuard('jwt'))
+    @Get('getAllAction')
+    @ApiOperation({ summary: 'Get info about every actions' })
+    @ApiHeader({ name: 'authorization', required: true, description: 'Bearer token for Area51 API access' })
+    @ApiResponse({ status: 200, description: 'Get actions successfully.',
+        schema: {
+        example:
+            [
+                {
+                    "service": "string",
+                    "name": "string",
+                    "description": "string",
+                    "parameters": {
+                        "parameterName": "string"
+                    }
+                }
+            ]
+        }})
+    @ApiResponse({ status: 401, description: 'Unauthorized. Invalid token.'})
+    @ApiResponse({ status: 500, description: 'Internal server error.' })
+    async getAllActions() {
+        const actions = [];
+        Object.keys(ACTIONS_REACTIONS).forEach(serviceName => {
+            const service = ACTIONS_REACTIONS[serviceName];
+            Object.keys(service.actions).forEach(actionName => {
+                actions.push({
+                    service: serviceName,
+                    name: actionName,
+                    description: service.actions[actionName].description,
+                    parameters: service.actions[actionName].parameters
+                });
+            });
+        });
+        return actions;
+    }
+
+    @UseGuards(AuthGuard('jwt'))
+    @Get('getAllReaction')
+    @ApiOperation({ summary: 'Get info about every reactions' })
+    @ApiHeader({ name: 'authorization', required: true, description: 'Bearer token for Area51 API access' })
+    @ApiResponse({ status: 200, description: 'Get reactions successfully.',
+        schema: {
+            example:
+                [
+                    {
+                        "service": "string",
+                        "description": "string",
+                        "name": "string",
+                        "parameters": {
+                            "parameterName": "string"
+                        }
+                    }
+                ]
+        }})
+    @ApiResponse({ status: 401, description: 'Unauthorized. Invalid token.'})
+    @ApiResponse({ status: 500, description: 'Internal server error.' })
+    async getAllReactions() {
+        const reactions = [];
+        Object.keys(ACTIONS_REACTIONS).forEach(serviceName => {
+            const service = ACTIONS_REACTIONS[serviceName];
+            Object.keys(service.reactions).forEach(reactionName => {
+                reactions.push({
+                    service: serviceName,
+                    name: reactionName,
+                    description: service.reactions[reactionName].description,
+                    parameters: service.reactions[reactionName].parameters
+                });
+            });
+        });
+        return reactions;
     }
 }

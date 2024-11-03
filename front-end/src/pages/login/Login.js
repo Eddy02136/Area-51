@@ -26,8 +26,7 @@ const Login = () => {
                 {!isDialogOpen && (
                     <>
                         <div className='login-buttons-container'>
-                            <button className='login-button-google'>Login with Google</button>
-                            <button className='login-button-email' onClick={openDialog}>Login with Email</button>
+                            <button className='login-button-google' onClick={openDialog}>Login with Email</button>
                         </div>
                         <div className='register-link-container'>
                             <p>Or</p>

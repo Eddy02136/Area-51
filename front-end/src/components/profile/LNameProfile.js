@@ -1,36 +1,50 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
+import axios from "axios";
+import UpdateProfileDialog from "./UpdateProfileDialog";
 import "./LNameProfile.css";
 
-const LastName = () => {
-    const [lastName, setLastName] = useState("Last Name");
-    const [isEditing, setIsEditing] = useState(false);
+const LastNameProfile = () => {
+    const [lastName, setLastName] = useState("");
+    const [isDialogVisible, setIsDialogVisible] = useState(false);
 
-    const handleLastNameChange = (e) => {
-        setLastName(e.target.value);
+    const fetchUserInfo = async () => {
+        try {
+            const authToken = localStorage.getItem("authToken");
+            if (!authToken) return;
+
+            const response = await axios.get("http://localhost:3000/users/infos", {
+                headers: {
+                    Authorization: `Bearer ${authToken}`,
+                },
+                withCredentials: true,
+            });
+            setLastName(response.data.lastname);
+        } catch (error) {
+            console.error("Error fetching user info:", error);
+        }
     };
 
-    const handleSave = () => {
-        setIsEditing(false);
-        console.log("Nom sauvegardé :", lastName);
-    };
+    useEffect(() => {
+        fetchUserInfo();
+    }, []);
 
     return (
         <div className="last-name-container">
-            <label>Last name :</label>
-            {isEditing ? (
-                <input
-                    type="text"
-                    value={lastName}
-                    onChange={handleLastNameChange}
-                />
-            ) : (
-                <span>{lastName}</span>
-            )}
-            <button onClick={() => setIsEditing(!isEditing)}>
-                {isEditing ? "Save" : "Edit"}
+            <h1>Last Name:</h1>
+            <h2>{lastName}</h2>
+            <button className="last-edit-button" onClick={() => setIsDialogVisible(true)}>
+                Edit
             </button>
+            <UpdateProfileDialog
+                visible={isDialogVisible}
+                onClose={() => {
+                    setIsDialogVisible(false);
+                    fetchUserInfo();
+                }}
+                fieldToUpdate="lastname"
+            />
         </div>
     );
 };
 
-export default LastName;
+export default LastNameProfile;

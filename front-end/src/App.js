@@ -15,7 +15,9 @@ import PublicRoute from "./components/routes/PublicRoutes";
 import HomePage from "./pages/home/Home";
 import "./App.css";
 import NewAR from "./pages/new-ar/NewAR";
-
+import Profile from "./pages/profile/Profile";
+import DelAr from "./pages/del-ar/DelAr";
+import NewHomePage from "./pages/home_new/NewHome";
 
 const queryClient = new QueryClient();
 
@@ -48,12 +50,14 @@ function App() {
                 path="/"
                 element={
                   <PrivateRoute>
-                    <HomePage />
+                    <NewHomePage />
                   </PrivateRoute>
                 }
               />
               <Route path="*" element={<Navigate to="/" />} />
               <Route path="/new-ar" element={<NewAR />} />
+              <Route path="/profile" element={<Profile />} />
+              <Route path="/del-ar" element={<DelAr />} />
             </Routes>
           </Router>
         </QueryClientProvider>

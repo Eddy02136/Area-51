@@ -5,13 +5,12 @@ import { InjectModel } from '@nestjs/mongoose';
 import { CreateUserDto } from './dto/CreateUser.dto';
 import * as bcrypt from 'bcrypt';
 import { JwtService } from '@nestjs/jwt';
-import { ApiToken } from "../schema/ApiToken.schema";
+import { ApiToken } from "../schema/ApiToken.interface";
 
 @Injectable()
 export class UsersService {
   constructor(
     @InjectModel(User.name) private userModel: Model<User>,
-    @InjectModel('ApiToken') private readonly apiTokenModel: Model<ApiToken>,
     private jwtService: JwtService,
   ) {}
 
@@ -82,22 +81,21 @@ export class UsersService {
     };
   }
 
-  async saveToken(apiName: string, accessToken: string, refreshToken: string, expiresIn: number, userId: string): Promise<void> {
-    const expiresAt = new Date(Date.now() + expiresIn * 1000);
+  async saveToken(apiName: string, accessToken: string, refreshToken: string | null, expiresIn: number, userId: string): Promise<void> {
     const user = await this.userModel.findOne({ _id: userId });
+
     if (!user) {
       throw new Error('User not found');
     }
 
     const existingTokenIndex = user.apiTokens.findIndex(token => token.apiName === apiName);
 
-    let apiToken: ApiToken;
-    if (refreshToken != "") {
-      apiToken = new this.apiTokenModel({apiName, accessToken, refreshToken, expiresAt});
-    } else {
-      apiToken = new this.apiTokenModel({apiName, accessToken});
-    }
-
+    const apiToken: ApiToken = {
+      apiName,
+      accessToken,
+      ...(refreshToken && { refreshToken }),
+      ...(expiresIn > 0 && { expiresAt: new Date(Date.now() + expiresIn * 1000) })
+    };
     if (existingTokenIndex > -1) {
       user.apiTokens[existingTokenIndex] = apiToken;
     } else {
@@ -120,6 +118,23 @@ export class UsersService {
     }
 
     return apiToken.accessToken;
+  }
+
+  async getElemApiToken(userId : string, apiName: string) : Promise<{refreshToken: string, expiresAt: Date}> {
+    const user = await this.userModel.findOne({ _id: userId });
+
+    if (!user) {
+      console.error('User not found')
+      return;
+    }
+
+    const apiToken: ApiToken = user.apiTokens.find((token: ApiToken): boolean => token.apiName === apiName);
+
+    if (!apiToken) {
+      console.error('User not connected to', apiName);
+      return;
+    }
+    return {refreshToken: apiToken.refreshToken, expiresAt: apiToken.expiresAt};
   }
 
   async removeToken(apiName: string, userId: unknown): Promise<string> {
@@ -151,9 +166,7 @@ export class UsersService {
       return acc;
     }, {});
 
-    const updatedUser = await this.userModel.findByIdAndUpdate(userId, fieldsToUpdate, {
-      new: true,
-    });
+    const updatedUser = await this.userModel.findByIdAndUpdate(userId, fieldsToUpdate, { new: true });
 
     if (!updatedUser) {
       throw new NotFoundException('User not found');

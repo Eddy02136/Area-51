@@ -1,50 +1,55 @@
 @font-face {
-    font-family: 'Sofachrome';
-    src: url('../../fonts/sofachrome-rg.otf') format('truetype');
+    font-family: 'PriegoRegular';
+    src: url('../../fonts/Priego-Regular.otf') format('truetype');
 }
-
+  
+@font-face {
+    font-family: 'PriegoBold';
+    src: url('../../fonts/Priego-Bold.otf') format('truetype');
+}
+  
+@font-face {
+    font-family: 'PriegoSemibold';
+    src: url('../../fonts/Priego-SemiBold.otf') format('truetype');
+}
 
 .last-name-container {
+    background-color: white;
+    border-radius: 20px;
+    font-family: PriegoRegular;
     display: flex;
-    flex-direction: column;
+    flex-direction: column ;
     align-items: center;
-    margin: 10px 0;
-    width: 100%;
-    background-color: rgb(27, 45, 207);
-    padding: 20px 40px;
-    border-radius: 1vh;
+    color : black;
+    height: 20vh;
+    width: 35vh;
+    overflow: hidden;
 }
 
-.last-name-container label {
+.last-name-container h1 {
+    font-size: 120%;
     font-weight: bold;
-    font-family: Sofachrome;
+    margin-bottom: 1vh;
+    font-family: PriegoSemibold;
 }
 
-.last-name-container span,
-.last-name-container input {
-    font-size: 1.1em;
-    font-family: Sofachrome;
-    width: 100%;
-    text-align: center;
-    margin: 5px 0;
-    background-color: rgb(47, 78, 255);
-    padding: 5px;
-    border-radius: 4px;
-
+.last-name-container h2 {
+    font-size: 80%;
+    margin-bottom: 2vh;
+    font-family: PriegoSemibold;
 }
 
-.last-name-container button {
-    padding: 6px 12px;
-    font-size: 1em;
-    font-family: Sofachrome;
-    margin-top: 5px;
+.last-edit-button {
+    background-color: #0015D0;
+    color: white;
     border: none;
+    text-align: center;
+    text-decoration: none;
+    font-size: 60%;
+    height: 5vh;
+    width: 18vh;
     cursor: pointer;
-    background-color: #082c55;
-    color: #fff;
     border-radius: 4px;
-}
-
-.last-name-container button:hover {
-    background-color: #007bf0;
+    font-family: PriegoRegular;
+    margin-bottom: 2vh;
 }

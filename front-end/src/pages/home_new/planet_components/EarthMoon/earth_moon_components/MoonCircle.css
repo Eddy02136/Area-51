@@ -1,23 +1,104 @@
-.mo-circle {
+@font-face {
+    font-family: 'PriegoRegular';
+    src: url('../../../../../fonts/Priego-Regular.otf') format('truetype');
+}
+  
+@font-face {
+    font-family: 'PriegoBold';
+    src: url('../../../../../fonts/Priego-Bold.otf') format('truetype');
+}
+  
+@font-face {
+    font-family: 'PriegoSemibold';
+    src: url('../../../../../fonts/Priego-SemiBold.otf') format('truetype');
+}
+
+.me-circle {
     position: absolute;
     top: 50%;
     left: 50%;
-    width: 15vw; 
-    height: 15vw; 
-    border: 1px solid rgb(255, 255, 255);
-    border-radius: 50%; 
+    width: 24vw;
+    height: 24vw;
+    border: 1px solid rgb(42, 241, 248);
+    border-radius: 50%;
     transform: translate(-50%, -50%) scale(0);
-    transition: opacity 0.3s, transform 0.3s; 
-    box-shadow: 0 0 20px rgb(216, 216, 215), inset 0 0 20px rgb(255, 255, 224);
+    transition: opacity 0.3s, transform 0.3s;
+    box-shadow: 0 0 20px rgb(0, 255, 242), inset 0 0 20px rgb(0, 255, 242);
 }
 
-.mo-circle.visible {
+.me-circle.visible {
     transform: translate(-50%, -50%) scale(1);
     opacity: 1;
 }
 
-.mo-glowing-point {
-    border-radius: 700%; 
-    background-color: rgb(255, 255, 255); 
-    box-shadow: 0 0 20px rgb(255, 255, 255); 
+.me-select-ar, .me-edit-ar {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    background-color: white;
+    border-radius: 20px;
+    padding: 20px;
+    width: 80%;
+}
+
+.me-select-ar h1, .me-edit-ar h1 {
+    color: black;
+    font-size: 1.2em;
+    font-family: PriegoSemibold;
+}
+
+.me-delete-button {
+    margin-top: 4vh;
+    width: 100%;
+    background-color: #ff4d4f;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    font-family: PriegoRegular;
+}
+
+.me-update-button {
+    margin-top: 10px;
+    width: 100%;
+    background-color: #0015d0;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    font-family: PriegoRegular;
+}
+
+.me-parameters {
+    width: 100%;
+}
+
+.me-parameters h2 {
+    font-family: PriegoSemibold;
+}
+
+.me-parameters label {
+    font-family: PriegoRegular;
+    font-size: 0.9em;
+}
+
+.me-edit-ar Input {
+    width: 100%;
+    margin-bottom: 10px;
+    border-radius: 4px;
+    padding-left: 8px;
+}
+
+.me-select-ar {
+    position: absolute;
+    right: 110%;
+}
+
+.me-edit-ar {
+    position: absolute;
+    left: 110%;
+    top: -25%;
+    height: 57vh;
+}
+
+.me-edit-ar label {
+    color: black;
 }

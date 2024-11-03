@@ -1,0 +1,65 @@
+@font-face {
+    font-family: 'PriegoRegular';
+    src: url('../../fonts/Priego-Regular.otf') format('truetype');
+}
+  
+@font-face {
+    font-family: 'PriegoBold';
+    src: url('../../fonts/Priego-Bold.otf') format('truetype');
+}
+  
+@font-face {
+    font-family: 'PriegoSemibold';
+    src: url('../../fonts/Priego-SemiBold.otf') format('truetype');
+}
+
+.profile-page {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.profile-page h1 {
+  font-family: PriegoBold;
+  font-size: 450%;
+  color: #fdff91;
+}
+
+.profile-page h2 {
+  font-family: PriegoSemibold;
+  font-size: 200%;
+  margin-bottom: 3vh;
+}
+
+.profile-page h3 {
+  font-family: PriegoRegular;
+  font-size: 150%;
+  margin-bottom: 3vh;
+}
+
+.profile-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  background-color: white;
+  border-radius: 10px;
+  width: 80vw;
+  height: 60vh;
+  justify-content: center;
+}
+
+.update-profile-button {
+  background-color: #0015d0;
+  color: white;
+  border: none;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 100%;
+  cursor: pointer;
+  border-radius: 4px;
+  height: 5vh;
+  width: 45vw;
+  font-family: PriegoRegular;
+  margin-top: 5vh;
+}

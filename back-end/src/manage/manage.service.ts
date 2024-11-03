@@ -1,6 +1,7 @@
 import {Injectable} from "@nestjs/common";
 import {ActionReaction} from "../schema/ActionReaction.schema";
 import {InjectModel} from "@nestjs/mongoose";
+import { ACTIONS_REACTIONS } from "./manage.constant";
 import {Model} from "mongoose";
 
 @Injectable()
@@ -8,24 +9,24 @@ import {Model} from "mongoose";
 export class ManageService {
     constructor(@InjectModel(ActionReaction.name) private readonly actionReactionModel: Model<ActionReaction>) {}
 
-    async findActionReaction( userId: string, action: string, action_api: string, reaction: string, reaction_api: string, parameters: Record<string, any>) {
+    async findActionReaction( userId: string, actionName: string, actionApi: string, reactionName: string, reactionApi: string, parameters: Record<string, any>) {
         return this.actionReactionModel.findOne({
             userId,
-            actionType: action,
-            action_api,
-            reactionType: reaction,
-            reaction_api,
+            actionName,
+            actionApi,
+            reactionName,
+            reactionApi,
             parameters
         });
     }
 
-    async addActionReaction(userId : string, action: string, action_api: string, reaction: string, reaction_api: string, parameters: any, schedule?: string ) {
+    async addActionReaction(userId : string, actionName: string, actionApi: string, reactionName: string, reactionApi: string, parameters: any, schedule?: string ) {
         const actionReaction = new this.actionReactionModel({
             userId,
-            actionType: action,
-            action_api: action_api,
-            reactionType: reaction,
-            reaction_api: reaction_api,
+            actionName,
+            actionApi,
+            reactionName,
+            reactionApi,
             parameters,
             schedule: schedule || null,
         });
@@ -36,10 +37,10 @@ export class ManageService {
         const actionsReactions = await this.actionReactionModel.find({ userId });
         return actionsReactions.map(actionReaction => ({
             _id: actionReaction.id,
-            actionType: actionReaction.actionType,
-            action_api: actionReaction.action_api,
-            reactionType: actionReaction.reactionType,
-            reaction_api: actionReaction.reaction_api,
+            actionName: actionReaction.actionName,
+            actionApi: actionReaction.actionApi,
+            reactionName: actionReaction.reactionName,
+            reactionApi: actionReaction.reactionApi,
             parameters: actionReaction.parameters,
             schedule: actionReaction.schedule,
         }));
@@ -47,5 +48,44 @@ export class ManageService {
 
     async deleteActionReaction(id: string) {
         return this.actionReactionModel.findByIdAndDelete(id);
+    }
+
+    async updateActionReaction(id: string, updateData: any): Promise<boolean> {
+        const check = this.checkActionReaction(updateData.actionName, updateData.actionApi, updateData.reactionName, updateData.reactionApi, updateData.parameters);
+        if (!check) {
+            return false;
+        }
+        await this.actionReactionModel.findByIdAndUpdate(id, updateData);
+        return true;
+    }
+
+    checkParams(expectedParams: Record<string, string>, actualParams: Record<string, any>): boolean {
+        for (const [key, type] of Object.entries(expectedParams)) {
+            if (!(key in actualParams) || typeof actualParams[key] !== type) {
+                return false;
+            }
+        }
+        return true;
+    }
+
+    checkActionReaction(actionName: string, actionApi: string, reactionName: string, reactionApi: string, parameters: any): boolean {
+        const actionApiName = ACTIONS_REACTIONS[actionApi];
+        const reactionApiName = ACTIONS_REACTIONS[reactionApi];
+        if (!actionApiName || !reactionApiName) {
+            return false
+        }
+        const action = ACTIONS_REACTIONS[actionApi]?.actions[actionName];
+        const reaction = ACTIONS_REACTIONS[reactionApi]?.reactions[reactionName];
+        if (!action || !reaction) {
+            return false
+        }
+        const expectedActionParams = action.parameters || {};
+        const expectedReactionParams = reaction.parameters || {};
+        const isValidActionParams = this.checkParams(expectedActionParams, parameters);
+        const isValidReactionParams = this.checkParams(expectedReactionParams, parameters);
+        if (!isValidActionParams || !isValidReactionParams) {
+            return false;
+        }
+        return true;
     }
 }

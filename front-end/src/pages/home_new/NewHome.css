@@ -1,4 +1,17 @@
-@import url("https://fonts.googleapis.com/css2?family=Nunito:wght@300;400;600;700&display=swap");
+@font-face {
+    font-family: 'PriegoRegular';
+    src: url('../../fonts/Priego-Regular.otf') format('truetype');
+}
+  
+@font-face {
+    font-family: 'PriegoBold';
+    src: url('../../fonts/Priego-Bold.otf') format('truetype');
+}
+  
+@font-face {
+    font-family: 'PriegoSemibold';
+    src: url('../../fonts/Priego-SemiBold.otf') format('truetype');
+}
 
 .new-home-page {
     display: flex;
@@ -45,20 +58,18 @@
 .help {
     position: absolute;
     right: 1%;
-    border-radius: 50%;
-    width: 5vw;
-    height: 5vw;
+    width: 15vw;
+    height: 10vh;
     top: 90%;
+    display: flex;
+    flex-direction: row;
 }
 
 .help-button {
     align-items: center;
     appearance: none;
-    background-image: radial-gradient(
-        100% 100% at 100% 0,
-        #5adaff 0,
-        #5468ff 100%
-    );
+    background-color: #0015d0;
+    font-family: PriegoRegular;
     border: 0;
     border-radius: 6px;
     box-shadow:
@@ -69,7 +80,6 @@
     color: #fff;
     cursor: pointer;
     display: inline-flex;
-    font-family: "JetBrains Mono", monospace;
     height: 48px;
     justify-content: center;
     line-height: 1;
@@ -89,6 +99,43 @@
     white-space: nowrap;
     will-change: box-shadow, transform;
     font-size: 18px;
+}
+
+.disconnect-button {
+    align-items: center;
+    appearance: none;
+    background-color: #0015d0;
+    font-family: PriegoRegular;
+    border: 0;
+    border-radius: 6px;
+    box-shadow:
+        rgba(45, 35, 66, 0.4) 0 2px 4px,
+        rgba(45, 35, 66, 0.3) 0 7px 13px -3px,
+        rgba(58, 65, 111, 0.5) 0 -3px 0 inset;
+    box-sizing: border-box;
+    color: #fff;
+    cursor: pointer;
+    display: inline-flex;
+    height: 48px;
+    justify-content: center;
+    line-height: 1;
+    list-style: none;
+    overflow: hidden;
+    padding-left: 16px;
+    padding-right: 16px;
+    position: relative;
+    text-align: left;
+    text-decoration: none;
+    transition:
+        box-shadow 0.15s,
+        transform 0.15s;
+    user-select: none;
+    -webkit-user-select: none;
+    touch-action: manipulation;
+    white-space: nowrap;
+    will-change: box-shadow, transform;
+    font-size: 18px;
+    margin-right: 1vh;
 }
 
 .help-button:hover {
@@ -120,8 +167,9 @@
 }
 
 .nh-title {
-    font-family: Nunito;
-    font-size: 5vh;
+    font-family: PriegoBold;
+    font-size: 400%;
+    color: #fdff91;
 }
 
 .planet-container {
