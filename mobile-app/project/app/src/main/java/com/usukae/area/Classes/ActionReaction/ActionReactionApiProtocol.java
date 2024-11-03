@@ -83,7 +83,7 @@ public class ActionReactionApiProtocol {
         });
     }
 
-    public void updateActionReaction(Context context, String id, ActionReactionRequest request, ActionReactionCallback callback) {
+    public void updateActionReaction(Context context, String id, ActionReactionRequestUp request, ActionReactionCallback callback) {
         String token = "Bearer " + getAuthToken(context);
         Call<Void> call = apiService.updateActionReaction(token, id, request);
 

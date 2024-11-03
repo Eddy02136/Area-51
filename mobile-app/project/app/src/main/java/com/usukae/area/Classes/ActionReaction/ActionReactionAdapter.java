@@ -12,6 +12,7 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.cardview.widget.CardView;
@@ -114,18 +115,18 @@ public class ActionReactionAdapter extends RecyclerView.Adapter<ActionReactionAd
             updatedParameters.put(key, value);
         }
 
-        ActionReactionRequest request = new ActionReactionRequest(
+        ActionReactionRequestUp request = new ActionReactionRequestUp(
                 "Name",
                 actionReaction.getActionApi(),
                 actionReaction.getActionName(),
                 actionReaction.getReactionApi(),
                 actionReaction.getReactionName(),
-                updatedParameters,
-                ""
+                updatedParameters
         );
 
         ActionReactionApiProtocol apiProtocol = new ActionReactionApiProtocol(context);
         apiProtocol.updateActionReaction(context, actionReaction.get_id(), request, (success, code, data, list, actions, reactions) -> {
+            Toast.makeText(context, "" + code, Toast.LENGTH_SHORT).show();
             PrettyAlert alert = new PrettyAlert((Activity) context);
             if (success) {
                 alert.success(context.getString(R.string.update_success), 3000);

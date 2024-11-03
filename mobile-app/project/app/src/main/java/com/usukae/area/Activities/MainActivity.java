@@ -40,7 +40,7 @@ public class MainActivity extends AppCompatActivity {
     private ImageView profilePicture, link;
     private CardView addArea, addConnection, updateUrlButton;
     private EditText editTextLink;
-    private TextView reset, userName, activesAreasValue, totalExecutionsValue;
+    private TextView reset, userName, activesAreasValue;
     private RecyclerView dashboardConnectionsRecyclerView, connectionsRecyclerView, dashboardAreasRecyclerView, areasRecyclerView;
 
     @Override
@@ -76,7 +76,6 @@ public class MainActivity extends AppCompatActivity {
 
     private void bindViews() {
         activesAreasValue = findViewById(R.id.dashboardActiveValue);
-        totalExecutionsValue = findViewById(R.id.dashboardExecutionsValue);
         addArea = findViewById(R.id.noAreasButton);
         addConnection = findViewById(R.id.addConnectionButton);
         userName = findViewById(R.id.userName);
@@ -125,10 +124,10 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void initDashboard() {
-        if (userName == null || activesAreasValue == null || totalExecutionsValue == null || sharedPreferencesManager == null) return;
+        if (userName == null || activesAreasValue == null || sharedPreferencesManager == null)
+            return;
         userName.setText(sharedPreferencesManager.getFirstName());
         activesAreasValue.setText(String.valueOf(0));
-        totalExecutionsValue.setText(String.valueOf(0));
     }
 
     private void initActionsList() {
@@ -195,7 +194,8 @@ public class MainActivity extends AppCompatActivity {
         super.onResume();
         SharedPreferencesManager sharedPreferencesManager1 = new SharedPreferencesManager(getApplicationContext());
         if (sharedPreferencesManager1.getString("reloadedList").equals("true")) {
-            if (addConnectionDialog != null && addConnectionDialog.isShowing()) addConnectionDialog.dismiss();
+            if (addConnectionDialog != null && addConnectionDialog.isShowing())
+                addConnectionDialog.dismiss();
             sharedPreferencesManager1.remove("reloadedList");
             checkConnections();
         }

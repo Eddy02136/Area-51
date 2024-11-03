@@ -97,9 +97,10 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="15dp"
                 android:layout_marginTop="15dp"
+                android:layout_marginEnd="15dp"
                 app:cardBackgroundColor="@color/dark_secondary"
                 app:cardCornerRadius="25dp"
-                app:layout_constraintEnd_toStartOf="@+id/dashboardCardExecutions"
+                app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/dashboardLabel">
 
@@ -135,54 +136,6 @@
                         app:layout_constraintStart_toStartOf="@+id/dashboardActiveValue"
                         app:layout_constraintTop_toBottomOf="@+id/dashboardActiveValue" />
 
-                </androidx.constraintlayout.widget.ConstraintLayout>
-            </androidx.cardview.widget.CardView>
-
-            <androidx.cardview.widget.CardView
-                android:id="@+id/dashboardCardExecutions"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="15dp"
-                android:layout_marginEnd="15dp"
-                app:cardBackgroundColor="@color/dark_secondary"
-                app:cardCornerRadius="25dp"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toEndOf="@+id/dashboardCardActive"
-                app:layout_constraintTop_toTopOf="@+id/dashboardCardActive">
-
-                <androidx.constraintlayout.widget.ConstraintLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent">
-
-                    <TextView
-                        android:id="@+id/dashboardExecutionsValue"
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_marginStart="30dp"
-                        android:layout_marginTop="10dp"
-                        android:fontFamily="@font/gotham_rounded_bold"
-                        android:text="@string/_0"
-                        android:textColor="@color/accent"
-                        android:textSize="40sp"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toTopOf="parent" />
-
-                    <TextView
-                        android:id="@+id/dashboardExecutionsTitle"
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_marginEnd="30dp"
-                        android:layout_marginBottom="20dp"
-                        android:fontFamily="@font/gotham_rounded_book"
-                        android:text="@string/total_executions"
-                        android:textColor="@color/light_primary"
-                        android:textSize="16sp"
-                        app:layout_constraintBottom_toBottomOf="parent"
-                        app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintHorizontal_bias="0.0"
-                        app:layout_constraintStart_toStartOf="@+id/dashboardExecutionsValue"
-                        app:layout_constraintTop_toBottomOf="@+id/dashboardExecutionsValue"
-                        app:layout_constraintVertical_bias="0.0" />
                 </androidx.constraintlayout.widget.ConstraintLayout>
             </androidx.cardview.widget.CardView>
 

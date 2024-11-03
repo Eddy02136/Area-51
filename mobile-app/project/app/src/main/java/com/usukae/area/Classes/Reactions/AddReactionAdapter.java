@@ -142,8 +142,7 @@ public class AddReactionAdapter extends RecyclerView.Adapter<AddReactionAdapter.
                 action.getService(),
                 reaction.getName(),
                 reaction.getService(),
-                combinedParameters,
-                ""
+                combinedParameters
         );
 
         apiProtocol.addActionReaction(context, request, (success, code, data, list, a, r) -> {
