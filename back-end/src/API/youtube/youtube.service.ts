@@ -181,7 +181,11 @@ export class YoutubeService {
     }
 
     async refreshYoutubeToken(userId: string): Promise<void> {
-        const { refreshToken, expiresAt } = await this.usersService.getElemApiToken(userId, 'YouTube');
+        const data = await this.usersService.getElemApiToken(userId, 'YouTube');
+        if (!data) {
+            return;
+        }
+        const { refreshToken, expiresAt } = data;
         const isTokenExpired = new Date() >= new Date(expiresAt);
 
         if (!isTokenExpired) {

@@ -115,7 +115,11 @@ export class DiscordService {
   }
 
   async refreshDiscordToken(userId: string): Promise<void> {
-    const { refreshToken, expiresAt } = await this.usersService.getElemApiToken(userId, 'Discord');
+    const data = await this.usersService.getElemApiToken(userId, 'Discord');
+    if (!data) {
+      return;
+    }
+    const { refreshToken, expiresAt } = data;
     const isTokenExpired = new Date() >= new Date(expiresAt);
 
     if (!isTokenExpired) {
