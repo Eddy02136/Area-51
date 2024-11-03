@@ -56,14 +56,18 @@ public class ActionReactionAdapter extends RecyclerView.Adapter<ActionReactionAd
 
     private void openBottomSheetDialog(ActionReaction actionReaction) {
         Dialog bottomSheetDialog = dialogUtil.createBottomDialog(context, R.layout.modal_edit_area);
+
         ImageView actionImage = bottomSheetDialog.findViewById(R.id.actionImage);
         TextView actionTitle = bottomSheetDialog.findViewById(R.id.actionTitle);
         TextView actionSubtitle = bottomSheetDialog.findViewById(R.id.actionSubtitle);
         ImageView reactionImage = bottomSheetDialog.findViewById(R.id.reactionImage);
         TextView reactionTitle = bottomSheetDialog.findViewById(R.id.reactionTitle);
         TextView reactionSubtitle = bottomSheetDialog.findViewById(R.id.reactionSubtitle);
+        LinearLayout inputContainer = bottomSheetDialog.findViewById(R.id.inputContainer);
+
         CardView updateButton = bottomSheetDialog.findViewById(R.id.validateButton);
-        updateButton.setOnClickListener(v -> updateActionReaction(actionReaction, bottomSheetDialog));
+        updateButton.setOnClickListener(v -> updateActionReaction(actionReaction, bottomSheetDialog, inputContainer));
+
         CardView deleteButton = bottomSheetDialog.findViewById(R.id.deleteButton);
         deleteButton.setOnClickListener(v -> deleteActionReaction(actionReaction, bottomSheetDialog));
 
@@ -75,44 +79,52 @@ public class ActionReactionAdapter extends RecyclerView.Adapter<ActionReactionAd
         reactionTitle.setText(formatCamelCase(actionReaction.getReactionName()));
         reactionSubtitle.setText(actionReaction.getReactionApi());
 
-        LinearLayout inputContainer = bottomSheetDialog.findViewById(R.id.inputContainer);
-        Map<String, EditText> inputFields = createDynamicInputs(actionReaction, inputContainer);
-
         actionImage.setImageResource(actionUtil.getActionIcon(actionReaction.getActionApi()));
         reactionImage.setImageResource(reactionUtil.getReactionIcon(actionReaction.getReactionApi()));
+
+        createDynamicInputs(actionReaction, inputContainer);
 
         bottomSheetDialog.show();
     }
 
-    private Map<String, EditText> createDynamicInputs(ActionReaction actionReaction, LinearLayout inputContainer) {
-        Map<String, EditText> inputFields = new HashMap<>();
+    private void createDynamicInputs(ActionReaction actionReaction, LinearLayout inputContainer) {
         inputContainer.removeAllViews();
 
-        for (Map.Entry<String, String> param : actionReaction.getParameters().entrySet()) {
+        Map<String, String> parameters = actionReaction.getParameters() != null ? actionReaction.getParameters() : new HashMap<>();
+
+        for (Map.Entry<String, String> param : parameters.entrySet()) {
             View inputFieldView = LayoutInflater.from(context).inflate(R.layout.input_field_layout, inputContainer, false);
             EditText input = inputFieldView.findViewById(R.id.editTextInput);
 
             input.setHint(formatCamelCase(param.getKey()));
             input.setText(param.getValue());
-            inputFields.put(param.getKey(), input);
 
             inputContainer.addView(inputFieldView);
         }
-
-        return inputFields;
     }
 
-    private void updateActionReaction(ActionReaction actionReaction, Dialog dialog) {
-        ActionReactionApiProtocol apiProtocol = new ActionReactionApiProtocol(context);
+    private void updateActionReaction(ActionReaction actionReaction, Dialog dialog, LinearLayout inputContainer) {
+        Map<String, String> updatedParameters = new HashMap<>();
+
+        for (int i = 0; i < inputContainer.getChildCount(); i++) {
+            View view = inputContainer.getChildAt(i);
+            EditText editText = view.findViewById(R.id.editTextInput);
+            String key = editText.getHint().toString();
+            String value = editText.getText().toString();
+            updatedParameters.put(key, value);
+        }
+
         ActionReactionRequest request = new ActionReactionRequest(
                 "Name",
                 actionReaction.getActionApi(),
                 actionReaction.getActionName(),
                 actionReaction.getReactionApi(),
                 actionReaction.getReactionName(),
-                actionReaction.getParameters(),
+                updatedParameters,
                 ""
         );
+
+        ActionReactionApiProtocol apiProtocol = new ActionReactionApiProtocol(context);
         apiProtocol.updateActionReaction(context, actionReaction.get_id(), request, (success, code, data, list, actions, reactions) -> {
             PrettyAlert alert = new PrettyAlert((Activity) context);
             if (success) {
@@ -130,7 +142,6 @@ public class ActionReactionAdapter extends RecyclerView.Adapter<ActionReactionAd
             PrettyAlert alert = new PrettyAlert((Activity) context);
             if (success) {
                 alert.success(context.getString(R.string.delete_success), 3000);
-
                 dialog.dismiss();
             } else {
                 alert.error(context.getString(R.string.delete_failed), 3000);
