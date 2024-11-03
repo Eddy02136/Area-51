@@ -15,10 +15,10 @@ export class AboutService {
                     {
                         name: 'discord',
                         actions: [{
-                                name: "Check_username_changed",
+                                name: "checkChangeUserNameDiscord",
                                 description: "Check if username discord have changed"
                             }, {
-                                name: "Check_join_server",
+                                name: "checkJoinOtherServerDiscord",
                                 description: "Check when user join server discord"
                         }],
                         reactions: [
@@ -29,40 +29,40 @@ export class AboutService {
                         actions: [
                         ],
                         reactions: [{
-                            name: "play_music",
+                            name: "playMusic",
                             description: "Play music on Spotify"
                         }, {
-                            name: "play_playlist",
+                            name: "playPlaylist",
                             description: "Play playlist on Spotify"
                         }, {
-                            name: "set_volume_max",
+                            name: "setVolumeMax",
                             description: "Sets current music volume to max"
                         }]
                     },
                     {
                         name: 'youtube',
                         actions: [{
-                            name: "check_new_spacex_video",
+                            name: "newVideoSpaceX",
                             description: "Check if SpaceX has posted a new video"
                         }],
                         reactions: [{
-                            name: "post_commentary",
+                            name: "postCommentary",
                             description: "A new commentary is posted on a video"
                         }, {
-                            name: "like_video",
+                            name: "likeVideo",
                             description: "Like video from your choice"
                         }]
                     },
                     {
                         name: 'github',
                         actions: [{
-                            name: "check_user_following",
+                            name: "followingUserGithub",
                             description: "Check if user follow new person",
                         }, {
-                            name: "check_username_changed",
+                            name: "changeUserGithub",
                             description: "Check if username github have changed"
                         }, {
-                            name: "check_followers",
+                            name: "followersUserGithub",
                             description: "Check if user is follow by a new person"
                         }],
                         reactions: []
@@ -70,21 +70,21 @@ export class AboutService {
                     {
                         name: 'twitch',
                         actions: [{
-                            name: "check_nasa_viewers",
+                            name: "getViewerNasa",
                             description: "Check if Nasa have more than 5000 viewers"
                         }, {
-                            name: "check_live_streamer",
+                            name: "streamerInLive",
                             description: "Get if a streamer is in live"
                         }],
                         reactions: [{
-                            name: "send_message",
+                            name: "sendMessage",
                             description: "Send a message in the stream chat"
                         }]
                     },
                     {
                         name: 'nasa',
                         actions: [{
-                            name: "get_iss_position",
+                            name: "getIssPos",
                             description: "Gets the position of the iss"
                         }],
                         reactions: []
