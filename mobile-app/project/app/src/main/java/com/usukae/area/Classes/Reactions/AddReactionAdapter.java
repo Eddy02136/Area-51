@@ -10,13 +10,12 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.usukae.area.Classes.ActionReaction.ActionReactionRequest;
 import com.usukae.area.Classes.ActionReaction.ActionReactionApiProtocol;
+import com.usukae.area.Classes.ActionReaction.ActionReactionRequest;
 import com.usukae.area.Classes.Actions.Action;
 import com.usukae.area.Classes.Utils.DialogUtil;
 import com.usukae.area.Classes.Utils.PrettyAlert;
@@ -180,9 +179,9 @@ public class AddReactionAdapter extends RecyclerView.Adapter<AddReactionAdapter.
         }
 
         public void bind(Reaction reaction, ReactionUtil reactionUtil) {
-            titleTextView.setText(formatCamelCase(reaction.getName()));
+            titleTextView.setText(formatCamelCase(reaction.getService() + " " + reaction.getName()));
             descriptionTextView.setText(reaction.getDescription());
-            pictureImageView.setImageResource(reactionUtil.getReactionIcon(reaction.getName()));
+            pictureImageView.setImageResource(reactionUtil.getReactionIcon(reaction.getService()));
         }
 
         public String formatCamelCase(String input) {

@@ -22,7 +22,7 @@ public class WebViewActivity extends AppCompatActivity {
     private static final String REDIRECT_URL = "localhost:3001";
 
     private PrettyAlert prettyAlert;
-    
+
     private Handler handler;
     private Runnable runnable;
 
@@ -88,6 +88,14 @@ public class WebViewActivity extends AppCompatActivity {
         handler.postDelayed(runnable, 100);
     }
 
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        if (handler != null && runnable != null) {
+            handler.removeCallbacks(runnable);
+        }
+    }
+
     private class CustomWebViewClient extends WebViewClient {
         @SuppressLint("WebViewClientOnReceivedSslError")
         @Override
@@ -110,14 +118,6 @@ public class WebViewActivity extends AppCompatActivity {
             if (url.contains(REDIRECT_URL)) {
                 finish();
             }
-        }
-    }
-
-    @Override
-    protected void onDestroy() {
-        super.onDestroy();
-        if (handler != null && runnable != null) {
-            handler.removeCallbacks(runnable);
         }
     }
 }

@@ -4,9 +4,9 @@ import android.content.Context;
 
 import androidx.annotation.NonNull;
 
+import com.usukae.area.Classes.ActionReaction.ActionReactionCallback;
 import com.usukae.area.Classes.Api.ApiClient;
 import com.usukae.area.Classes.Api.ApiService;
-import com.usukae.area.Classes.ActionReaction.ActionReactionCallback;
 import com.usukae.area.Classes.Managers.SharedPreferencesManager;
 
 import retrofit2.Call;

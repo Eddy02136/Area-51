@@ -3,11 +3,11 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/main"
-    tools:ignore="ContentDescription"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/dark_primary"
-    tools:context=".Activities.MainActivity">
+    tools:context=".Activities.MainActivity"
+    tools:ignore="ContentDescription">
 
     <ImageView
         android:id="@+id/profileButton"
@@ -24,8 +24,8 @@
         android:id="@+id/urlButton"
         android:layout_width="25dp"
         android:layout_height="25dp"
-        android:padding="2dp"
         android:layout_marginEnd="15dp"
+        android:padding="2dp"
         android:src="@drawable/ic_link"
         app:layout_constraintBottom_toBottomOf="@+id/welcomeBack"
         app:layout_constraintEnd_toStartOf="@+id/profileButton"
@@ -63,9 +63,9 @@
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:layout_marginTop="15dp"
+        android:fillViewport="true"
         android:nestedScrollingEnabled="false"
         android:scrollbars="none"
-        android:fillViewport="true"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"

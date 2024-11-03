@@ -92,9 +92,9 @@
             android:fontFamily="@font/gotham_rounded_book"
             android:gravity="start"
             android:text="@string/paired_on"
-            android:textStyle="bold"
             android:textColor="@color/accent"
             android:textSize="16sp"
+            android:textStyle="bold"
             app:layout_constraintBottom_toBottomOf="@+id/imageView3"
             app:layout_constraintStart_toEndOf="@+id/imageView3"
             app:layout_constraintTop_toTopOf="@+id/imageView3" />

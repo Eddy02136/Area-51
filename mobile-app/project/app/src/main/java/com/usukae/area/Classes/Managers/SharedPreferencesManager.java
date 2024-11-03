@@ -153,11 +153,11 @@ public class SharedPreferencesManager {
         return sharedPreferences.getString(KEY_TOKEN, "");
     }
 
-    public void resetToken() {
-        setString(KEY_TOKEN, "");
-    }
-
     public void setToken(String token) {
         setString(KEY_TOKEN, token);
+    }
+
+    public void resetToken() {
+        setString(KEY_TOKEN, "");
     }
 }
