@@ -1,11 +1,19 @@
-version: '3'
-
 services:
-
   server:
     build: './back-end'
     ports:
       - "8080:3000"
+    depends_on:
+      - mongo
+    environment:
+      - MONGO_URI=mongodb://mongo:27017/Area
+
+  mongo:
+    image: mongo:7
+    ports:
+      - "27017:27017"
+    volumes:
+      - mongo_data:/data/db
 
   client_web:
     build: './front-end'
@@ -16,12 +24,6 @@ services:
     volumes:
       - apk:/mobile_app/
 
-  # client_mobile:
-  #   build: './mobile-app'
-  #   depends_on:
-  #     - server
-  #   volumes:
-  #     - apk:/mobile_app/
-
 volumes:
   apk:
+  mongo_data:
